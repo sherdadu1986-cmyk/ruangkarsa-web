@@ -1,18 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    --color-primary: #4C1D95;     /* Deep Violet */
-    --color-primary-dark: #3B0764;/* Dark Violet */
-    --color-accent: #84CC16;       /* Lime */
-    --color-accent-bright: #CCFF00;/* Bright Lemon Lime */
-    --color-bg-light: #FFFFFF;
-    --color-bg-alt: #F9FAFB;
+    --color-primary: #0F172A;       /* Biru Tua Slate-900 */
+    --color-primary-dark: #0B0F19;  /* Sangat Biru Tua */
+    --color-accent: #FBBF24;        /* Oranye Amber-400 */
+    --color-accent-bright: #F59E0B; /* Oranye Terang Amber-500 */
+    --color-bg-light: #0F172A;      /* Dark Blue Body */
+    --color-bg-alt: #1E293B;        /* Slate-800 for Cards */
 }
 
 body {
     background-color: var(--color-bg-light);
     font-family: 'Plus Jakarta Sans', sans-serif;
-    color: #1F2937;
+    color: #E2E8F0;                 /* Slate-200 for readability */
     overflow-x: hidden;
 }
 
@@ -21,18 +21,24 @@ body {
     width: 8px;
 }
 ::-webkit-scrollbar-track {
-    background: var(--color-bg-alt);
+    background: var(--color-primary-dark);
 }
 ::-webkit-scrollbar-thumb {
-    background: rgba(76, 29, 149, 0.2);
+    background: rgba(251, 191, 36, 0.15); /* Faint orange thumb */
     border-radius: 9999px;
-    border: 2px solid var(--color-bg-alt);
+    border: 2px solid var(--color-primary-dark);
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(76, 29, 149, 0.4);
+    background: rgba(251, 191, 36, 0.35); /* Brighter on hover */
 }
 
-/* Soft Decorative Blobs for Light Mode */
+/* Repeating 'R' Arrow Geometric Background Pattern */
+.bg-r-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 100 100' fill-rule='evenodd'%3E%3Cpath d='M15,10 H30 V90 H15 Z M38,10 H80 V38 L95,48 L80,58 V90 H60 V58 H38 Z M38,20 H60 V46 H38 Z' fill='%23FBBF24' fill-opacity='0.015'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+}
+
+/* Ambient Background Light Blobs (Darkened & Oranged) */
 .bg-light-blobs {
     position: absolute;
     width: 100%;
@@ -47,36 +53,36 @@ body {
 .light-blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.15;
-    animation: floatBlob 20s infinite alternate ease-in-out;
+    filter: blur(140px);
+    opacity: 0.25;
+    animation: floatBlob 25s infinite alternate ease-in-out;
 }
 
 .blob-purple-1 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(76, 29, 149, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0) 70%);
     top: -5%;
     left: -10%;
     animation-delay: 0s;
 }
 
 .blob-lime-1 {
-    width: 450px;
-    height: 450px;
-    background: radial-gradient(circle, rgba(204, 255, 0, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
-    top: 30%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, rgba(15, 23, 42, 0) 70%);
+    top: 25%;
     right: -10%;
-    animation-delay: 5s;
+    animation-delay: 6s;
 }
 
 .blob-purple-2 {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.12) 0%, rgba(15, 23, 42, 0) 70%);
     bottom: 5%;
-    left: 20%;
-    animation-delay: 10s;
+    left: 15%;
+    animation-delay: 12s;
 }
 
 @keyframes floatBlob {
@@ -84,10 +90,10 @@ body {
         transform: translate(0, 0) scale(1);
     }
     50% {
-        transform: translate(40px, -60px) scale(1.08);
+        transform: translate(60px, -80px) scale(1.1);
     }
     100% {
-        transform: translate(-30px, 40px) scale(0.92);
+        transform: translate(-40px, 60px) scale(0.9);
     }
 }
 
@@ -110,13 +116,13 @@ body {
     width: 100%;
 }
 
-/* Interactive Card Layouts */
+/* Interactive Card Layouts - Optimized for Dark Theme */
 .premium-card {
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .premium-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px -15px rgba(59, 7, 100, 0.08);
+    box-shadow: 0 20px 40px -15px rgba(251, 191, 36, 0.08);
 }
 
 /* Stacked Visual Component in Hero */
