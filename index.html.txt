@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Ruang Karsa</title>
+</head>
+<body>
+    <h1>Selamat Datang di Ruang Karsa</h1>
+    <p>Web ini sedang dalam masa pengembangan.</p>
+</body>
+</html>
