@@ -1,15 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    --bg-dark: #08050e;
-    --accent-purple: #8b5cf6;
-    --accent-pink: #ec4899;
-    --accent-teal: #14b8a6;
+    --color-primary: #4C1D95;     /* Deep Violet */
+    --color-primary-dark: #3B0764;/* Dark Violet */
+    --color-accent: #84CC16;       /* Lime */
+    --color-accent-bright: #CCFF00;/* Bright Lemon Lime */
+    --color-bg-light: #FFFFFF;
+    --color-bg-alt: #F9FAFB;
 }
 
 body {
-    background-color: var(--bg-dark);
+    background-color: var(--color-bg-light);
     font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #1F2937;
     overflow-x: hidden;
 }
 
@@ -18,62 +21,61 @@ body {
     width: 8px;
 }
 ::-webkit-scrollbar-track {
-    background: #08050e;
+    background: var(--color-bg-alt);
 }
 ::-webkit-scrollbar-thumb {
-    background: rgba(139, 92, 246, 0.3);
-    border-radius: 4px;
+    background: rgba(76, 29, 149, 0.2);
+    border-radius: 9999px;
+    border: 2px solid var(--color-bg-alt);
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(139, 92, 246, 0.6);
+    background: rgba(76, 29, 149, 0.4);
 }
 
-/* Background blob animations */
-.bg-blobs {
+/* Soft Decorative Blobs for Light Mode */
+.bg-light-blobs {
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
     overflow: hidden;
-    z-index: 1;
+    z-index: 0;
     pointer-events: none;
 }
 
-.blob {
+.light-blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(140px);
-    opacity: 0.4;
-    mix-blend-mode: screen;
-    animation: floatBlob 25s infinite alternate ease-in-out;
+    filter: blur(120px);
+    opacity: 0.15;
+    animation: floatBlob 20s infinite alternate ease-in-out;
 }
 
-.blob-1 {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(139, 92, 246, 0.45) 0%, rgba(236, 72, 153, 0) 70%);
-    top: -10%;
+.blob-purple-1 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(76, 29, 149, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
+    top: -5%;
     left: -10%;
     animation-delay: 0s;
 }
 
-.blob-2 {
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, rgba(20, 184, 166, 0.35) 0%, rgba(59, 130, 246, 0) 70%);
-    bottom: -10%;
+.blob-lime-1 {
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(204, 255, 0, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
+    top: 30%;
     right: -10%;
     animation-delay: 5s;
 }
 
-.blob-3 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, rgba(139, 92, 246, 0) 70%);
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.blob-purple-2 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
+    bottom: 5%;
+    left: 20%;
     animation-delay: 10s;
 }
 
@@ -82,73 +84,82 @@ body {
         transform: translate(0, 0) scale(1);
     }
     50% {
-        transform: translate(60px, -80px) scale(1.1);
+        transform: translate(40px, -60px) scale(1.08);
     }
     100% {
-        transform: translate(-40px, 60px) scale(0.9);
+        transform: translate(-30px, 40px) scale(0.92);
     }
 }
 
-/* Card Glow Border */
-.glow-border {
+/* Smooth Navigation Accent Transition */
+.nav-link {
     position: relative;
+    transition: color 0.3s ease;
 }
-.glow-border::before {
+.nav-link::after {
     content: '';
     position: absolute;
-    top: 0;
+    bottom: -4px;
     left: 0;
-    right: 0;
+    width: 0;
     height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent-purple), var(--accent-pink), var(--accent-teal), transparent);
-    background-size: 200% 100%;
-    animation: borderGlow 6s linear infinite;
+    background-color: var(--color-accent);
+    transition: width 0.3s ease;
+}
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Interactive Card Layouts */
+.premium-card {
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.premium-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -15px rgba(59, 7, 100, 0.08);
+}
+
+/* Stacked Visual Component in Hero */
+.stacked-card-1 {
+    transform: rotate(-3deg) translateY(0);
     z-index: 10;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.stacked-card-2 {
+    transform: rotate(4deg) translate(25px, -15px);
+    z-index: 5;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.stacked-card-3 {
+    transform: rotate(-1deg) translate(-20px, 20px);
+    z-index: 8;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes borderGlow {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 200% 50%; }
+.stacked-card-group:hover .stacked-card-1 {
+    transform: rotate(0deg) translate(-10px, -5px);
+    z-index: 15;
+}
+.stacked-card-group:hover .stacked-card-2 {
+    transform: rotate(0deg) translate(35px, 0);
+}
+.stacked-card-group:hover .stacked-card-3 {
+    transform: rotate(0deg) translate(-25px, 25px);
 }
 
-/* Floating animation for cards */
-.floating-element {
+/* Floating animation for subtle element shifts */
+.floating {
     animation: floatElement 6s ease-in-out infinite;
 }
-
 @keyframes floatElement {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
 }
 
-.floating-element-delayed {
+.floating-delayed {
     animation: floatElementDelayed 8s ease-in-out infinite;
 }
-
 @keyframes floatElementDelayed {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
-}
-
-/* Animation for adding new card on board */
-.animate-bounce-in {
-    animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-@keyframes bounceIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.3) translateY(40px);
-    }
-    60% {
-        opacity: 0.9;
-        transform: scale(1.1) translateY(-10px);
-    }
-    90% {
-        transform: scale(0.98) translateY(2px);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
+    50% { transform: translateY(-14px); }
 }

@@ -3,24 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ruang Karsa - Ekosistem kolaborasi kreatif modern untuk mewadahi ide, memamerkan karya, belajar bersama, dan memperoleh pendanaan proyek kreasi anak bangsa.">
-    <title>Ruang Karsa | Ekosistem Kolaborasi & Inovasi Kreatif</title>
-    <!-- Tailwind CSS Play CDN -->
+    <meta name="description" content="Ruang Karsa adalah Creative Media & Production House profesional di Pasuruan, Jawa Timur. Menyediakan layanan video profile, dokumentasi, drone aerial, live streaming, graphic design, dan social media management.">
+    <title>Ruang Karsa | Creative Media & Production House Pasuruan</title>
+    <!-- Tailwind CSS Play CDN v3 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        darkbg: '#08050e',
-                        cardbg: 'rgba(17, 12, 28, 0.65)',
-                        accentPurple: '#8b5cf6',
-                        accentPink: '#ec4899',
-                        accentTeal: '#14b8a6',
+                        brand: {
+                            dark: '#3B0764',     /* Deep Violet Dark */
+                            DEFAULT: '#4C1D95',  /* Brand Purple */
+                            light: '#7C3AED',    /* Light Purple */
+                            soft: '#F3E8FF',     /* Translucent soft purple */
+                            accent: '#84CC16',   /* Lime Accent */
+                            limeBright: '#CCFF00', /* Bright Lemon/Lime */
+                        }
                     },
                     fontFamily: {
-                        outfit: ['Outfit', 'sans-serif'],
-                        jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+                        inter: ['"Inter"', 'sans-serif'],
                     }
                 }
             }
@@ -28,476 +31,768 @@
     </script>
     <link rel="stylesheet" href="index.css">
 </head>
-<body class="bg-darkbg text-gray-100 min-h-screen relative font-jakarta overflow-x-hidden">
+<body class="bg-white text-gray-800 min-h-screen relative font-sans overflow-x-hidden antialiased">
 
-    <!-- Background Animated Blobs -->
-    <div class="bg-blobs">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
+    <!-- Ambient Background Light Blobs -->
+    <div class="bg-light-blobs">
+        <div class="light-blob blob-purple-1"></div>
+        <div class="light-blob blob-lime-1"></div>
+        <div class="light-blob blob-purple-2"></div>
     </div>
 
-    <!-- Navigation Bar -->
-    <header class="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-[#08050e]/75 border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <!-- Logo Section -->
-            <a href="#" class="flex items-center gap-2 text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-accentPurple to-accentPink font-outfit">
-                Ruang Karsa
-                <span class="w-2.5 h-2.5 bg-accentTeal rounded-full shadow-[0_0_8px_#14b8a6]"></span>
+    <!-- Header / Navbar Section -->
+    <header id="main-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-transparent py-5">
+        <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+            <!-- Logo Brand -->
+            <a href="#" class="flex items-center gap-2 text-2xl font-extrabold tracking-tight text-brand-dark transition-transform hover:scale-102">
+                <span>Ruang</span><span class="text-brand">Karsa</span>
+                <span class="w-3 h-3 bg-brand-accent rounded-full animate-pulse shadow-[0_0_8px_#84CC16]"></span>
             </a>
-            
-            <!-- Desktop Navigation Links -->
-            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
-                <a href="#" class="hover:text-white transition-colors">Beranda</a>
-                <a href="#about" class="hover:text-white transition-colors">Visi Kami</a>
-                <a href="#features" class="hover:text-white transition-colors">Fitur</a>
-                <a href="#playground" class="hover:text-white transition-colors">Karsa Board</a>
-                <a href="#subscribe" class="hover:text-white transition-colors">Gabung</a>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-600">
+                <a href="#" class="nav-link text-brand-dark hover:text-brand transition-colors">Beranda</a>
+                <a href="#tentang" class="nav-link hover:text-brand transition-colors">Tentang</a>
+                <a href="#layanan" class="nav-link hover:text-brand transition-colors">Layanan</a>
+                <a href="#keunggulan" class="nav-link hover:text-brand transition-colors">Keunggulan</a>
             </nav>
 
             <!-- CTA Desktop Button -->
             <div class="hidden md:block">
-                <a href="#subscribe" class="px-5 py-2.5 text-sm font-semibold rounded-xl bg-gradient-to-r from-accentPurple to-accentPink text-white hover:shadow-[0_0_20px_rgba(236,72,153,0.4)] hover:-translate-y-0.5 transition-all">
-                    Gabung Waitlist
+                <a id="cta-nav-whatsapp" href="https://wa.me/6289617390529?text=Halo%20Ruang%20Karsa%2C%20saya%20tertarik%20dengan%20layanan%20kreatif%20Anda." target="_blank" rel="noopener noreferrer" 
+                   class="px-5 py-2.5 text-sm font-bold rounded-full bg-brand text-white hover:bg-brand-dark hover:shadow-lg hover:shadow-brand/20 transition-all duration-300 transform hover:-translate-y-0.5 inline-flex items-center gap-2">
+                    <span>Hubungi Kami</span>
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.012 2C6.5 2 2.012 6.5 2.012 12c0 2.124.66 4.104 1.8 5.748L2 22l4.38-1.74a9.92 9.92 0 0 0 5.632 1.74c5.5 0 9.988-4.5 9.988-10S17.512 2 12.012 2zm5.72 14.1c-.24.672-1.2 1.224-1.656 1.284-.456.06-1.02.108-3.012-.684-2.544-1.008-4.176-3.6-4.308-3.78-.12-.18-1.008-1.344-1.008-2.556s.636-1.812.864-2.052c.228-.24.504-.3.672-.3.168 0 .336 0 .48.012.156.012.36-.06.564.432.204.504.708 1.716.768 1.836.06.12.108.264.024.432-.084.18-.18.288-.3.432-.12.132-.252.276-.36.372-.12.108-.24.228-.108.456.132.228.588.972 1.26 1.572.864.768 1.584 1.008 1.812 1.116.228.108.36.096.492-.06.132-.156.564-.66.72-.888.156-.228.312-.192.528-.108.216.084 1.38.648 1.62.768.24.12.396.18.456.288.06.096.06.564-.18 1.236z"/>
+                    </svg>
                 </a>
             </div>
 
             <!-- Mobile Menu Toggle Button -->
-            <button id="menu-btn" class="md:hidden text-gray-300 hover:text-white focus:outline-none" aria-label="Toggle Menu">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            <button id="menu-btn" class="md:hidden text-brand-dark hover:text-brand focus:outline-none" aria-label="Toggle Menu">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path id="menu-icon-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16m-7 6h7"></path>
                 </svg>
             </button>
         </div>
 
         <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden md:hidden px-6 py-4 bg-[#08050e]/95 border-b border-white/5 space-y-4">
-            <a href="#" class="block text-gray-300 hover:text-white transition-colors">Beranda</a>
-            <a href="#about" class="block text-gray-300 hover:text-white transition-colors">Visi Kami</a>
-            <a href="#features" class="block text-gray-300 hover:text-white transition-colors">Fitur</a>
-            <a href="#playground" class="block text-gray-300 hover:text-white transition-colors">Karsa Board</a>
-            <a href="#subscribe" class="block text-gray-300 hover:text-white transition-colors">Gabung</a>
-            <a href="#subscribe" class="block w-full py-2.5 text-center text-sm font-semibold rounded-xl bg-gradient-to-r from-accentPurple to-accentPink text-white">
-                Gabung Waitlist
+        <div id="mobile-menu" class="hidden md:hidden px-6 py-6 bg-white/95 border-b border-gray-100 space-y-4 shadow-lg absolute w-full left-0 z-40 backdrop-blur-md transition-all duration-300">
+            <a href="#" class="block text-gray-800 hover:text-brand font-semibold py-2">Beranda</a>
+            <a href="#tentang" class="block text-gray-800 hover:text-brand font-semibold py-2">Tentang</a>
+            <a href="#layanan" class="block text-gray-800 hover:text-brand font-semibold py-2">Layanan</a>
+            <a href="#keunggulan" class="block text-gray-800 hover:text-brand font-semibold py-2">Keunggulan</a>
+            <a id="cta-mobile-whatsapp" href="https://wa.me/6289617390529?text=Halo%20Ruang%20Karsa%2C%20saya%20tertarik%20dengan%20layanan%20kreatif%20Anda." target="_blank" rel="noopener noreferrer" 
+               class="block w-full text-center py-3 px-5 text-sm font-bold rounded-full bg-brand text-white hover:bg-brand-dark transition-colors">
+                Hubungi Kami via WhatsApp
             </a>
         </div>
     </header>
 
-    <main class="relative z-10">
+    <main class="relative z-10 pt-28">
         <!-- Hero Section -->
-        <section class="relative pt-32 pb-24 md:pt-40 md:pb-32 px-6 max-w-7xl mx-auto">
+        <section id="beranda" class="relative py-16 md:py-24 px-6 max-w-7xl mx-auto overflow-hidden">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-                <!-- Text Content -->
+                <!-- Text Left -->
                 <div class="lg:col-span-7 flex flex-col items-start space-y-6 text-left">
-                    <span class="inline-flex items-center gap-2 px-3 py-1 text-xs font-semibold tracking-wider text-accentTeal uppercase bg-accentTeal/10 border border-accentTeal/20 rounded-full">
-                        🚀 Ekosistem Kreatif Masa Depan
+                    <span class="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-extrabold tracking-wider text-brand-dark uppercase bg-brand-soft/70 border border-brand/20 rounded-full">
+                        <span class="w-2 h-2 rounded-full bg-brand-accent animate-ping"></span>
+                        Dari Ide Menjadi Karya
                     </span>
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold font-outfit text-white leading-tight tracking-tight">
-                        Wujudkan <span class="bg-gradient-to-r from-accentPurple via-accentPink to-accentTeal bg-clip-text text-transparent">Ide Kreatif</span> & Kolaborasi Tanpa Batas
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-brand-dark leading-tight tracking-tight">
+                        Wujudkan Ide Kreatif & <span class="text-brand">Komunikasi Visual</span> yang Berdampak.
                     </h1>
-                    <p class="text-lg text-gray-300 max-w-2xl leading-relaxed">
-                        Ruang Karsa adalah wadah digital kolaboratif tempat para kreator, desainer, developer, dan pemikir visioner bersatu untuk mematangkan ide, berkreasi bersama, dan menciptakan dampak nyata.
+                    <p class="text-lg text-gray-600 max-w-2xl leading-relaxed">
+                        Ruang Karsa adalah partner media kreatif profesional yang bergerak di bidang produksi media terintegrasi, dokumentasi sinematik, drone aerial, live streaming event, desain grafis, hingga pengelolaan media sosial secara profesional. Kami mendedikasikan keahlian kami untuk mematangkan gagasan Anda menjadi visualisasi yang berestetika premium dan menyampaikan pesan yang kuat.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto pt-2">
-                        <a href="#subscribe" class="px-8 py-4 text-center text-base font-semibold rounded-xl bg-gradient-to-r from-accentPurple to-accentPink text-white hover:shadow-[0_0_25px_rgba(236,72,153,0.45)] hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
-                            Gabung Waitlist 
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path></svg>
+                        <a id="cta-hero-whatsapp" href="https://wa.me/6289617390529?text=Halo%20Ruang%20Karsa%2C%20saya%20ingin%20berkonsultasi%20mengenai%20proyek%20media..." target="_blank" rel="noopener noreferrer" 
+                           class="px-8 py-4 text-center text-base font-bold rounded-full bg-brand text-white hover:bg-brand-dark hover:shadow-xl hover:shadow-brand/30 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-3">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12.012 2C6.5 2 2.012 6.5 2.012 12c0 2.124.66 4.104 1.8 5.748L2 22l4.38-1.74a9.92 9.92 0 0 0 5.632 1.74c5.5 0 9.988-4.5 9.988-10S17.512 2 12.012 2zm5.72 14.1c-.24.672-1.2 1.224-1.656 1.284-.456.06-1.02.108-3.012-.684-2.544-1.008-4.176-3.6-4.308-3.78-.12-.18-1.008-1.344-1.008-2.556s.636-1.812.864-2.052c.228-.24.504-.3.672-.3.168 0 .336 0 .48.012.156.012.36-.06.564.432.204.504.708 1.716.768 1.836.06.12.108.264.024.432-.084.18-.18.288-.3.432-.12.132-.252.276-.36.372-.12.108-.24.228-.108.456.132.228.588.972 1.26 1.572.864.768 1.584 1.008 1.812 1.116.228.108.36.096.492-.06.132-.156.564-.66.72-.888.156-.228.312-.192.528-.108.216.084 1.38.648 1.62.768.24.12.396.18.456.288.06.096.06.564-.18 1.236z"/>
+                            </svg>
+                            <span>Hubungi via WhatsApp</span>
                         </a>
-                        <a href="#playground" class="px-8 py-4 text-center text-base font-semibold rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:border-white/20 transition-all flex items-center justify-center gap-2">
-                            Coba Karsa Board
+                        <a href="#layanan" class="px-8 py-4 text-center text-base font-bold rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors flex items-center justify-center gap-2">
+                            <span>Jelajahi Layanan</span>
                         </a>
-                    </div>
-                    <!-- Social Proof -->
-                    <div class="flex items-center gap-4 pt-4 border-t border-white/5 w-full">
-                        <div class="flex -space-x-3">
-                            <img class="w-10 h-10 rounded-full border-2 border-darkbg object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Avatar 1">
-                            <img class="w-10 h-10 rounded-full border-2 border-darkbg object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Avatar 2">
-                            <img class="w-10 h-10 rounded-full border-2 border-darkbg object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="Avatar 3">
-                        </div>
-                        <div class="text-sm text-gray-400">
-                            Bergabung dengan <span class="text-white font-semibold">500+ kreator</span> yang siap berkolaborasi.
-                        </div>
                     </div>
                 </div>
-                
-                <!-- Interactive Mockup (Dashboard Preview) -->
-                <div class="lg:col-span-5 relative w-full flex justify-center items-center">
-                    <!-- Glowing background aura -->
-                    <div class="absolute w-72 h-72 bg-accentPurple/25 rounded-full filter blur-[80px] -z-10 animate-pulse-slow"></div>
-                    
-                    <!-- Glassmorphic Mockup Board -->
-                    <div class="relative w-full max-w-[420px] bg-cardbg backdrop-blur-2xl border border-white/10 rounded-3xl p-6 shadow-2xl floating-element">
-                        <!-- Card Header -->
-                        <div class="flex items-center justify-between pb-4 border-b border-white/5 mb-4">
-                            <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
-                                <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
-                                <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
-                            </div>
-                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-accentTeal/10 text-accentTeal border border-accentTeal/20">LIVE COLLAB</span>
-                        </div>
+
+                <!-- Visual Mockup Right (Stacked Cards Grid) -->
+                <div class="lg:col-span-5 relative w-full flex justify-center items-center py-10 lg:py-0 stacked-card-group">
+                    <!-- Glow Aura behind -->
+                    <div class="absolute w-80 h-80 bg-brand-soft/80 rounded-full filter blur-[80px] -z-10 animate-pulse-slow"></div>
+
+                    <!-- Stacked Card System -->
+                    <div class="relative w-full max-w-[380px] h-[360px] flex justify-center items-center">
                         
-                        <!-- Card Inner Content -->
-                        <div class="space-y-4">
-                            <!-- Project title card -->
-                            <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="text-xs font-semibold text-gray-400">Desain Proyek UI/UX</span>
-                                    <span class="text-xs text-accentTeal font-bold">92% Selesai</span>
+                        <!-- Card 3 (Bottom/Left) -->
+                        <div class="absolute w-[240px] h-[280px] bg-white border border-gray-100 rounded-3xl p-4 shadow-xl stacked-card-3 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=400&q=80" alt="Creative Session" class="w-full h-2/3 object-cover rounded-2xl mb-3">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-xs font-bold text-brand-dark">Creative Meeting</h4>
+                                    <span class="text-[10px] text-gray-400">Ideation Process</span>
                                 </div>
-                                <h3 class="text-sm font-semibold text-white font-outfit">App Ruang Karsa Mobile</h3>
-                                <div class="flex items-center justify-between mt-3">
-                                    <div class="flex -space-x-2">
-                                        <span class="w-6 h-6 rounded-full bg-accentPurple flex items-center justify-center text-[9px] font-bold text-white border border-darkbg">RK</span>
-                                        <span class="w-6 h-6 rounded-full bg-accentPink flex items-center justify-center text-[9px] font-bold text-white border border-darkbg">DA</span>
-                                        <span class="w-6 h-6 rounded-full bg-accentTeal flex items-center justify-center text-[9px] font-bold text-white border border-darkbg">YS</span>
-                                    </div>
-                                    <span class="text-[10px] text-gray-400">Aktif 5 menit lalu</span>
-                                </div>
-                            </div>
-                            <!-- Activity Feed Item -->
-                            <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
-                                <div class="flex items-start gap-3">
-                                    <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-accentPurple to-accentPink flex items-center justify-center text-xs font-bold text-white shrink-0">
-                                        RK
-                                    </div>
-                                    <div class="space-y-1">
-                                        <h4 class="text-xs font-bold text-white">Yusuf A. mengunggah karya baru</h4>
-                                        <p class="text-[10px] text-gray-400">"Karya Seni Ilustrasi Ruang Karsa V1.0"</p>
-                                        <span class="inline-block text-[9px] px-2 py-0.5 rounded bg-accentPurple/20 text-accentPurple border border-accentPurple/20 font-medium">Ilustrasi</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Stats Grid -->
-                            <div class="grid grid-cols-2 gap-3">
-                                <div class="p-3 rounded-2xl bg-white/5 border border-white/5 text-center">
-                                    <span class="block text-[10px] text-gray-400">Kolaborator</span>
-                                    <span class="text-base font-bold text-white">124+ Aktif</span>
-                                </div>
-                                <div class="p-3 rounded-2xl bg-white/5 border border-white/5 text-center">
-                                    <span class="block text-[10px] text-gray-400">Karsa Terkumpul</span>
-                                    <span class="text-base font-bold text-accentTeal">342 Ide</span>
-                                </div>
+                                <span class="px-2 py-0.5 bg-brand-soft text-brand text-[9px] font-bold rounded-full">Karsa</span>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Floating Widget Extra -->
-                    <div class="absolute -bottom-6 -left-6 bg-[#110c1c]/90 backdrop-blur-md border border-white/10 px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 floating-element-delayed">
-                        <span class="flex h-3 w-3 relative">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accentTeal opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-3 w-3 bg-accentTeal"></span>
-                        </span>
-                        <div class="text-xs">
-                            <span class="block font-bold text-white">Sesi Brainstorming</span>
-                            <span class="text-gray-400">12 Kreator bergabung</span>
+
+                        <!-- Card 2 (Top/Right) -->
+                        <div class="absolute w-[240px] h-[280px] bg-white border border-gray-100 rounded-3xl p-4 shadow-xl stacked-card-2 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=400&q=80" alt="Drone View" class="w-full h-2/3 object-cover rounded-2xl mb-3">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-xs font-bold text-brand-dark">Aerial Capture</h4>
+                                    <span class="text-[10px] text-gray-400">Drone Service</span>
+                                </div>
+                                <span class="px-2 py-0.5 bg-brand-accent/25 text-brand-dark text-[9px] font-bold rounded-full">Pro</span>
+                            </div>
+                        </div>
+
+                        <!-- Card 1 (Center Front) -->
+                        <div class="absolute w-[240px] h-[280px] bg-white border border-gray-100 rounded-3xl p-4 shadow-2xl stacked-card-1 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=400&q=80" alt="Camera Filming" class="w-full h-2/3 object-cover rounded-2xl mb-3">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-xs font-bold text-brand-dark">Cinema Shooting</h4>
+                                    <span class="text-[10px] text-gray-400">Production House</span>
+                                </div>
+                                <span class="w-2.5 h-2.5 bg-brand-accent rounded-full shadow-[0_0_8px_#84CC16]"></span>
+                            </div>
+                        </div>
+
+                        <!-- Mini Floating Stats (Gimmick) -->
+                        <div class="absolute -bottom-2 -left-6 bg-white border border-gray-100 px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 floating z-20">
+                            <div class="w-8 h-8 rounded-full bg-brand-soft flex items-center justify-center text-brand">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <span class="block font-bold text-xs text-brand-dark">Klien Puas</span>
+                                <span class="text-[10px] text-gray-400 font-semibold">100+ Instansi & UMKM</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Core Values Section (Pilar Utama) -->
-        <section id="about" class="py-24 px-6 relative max-w-7xl mx-auto border-t border-white/5">
+        <!-- Visi & Misi Section -->
+        <section id="tentang" class="py-24 px-6 relative bg-gray-50 border-t border-b border-gray-100">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                    <span class="text-sm font-bold text-brand uppercase tracking-wider block">Visi & Misi Kami</span>
+                    <h2 class="text-3xl md:text-4xl font-bold font-sans text-brand-dark">Landasan Komitmen & Arah Gerak Kreatif</h2>
+                    <p class="text-gray-600">Bagaimana kami mengarahkan ide kreatif, mendedikasikan keahlian produksi, dan membangun kepercayaan klien secara berkelanjutan.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                    <!-- Visi Card (Large) -->
+                    <div class="lg:col-span-5 p-8 md:p-10 rounded-3xl bg-brand text-white shadow-xl flex flex-col justify-between relative overflow-hidden premium-card">
+                        <div class="absolute -right-16 -top-16 w-48 h-48 bg-white/5 rounded-full pointer-events-none"></div>
+                        <div class="space-y-6">
+                            <div class="inline-flex p-3 bg-white/10 rounded-2xl text-brand-limeBright">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <span class="text-xs uppercase tracking-wider font-extrabold text-brand-soft/75">Visi Perusahaan</span>
+                                <h3 class="text-2xl md:text-3xl font-extrabold mt-1">VISI</h3>
+                            </div>
+                            <p class="text-brand-soft text-lg leading-relaxed font-semibold italic">
+                                "Menjadi production house dan media kreatif terdepan yang menginspirasi, menghubungkan ide dengan realitas, dan menghasilkan karya komunikasi visual yang berdampak luas serta bernilai seni tinggi."
+                            </p>
+                        </div>
+                        <div class="pt-6 border-t border-white/10 text-xs text-brand-soft/60">
+                            RUANG KARSA - Creative Media & Production House
+                        </div>
+                    </div>
+
+                    <!-- Misi List (Grid of Cards) -->
+                    <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
+                        <!-- Misi 1 -->
+                        <div class="p-6 bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-shadow premium-card flex flex-col justify-between">
+                            <div class="space-y-4">
+                                <div class="text-brand font-extrabold text-xl font-mono">01</div>
+                                <h4 class="text-brand-dark font-bold text-base">Menghasilkan Produk Premium</h4>
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    Menyajikan konten video, fotografi, dan desain grafis dengan standar estetika tertinggi serta pengerjaan teknis terbaik.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Misi 2 -->
+                        <div class="p-6 bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-shadow premium-card flex flex-col justify-between">
+                            <div class="space-y-4">
+                                <div class="text-brand font-extrabold text-xl font-mono">02</div>
+                                <h4 class="text-brand-dark font-bold text-base">Inovasi Teknologi</h4>
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    Memanfaatkan peralatan modern serta metodologi produksi termutakhir demi efisiensi dan orisinalitas setiap karya kreatif.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Misi 3 -->
+                        <div class="p-6 bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-shadow premium-card flex flex-col justify-between">
+                            <div class="space-y-4">
+                                <div class="text-brand font-extrabold text-xl font-mono">03</div>
+                                <h4 class="text-brand-dark font-bold text-base">Kemitraan Kolaboratif</h4>
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    Membangun komunikasi yang transparan dan sinergi yang erat untuk merealisasikan visi unik yang dimiliki oleh setiap klien kami.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Misi 4 -->
+                        <div class="p-6 bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-shadow premium-card flex flex-col justify-between">
+                            <div class="space-y-4">
+                                <div class="text-brand font-extrabold text-xl font-mono">04</div>
+                                <h4 class="text-brand-dark font-bold text-base">Pemberdayaan Talenta</h4>
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    Mewadahi dan terus mengembangkan potensi kreator media lokal agar dapat berdaya saing secara profesional tingkat nasional.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Misi 5 (Full width on small grid) -->
+                        <div class="sm:col-span-2 p-6 bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-shadow premium-card flex flex-col justify-between">
+                            <div class="space-y-2">
+                                <div class="text-brand font-extrabold text-xl font-mono">05</div>
+                                <h4 class="text-brand-dark font-bold text-base">Dampak Visual Nyata</h4>
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    Menghasilkan karya visual komunikatif yang tidak hanya indah secara estetika, tetapi juga berdaya guna dalam menyampaikan pesan secara tepat sasaran kepada publik.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nilai Perusahaan (Company Values) -->
+        <section id="nilai" class="py-24 px-6 relative max-w-7xl mx-auto">
             <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                <h2 class="text-3xl md:text-4xl font-bold font-outfit text-white">Pilar Utama Ruang Karsa</h2>
-                <p class="text-gray-400 leading-relaxed">Kami percaya bahwa inovasi lahir dari kolaborasi yang erat dan wadah berkreasi yang fleksibel.</p>
+                <span class="text-sm font-bold text-brand uppercase tracking-wider block">Nilai Perusahaan</span>
+                <h2 class="text-3xl md:text-4xl font-bold font-sans text-brand-dark">Prinsip Utama yang Menjiwai Setiap Karya</h2>
+                <p class="text-gray-600">Lima nilai inti yang kami tanamkan di setiap proses berpikir dan berproduksi, guna melayani dengan keunggulan.</p>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Pilar 1 -->
-                <div class="p-8 rounded-3xl bg-cardbg backdrop-blur-lg border border-white/5 hover:border-accentPurple/30 transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accentPurple to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="w-12 h-12 rounded-2xl bg-accentPurple/10 flex items-center justify-center text-accentPurple mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94-3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"></path></svg>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                <!-- Value 1: Kreatif -->
+                <div class="p-8 rounded-3xl bg-violet-50/80 border border-violet-100/50 hover:bg-violet-100/50 hover:border-brand/20 transition-all duration-300 flex flex-col items-start text-left space-y-4 premium-card">
+                    <div class="p-3 bg-brand text-white rounded-2xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
                     </div>
-                    <h3 class="text-xl font-bold font-outfit text-white mb-3">Kolaborasi Tanpa Sekat</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">
-                        Hubungkan dan padukan berbagai keahlian unik dengan kreator lintas bidang dari seluruh Indonesia untuk menciptakan hasil karya yang epik.
+                    <h3 class="text-xl font-bold text-brand-dark">Kreatif</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Selalu mengeksplorasi sudut pandang baru untuk menghasilkan konsep visual yang orisinal, segar, dan berkarakter unik.
                     </p>
                 </div>
-                
-                <!-- Pilar 2 -->
-                <div class="p-8 rounded-3xl bg-cardbg backdrop-blur-lg border border-white/5 hover:border-accentPink/30 transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accentPink to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="w-12 h-12 rounded-2xl bg-accentPink/10 flex items-center justify-center text-accentPink mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+
+                <!-- Value 2: Profesional -->
+                <div class="p-8 rounded-3xl bg-violet-50/80 border border-violet-100/50 hover:bg-violet-100/50 hover:border-brand/20 transition-all duration-300 flex flex-col items-start text-left space-y-4 premium-card">
+                    <div class="p-3 bg-brand text-white rounded-2xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"></path>
+                        </svg>
                     </div>
-                    <h3 class="text-xl font-bold font-outfit text-white mb-3">Inovasi Berkelanjutan</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">
-                        Kami menyediakan sarana dan metodologi inkubasi modern untuk meramu konsep ide mentah Anda menjadi produk matang yang berdaya guna.
+                    <h3 class="text-xl font-bold text-brand-dark">Profesional</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Menjaga integritas, disiplin waktu, ketepatan estimasi, dan kualitas output di setiap skala proyek yang kami tangani.
                     </p>
                 </div>
-                
-                <!-- Pilar 3 -->
-                <div class="p-8 rounded-3xl bg-cardbg backdrop-blur-lg border border-white/5 hover:border-accentTeal/30 transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accentTeal to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="w-12 h-12 rounded-2xl bg-accentTeal/10 flex items-center justify-center text-accentTeal mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.01-2.512a15.9 15.9 0 011.022-2.221m5.396 7.74a6.142 6.142 0 01-3.807-1.077L9.06 11l.992-1.06 6.14 5.395c.502.44.854 1.049.98 1.703z"></path></svg>
+
+                <!-- Value 3: Kolaboratif -->
+                <div class="p-8 rounded-3xl bg-violet-50/80 border border-violet-100/50 hover:bg-violet-100/50 hover:border-brand/20 transition-all duration-300 flex flex-col items-start text-left space-y-4 premium-card">
+                    <div class="p-3 bg-brand text-white rounded-2xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94-3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"></path>
+                        </svg>
                     </div>
-                    <h3 class="text-xl font-bold font-outfit text-white mb-3">Kreasi Mandiri & Bebas</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">
-                        Pamerkan hasil karya Anda tanpa batasan format. Bangun personal branding yang kuat dan dapatkan dukungan apresiasi penuh dari komunitas.
+                    <h3 class="text-xl font-bold text-brand-dark">Kolaboratif</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Mendengar aktif, bekerja sama secara sinergis dengan klien untuk menyatukan ide-ide terbaik demi tujuan yang sama.
+                    </p>
+                </div>
+
+                <!-- Value 4: Inovatif -->
+                <div class="p-8 rounded-3xl bg-violet-50/80 border border-violet-100/50 hover:bg-violet-100/50 hover:border-brand/20 transition-all duration-300 flex flex-col items-start text-left space-y-4 premium-card">
+                    <div class="p-3 bg-brand text-white rounded-2xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-dark">Inovatif</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Terus beradaptasi dengan kemajuan teknologi peralatan media, teknik sinematografi, dan tren komunikasi visual termutakhir.
+                    </p>
+                </div>
+
+                <!-- Value 5: Berdampak -->
+                <div class="p-8 rounded-3xl bg-violet-50/80 border border-violet-100/50 hover:bg-violet-100/50 hover:border-brand/20 transition-all duration-300 flex flex-col items-start text-left space-y-4 premium-card">
+                    <div class="p-3 bg-brand text-white rounded-2xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-dark">Berdampak</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Memastikan setiap karya visual yang kami luncurkan memicu respon positif, meningkatkan kredibilitas brand, serta memberikan nilai konversi bisnis yang optimal.
                     </p>
                 </div>
             </div>
         </section>
 
-        <!-- Features Grid Section -->
-        <section id="features" class="py-24 px-6 relative max-w-7xl mx-auto border-t border-white/5">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <!-- Text Left -->
-                <div class="space-y-6">
-                    <span class="inline-flex items-center gap-2 px-3 py-1 text-xs font-semibold tracking-wider text-accentPink uppercase bg-accentPink/10 border border-accentPink/20 rounded-full">
-                        ✨ FITUR EKOSISTEM
-                    </span>
-                    <h2 class="text-3xl md:text-4xl font-bold font-outfit text-white">Semua Kebutuhan Kreatif Anda di Satu Tempat</h2>
-                    <p class="text-gray-400 leading-relaxed">
-                        Kami membangun modul-modul kolaborasi digital yang saling terintegrasi untuk membantu para desainer, pengembang, dan penulis dalam mewujudkan visi proyek mereka.
-                    </p>
-                    
-                    <div class="space-y-4 pt-4">
-                        <div class="flex items-start gap-4">
-                            <div class="w-6 h-6 rounded-full bg-accentTeal/10 flex items-center justify-center text-accentTeal shrink-0 mt-1">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold">Integrasi Alat Kerja Populer</h4>
-                                <p class="text-sm text-gray-400">Hubungkan Ruang Karsa dengan tools favorit Anda seperti Figma, GitHub, dan Slack secara mulus.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-6 h-6 rounded-full bg-accentTeal/10 flex items-center justify-center text-accentTeal shrink-0 mt-1">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg>
-                            </div>
-                            <div>
-                                <h4 class="text-white font-semibold">Ruang Presentasi Interaktif</h4>
-                                <p class="text-sm text-gray-400">Pamerkan proyek Anda dalam format interaktif (live prototype atau video) langsung di profil Anda.</p>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Layanan Kami (Grid Card-Based rounded-2xl) -->
+        <section id="layanan" class="py-24 px-6 relative bg-gray-50 border-t border-b border-gray-100">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                    <span class="text-sm font-bold text-brand uppercase tracking-wider block">Layanan Kami</span>
+                    <h2 class="text-3xl md:text-4xl font-bold font-sans text-brand-dark">Solusi Media Kreatif End-to-End</h2>
+                    <p class="text-gray-600">Kami menawarkan rangkaian layanan produksi media berkualitas tinggi untuk mendongkrak performa komunikasi visual organisasi atau bisnis Anda.</p>
                 </div>
-                
-                <!-- Grid Right -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <!-- Feature 1 -->
-                    <div class="p-6 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all">
-                        <div class="w-10 h-10 rounded-xl bg-accentPurple/20 flex items-center justify-center text-accentPurple mb-4">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"></path></svg>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Service 1: Production House -->
+                    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-8 hover:shadow-xl transition-all duration-300 flex flex-col justify-between premium-card group">
+                        <div class="space-y-6">
+                            <div class="w-12 h-12 bg-brand text-white rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 7.5h6M9 12h6M9 16.5h3"></path>
+                                </svg>
+                            </div>
+                            <div class="space-y-2">
+                                <h3 class="text-xl font-bold text-brand-dark">1. Production House</h3>
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    Layanan produksi video komprehensif mulai dari penyusunan naskah/konsep, sutradara, pengambilan gambar profesional, hingga pasca-produksi (editing & grading).
+                                </p>
+                            </div>
+                            <ul class="space-y-2 border-t border-gray-100 pt-4">
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Video Profil Perusahaan (Company Profile Video)
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Video Dokumenter & Sejarah (Documentary)
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Video Promosi & Iklan Komersial (TVC)
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Video Sinematik Pendek (Cinematic Short Movie)
+                                </li>
+                            </ul>
                         </div>
-                        <h3 class="text-lg font-bold text-white mb-2 font-outfit">Digital Co-Creation Hub</h3>
-                        <p class="text-sm text-gray-400">Papan brainstorming interaktif yang memungkinkan kerja kelompok real-time.</p>
                     </div>
-                    
-                    <!-- Feature 2 -->
-                    <div class="p-6 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all">
-                        <div class="w-10 h-10 rounded-xl bg-accentPink/20 flex items-center justify-center text-accentPink mb-4">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"></path></svg>
+
+                    <!-- Service 2: Photography & Videography -->
+                    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-8 hover:shadow-xl transition-all duration-300 flex flex-col justify-between premium-card group">
+                        <div class="space-y-6">
+                            <div class="w-12 h-12 bg-brand text-white rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316A2.192 2.192 0 0014.502 4h-5c-.7 0-1.343.372-1.68 1.004l-.995 1.171z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5a4.5 4.5 0 100-9 4.5 4.5 0 000 9z"></path>
+                                </svg>
+                            </div>
+                            <div class="space-y-2">
+                                <h3 class="text-xl font-bold text-brand-dark">2. Photography & Videography</h3>
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    Merekam detail momen berharga dengan ketajaman estetika tinggi. Sempurna untuk kebutuhan personal, akademis, institusional, maupun promosi komersial.
+                                </p>
+                            </div>
+                            <ul class="space-y-2 border-t border-gray-100 pt-4">
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Dokumentasi Acara Resmi, Seminar, & Talkshow
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Wisuda, Kelulusan, & Foto Bersama
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Foto Produk Studio & Outdoor untuk E-Commerce
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Liputan Highlights & Aftermovie Acara
+                                </li>
+                            </ul>
                         </div>
-                        <h3 class="text-lg font-bold text-white mb-2 font-outfit">Showcase & Kurasi Karya</h3>
-                        <p class="text-sm text-gray-400">Galeri karya terintegrasi dengan voting dan feedback berkualitas dari kreator berpengalaman.</p>
                     </div>
-                    
-                    <!-- Feature 3 -->
-                    <div class="p-6 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all">
-                        <div class="w-10 h-10 rounded-xl bg-accentTeal/20 flex items-center justify-center text-accentTeal mb-4">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.62 48.62 0 0112 20.904a48.62 48.62 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7 1.132v5.425"></path></svg>
+
+                    <!-- Service 3: Drone Aerial Service -->
+                    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-8 hover:shadow-xl transition-all duration-300 flex flex-col justify-between premium-card group">
+                        <div class="space-y-6">
+                            <div class="w-12 h-12 bg-brand text-white rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"></path>
+                                </svg>
+                            </div>
+                            <div class="space-y-2">
+                                <h3 class="text-xl font-bold text-brand-dark">3. Drone Aerial Service</h3>
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    Menghadirkan sudut pandang udara (bird's-eye view) sinematik yang dramatis dengan lisensi pilot drone profesional demi keamanan dan legalitas terbang.
+                                </p>
+                            </div>
+                            <ul class="space-y-2 border-t border-gray-100 pt-4">
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Foto/Video Udara Sinematik Resolusi Tinggi (4K)
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Dokumentasi Udara Proyek & Konstruksi Fisik
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Video Udara untuk Promosi Pariwisata & Hotel
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Pemetaan Udara Kasar & Survei Topografi Lahan
+                                </li>
+                            </ul>
                         </div>
-                        <h3 class="text-lg font-bold text-white mb-2 font-outfit">Kelas & Mentorship</h3>
-                        <p class="text-sm text-gray-400">Seni berbagi ilmu, review portofolio, dan workshop intensif eksklusif secara online.</p>
                     </div>
-                    
-                    <!-- Feature 4 -->
-                    <div class="p-6 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all">
-                        <div class="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center text-yellow-400 mb-4">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879-.659c1.171-.879 3.07-.879 4.242 0 1.172.879 1.172 2.303 0 3.182C13.536 21.602 11.636 21.6 10.464 20.72l-.879-.66m4.848-13.626l-.879-.66c-1.172-.879-3.07-.879-4.242 0-1.172.879-1.172 2.303 0 3.182C10.464 10.02 12.364 10.022 13.536 9.14l.879-.66M9.75 3h4.5"></path></svg>
+
+                    <!-- Service 4: Live Streaming & Hybrid Event -->
+                    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-8 hover:shadow-xl transition-all duration-300 flex flex-col justify-between premium-card group">
+                        <div class="space-y-6">
+                            <div class="w-12 h-12 bg-brand text-white rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"></path>
+                                </svg>
+                            </div>
+                            <div class="space-y-2">
+                                <h3 class="text-xl font-bold text-brand-dark">4. Live Streaming & Hybrid Event</h3>
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    Mengintegrasikan dunia fisik dan digital secara real-time. Didukung dengan setup multi-kamera, mixer audio-video profesional, dan koneksi internet stabil.
+                                </p>
+                            </div>
+                            <ul class="space-y-2 border-t border-gray-100 pt-4">
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Siaran Langsung YouTube, FB, & Instagram (Multi-cam)
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Webinar & Hybrid Meeting Terintegrasi Zoom/GMeet
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Virtual Event Production dengan Green Screen
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Sistem Mixer Video, Audio Broadcast, & Layar Stage
+                                </li>
+                            </ul>
                         </div>
-                        <h3 class="text-lg font-bold text-white mb-2 font-outfit">Pendanaan Karsa</h3>
-                        <p class="text-sm text-gray-400">Ajukan ide/proposal kreasi Anda untuk mendapatkan hibah dana pengembangan (grant).</p>
+                    </div>
+
+                    <!-- Service 5: Graphic Design -->
+                    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-8 hover:shadow-xl transition-all duration-300 flex flex-col justify-between premium-card group">
+                        <div class="space-y-6">
+                            <div class="w-12 h-12 bg-brand text-white rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.01-2.512a15.9 15.9 0 011.022-2.221m5.396 7.74a6.142 6.142 0 01-3.807-1.077L9.06 11l.992-1.06 6.14 5.395c.502.44.854 1.049.98 1.703z"></path>
+                                </svg>
+                            </div>
+                            <div class="space-y-2">
+                                <h3 class="text-xl font-bold text-brand-dark">5. Graphic Design</h3>
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    Visualisasikan identitas bisnis Anda melalui desain grafis premium yang konsisten, berestetika modern, dan komunikatif untuk media cetak maupun digital.
+                                </p>
+                            </div>
+                            <ul class="space-y-2 border-t border-gray-100 pt-4">
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Identity & Branding Kit (Desain Logo, Kartu Nama, Kop)
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Poster, Brosur, Banner, & Media Promosi Cetak
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Desain Layout Konten Media Sosial Kreatif
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Aset Grafis Digital, Presentasi Investor, & Mockups
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Service 6: Social Media Management -->
+                    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-8 hover:shadow-xl transition-all duration-300 flex flex-col justify-between premium-card group">
+                        <div class="space-y-6">
+                            <div class="w-12 h-12 bg-brand text-white rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.083.293.125.599.125.91v9.579a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V9.42c0-.312.042-.617.125-.91m19.375 0c-.154-.543-.538-1.002-1.07-1.228M19.99 6.559a47.88 47.88 0 00-15.98 0m0 0C3.477 6.785 3.093 7.244 2.94 7.787M2.94 7.787A47.92 47.92 0 0112 5.25a47.92 47.92 0 019.06 2.537M12 12.25c-1.5 0-3-1-3-3s1.5-3 3-3 3 1 3 3-1.5 3-3 3z"></path>
+                                </svg>
+                            </div>
+                            <div class="space-y-2">
+                                <h3 class="text-xl font-bold text-brand-dark">6. Social Media Management</h3>
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    Kami mengelola saluran media sosial Anda (Instagram & TikTok) secara menyeluruh mulai dari perencanaan konten bulanan, copywriting naskah, admin, hingga laporan evaluasi.
+                                </p>
+                            </div>
+                            <ul class="space-y-2 border-t border-gray-100 pt-4">
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Analisis Audiens & Strategi Kalender Konten Bulanan
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Penulisan Caption Kreatif & Naskah Video Pendek (Reels/TikTok)
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Pengelolaan Administrasi Akun & Interaksi DM/Komentar
+                                </li>
+                                <li class="text-xs text-gray-600 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>
+                                    Laporan Evaluasi Bulanan (KPI & Monthly Analytics Report)
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Playground Section (Karsa Board) -->
-        <section id="playground" class="py-24 px-6 relative max-w-7xl mx-auto border-t border-white/5">
-            <div class="text-center max-w-3xl mx-auto mb-12 space-y-4">
-                <span class="inline-flex items-center gap-2 px-3 py-1 text-xs font-semibold tracking-wider text-accentTeal uppercase bg-accentTeal/10 border border-accentTeal/20 rounded-full">
-                    🎮 PLAYGROUND INTERAKTIF
+        <!-- Keunggulan & Target Klien Section (Kontras Horizontal) -->
+        <section id="keunggulan" class="py-24 px-6 relative bg-brand-dark text-white overflow-hidden">
+            <!-- Decorative Vector shapes -->
+            <div class="absolute -right-48 -bottom-48 w-96 h-96 bg-brand/35 rounded-full filter blur-[100px] pointer-events-none"></div>
+            <div class="absolute -left-48 -top-48 w-96 h-96 bg-brand-light/20 rounded-full filter blur-[100px] pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                    
+                    <!-- Left: 7 Keunggulan -->
+                    <div class="lg:col-span-7 space-y-8">
+                        <div class="space-y-4">
+                            <span class="inline-flex items-center gap-2 px-3 py-1 text-xs font-extrabold tracking-wider text-brand-limeBright uppercase bg-brand/40 border border-brand-limeBright/30 rounded-full">
+                                Mengapa Harus Ruang Karsa?
+                            </span>
+                            <h2 class="text-3xl md:text-4xl font-bold font-sans">7 Keunggulan Utama Kami</h2>
+                            <p class="text-gray-300 max-w-2xl leading-relaxed">
+                                Keunggulan operasional dan komitmen profesional yang membuat kami dipercaya sebagai mitra andalan untuk berbagai proyek komunikasi visual.
+                            </p>
+                        </div>
+
+                        <!-- 7 Advantages List -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Adv 1 -->
+                            <div class="flex items-start gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl">
+                                <div class="w-8 h-8 rounded-full bg-brand-limeBright/20 text-brand-limeBright flex items-center justify-center font-bold text-sm shrink-0">1</div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">Peralatan Profesional & Mutakhir</h4>
+                                    <p class="text-xs text-gray-300 mt-1">Menggunakan kamera bioskop, drone 4K, stabilizer, & studio editing mutakhir.</p>
+                                </div>
+                            </div>
+                            <!-- Adv 2 -->
+                            <div class="flex items-start gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl">
+                                <div class="w-8 h-8 rounded-full bg-brand-limeBright/20 text-brand-limeBright flex items-center justify-center font-bold text-sm shrink-0">2</div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">Tim Kreatif & Berpengalaman</h4>
+                                    <p class="text-xs text-gray-300 mt-1">Sutradara, videografer, desainer grafis, & editor yang berpengalaman bertahun-tahun.</p>
+                                </div>
+                            </div>
+                            <!-- Adv 3 -->
+                            <div class="flex items-start gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl">
+                                <div class="w-8 h-8 rounded-full bg-brand-limeBright/20 text-brand-limeBright flex items-center justify-center font-bold text-sm shrink-0">3</div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">Kualitas Output Resolusi Tinggi</h4>
+                                    <p class="text-xs text-gray-300 mt-1">Karya visual tajam, jernih, dan memenuhi standar broadcast & digital marketing.</p>
+                                </div>
+                            </div>
+                            <!-- Adv 4 -->
+                            <div class="flex items-start gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl">
+                                <div class="w-8 h-8 rounded-full bg-brand-limeBright/20 text-brand-limeBright flex items-center justify-center font-bold text-sm shrink-0">4</div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">Pengerjaan Tepat Waktu</h4>
+                                    <p class="text-xs text-gray-300 mt-1">Menjamin file final diserahkan sesuai dengan timeline kesepakatan tertulis.</p>
+                                </div>
+                            </div>
+                            <!-- Adv 5 -->
+                            <div class="flex items-start gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl">
+                                <div class="w-8 h-8 rounded-full bg-brand-limeBright/20 text-brand-limeBright flex items-center justify-center font-bold text-sm shrink-0">5</div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">Alur Kerja Terstruktur & Transparan</h4>
+                                    <p class="text-xs text-gray-300 mt-1">Mulai tahap pre-production, moodboard, produksi, revisi, hingga finishing.</p>
+                                </div>
+                            </div>
+                            <!-- Adv 6 -->
+                            <div class="flex items-start gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl">
+                                <div class="w-8 h-8 rounded-full bg-brand-limeBright/20 text-brand-limeBright flex items-center justify-center font-bold text-sm shrink-0">6</div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">Harga Kompetitif & Fleksibel</h4>
+                                    <p class="text-xs text-gray-300 mt-1">Penawaran harga terbaik yang dapat disesuaikan dengan kapasitas anggaran Anda.</p>
+                                </div>
+                            </div>
+                            <!-- Adv 7 (Full width on grid) -->
+                            <div class="sm:col-span-2 flex items-start gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl">
+                                <div class="w-8 h-8 rounded-full bg-brand-limeBright/20 text-brand-limeBright flex items-center justify-center font-bold text-sm shrink-0">7</div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">Layanan End-to-End Terintegrasi</h4>
+                                    <p class="text-xs text-gray-300 mt-1">Satu pintu untuk semua kebutuhan visual. Anda tidak perlu mencari vendor terpisah untuk video, foto, desain, drone, streaming, maupun medsos.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Target Klien -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="p-8 rounded-3xl bg-white/5 border border-white/10 space-y-6">
+                            <div>
+                                <h3 class="text-2xl font-bold font-sans text-white">Target Klien Kami</h3>
+                                <p class="text-gray-300 text-sm mt-2">Kami merancang solusi visual khusus yang adaptif untuk berbagai jenis institusi dan kebutuhan bisnis:</p>
+                            </div>
+                            
+                            <!-- Badges grid -->
+                            <div class="flex flex-wrap gap-2.5">
+                                <span class="px-4 py-2 bg-brand text-white border border-brand-light/30 rounded-full text-xs font-semibold">🏛️ Instansi Pemerintah & Dinas</span>
+                                <span class="px-4 py-2 bg-brand text-white border border-brand-light/30 rounded-full text-xs font-semibold">🏫 Sekolah & Universitas</span>
+                                <span class="px-4 py-2 bg-brand text-white border border-brand-light/30 rounded-full text-xs font-semibold">🏪 UMKM & Brand Lokal</span>
+                                <span class="px-4 py-2 bg-brand text-white border border-brand-light/30 rounded-full text-xs font-semibold">🏢 Perusahaan Swasta (B2B)</span>
+                                <span class="px-4 py-2 bg-brand text-white border border-brand-light/30 rounded-full text-xs font-semibold">🎉 Event Organizer (EO)</span>
+                                <span class="px-4 py-2 bg-brand text-white border border-brand-light/30 rounded-full text-xs font-semibold">👥 Komunitas & LSM</span>
+                                <span class="px-4 py-2 bg-brand text-white border border-brand-light/30 rounded-full text-xs font-semibold">💍 Wedding Organizer (WO)</span>
+                                <span class="px-4 py-2 bg-brand text-white border border-brand-light/30 rounded-full text-xs font-semibold">🏨 Hotel, Kafe & Restoran</span>
+                            </div>
+
+                            <div class="pt-4 border-t border-white/10 text-xs text-gray-400">
+                                Apapun bidang bisnis atau instansi Anda, kami siap merancang konsep komunikasi visual yang berdampak tinggi.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Hubungi Kami (Before Footer) -->
+        <section class="py-24 px-6 relative max-w-5xl mx-auto">
+            <div class="bg-gradient-to-br from-brand via-brand-dark to-[#1E1135] rounded-3xl p-10 md:p-14 text-center text-white shadow-2xl relative overflow-hidden flex flex-col items-center space-y-6">
+                <!-- Glowing elements -->
+                <div class="absolute -top-24 -left-24 w-60 h-60 bg-brand-light/20 rounded-full filter blur-[50px] pointer-events-none"></div>
+                <div class="absolute -bottom-24 -right-24 w-60 h-60 bg-brand-accent/20 rounded-full filter blur-[50px] pointer-events-none"></div>
+
+                <span class="inline-flex items-center gap-2 px-3 py-1 text-xs font-bold tracking-wider text-brand-limeBright uppercase bg-white/10 rounded-full">
+                    KONSULTASI GRATIS
                 </span>
-                <h2 class="text-3xl md:text-4xl font-bold font-outfit text-white">Karsa Board: Tempel Idemu!</h2>
-                <p class="text-gray-400">Punya gagasan kreatif menarik? Ketik dan tempelkan ide (karsa) Anda langsung di papan interaktif bawah ini untuk berpartisipasi secara real-time.</p>
-            </div>
-            
-            <!-- Board Container -->
-            <div class="bg-cardbg backdrop-blur-xl border border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl space-y-8">
-                <!-- Input Form -->
-                <div class="max-w-2xl mx-auto">
-                    <form id="karsa-form" class="flex flex-col sm:flex-row gap-3">
-                        <input type="text" id="karsa-input" required maxlength="120" placeholder="Contoh: Membuat platform barter buku online bagi penyuka novel... 📚" 
-                               class="flex-grow px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-accentTeal focus:ring-1 focus:ring-accentTeal transition-all text-sm">
-                        <button type="submit" class="px-6 py-4 bg-accentTeal text-white font-semibold rounded-xl hover:bg-opacity-90 hover:shadow-[0_0_15px_rgba(20,184,166,0.4)] transition-all flex items-center justify-center gap-2 shrink-0">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path></svg>
-                            Tempel Karsa
-                        </button>
-                    </form>
-                    <p class="text-xs text-gray-500 mt-2 text-center sm:text-left">Ide Anda akan langsung tertempel di papan di bawah secara real-time (maksimal 120 karakter).</p>
-                </div>
                 
-                <!-- Live Board Grid -->
-                <div id="karsa-board" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 pt-4">
-                    <!-- Sample Card 1 -->
-                    <div class="p-6 rounded-2xl bg-gradient-to-br from-accentPurple/20 via-transparent to-accentPink/10 border border-accentPurple/20 shadow-lg relative group transition-all duration-300 hover:scale-105 hover:-rotate-1">
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-[10px] uppercase font-bold tracking-wider text-accentPurple">💡 Karsa Kreatif</span>
-                            <span class="text-[10px] text-gray-500 font-medium">Baru Saja</span>
-                        </div>
-                        <p class="text-gray-200 text-sm leading-relaxed mb-4">"Membuat aplikasi tracker jejak karbon harian yang ramah pengguna. 🍃"</p>
-                        <div class="flex items-center justify-between border-t border-white/5 pt-3">
-                            <span class="text-xs text-gray-400 font-semibold">@lestari_kreatif</span>
-                            <button class="like-btn flex items-center gap-1.5 text-xs text-gray-500 hover:text-red-500 transition-colors" data-likes="14">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                                <span>14</span>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Sample Card 2 -->
-                    <div class="p-6 rounded-2xl bg-gradient-to-br from-accentTeal/20 via-transparent to-accentPurple/10 border border-accentTeal/20 shadow-lg relative group transition-all duration-300 hover:scale-105 hover:rotate-1">
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-[10px] uppercase font-bold tracking-wider text-accentTeal">⚡ Proyek Inovasi</span>
-                            <span class="text-[10px] text-gray-500 font-medium">2 jam lalu</span>
-                        </div>
-                        <p class="text-gray-200 text-sm leading-relaxed mb-4">"Membangun platform kurasi font lokal Indonesia untuk desainer dunia. ✍️"</p>
-                        <div class="flex items-center justify-between border-t border-white/5 pt-3">
-                            <span class="text-xs text-gray-400 font-semibold">@aksara_karsa</span>
-                            <button class="like-btn flex items-center gap-1.5 text-xs text-gray-500 hover:text-red-500 transition-colors" data-likes="32">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                                <span>32</span>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Sample Card 3 -->
-                    <div class="p-6 rounded-2xl bg-gradient-to-br from-accentPink/20 via-transparent to-accentTeal/10 border border-accentPink/20 shadow-lg relative group transition-all duration-300 hover:scale-105 hover:-rotate-1">
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-[10px] uppercase font-bold tracking-wider text-accentPink">🎨 Desain & Seni</span>
-                            <span class="text-[10px] text-gray-500 font-medium">5 jam lalu</span>
-                        </div>
-                        <p class="text-gray-200 text-sm leading-relaxed mb-4">"Buku ilustrasi interaktif anak-anak tentang cerita rakyat dengan AR. 📖"</p>
-                        <div class="flex items-center justify-between border-t border-white/5 pt-3">
-                            <span class="text-xs text-gray-400 font-semibold">@karsa_studio</span>
-                            <button class="like-btn flex items-center gap-1.5 text-xs text-gray-500 hover:text-red-500 transition-colors" data-likes="27">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                                <span>27</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                <h2 class="text-3xl md:text-4xl font-extrabold max-w-3xl leading-tight">Siap Membangun Cerita & Menghadirkan Karya yang Bermakna Bersama Kami?</h2>
+                
+                <p class="text-gray-300 max-w-2xl text-base leading-relaxed">
+                    Sampaikan ide, rencana acara, atau konsep kampanye produk Anda. Hubungi tim representasi kami di WhatsApp untuk mendapatkan konsultasi awal gratis.
+                </p>
 
-        <!-- Subscription Section (Waitlist) -->
-        <section id="subscribe" class="py-24 px-6 relative max-w-4xl mx-auto border-t border-white/5">
-            <div class="glow-border bg-cardbg backdrop-blur-2xl border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl text-center space-y-8 relative overflow-hidden">
-                <!-- Inner ambient lights -->
-                <div class="absolute -top-24 -left-24 w-48 h-48 bg-accentPurple/20 rounded-full filter blur-[60px] pointer-events-none"></div>
-                <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-accentTeal/20 rounded-full filter blur-[60px] pointer-events-none"></div>
-                
-                <div class="space-y-4 max-w-2xl mx-auto">
-                    <h2 class="text-3xl md:text-4xl font-bold font-outfit text-white">Jadilah Bagian dari Perjalanan Kami</h2>
-                    <p class="text-gray-300 text-sm md:text-base leading-relaxed">
-                        Kami sedang meramu ekosistem digital terbaik untuk mewujudkan ide-ide kreatif Anda. Masukkan email Anda untuk mendapatkan akses beta eksklusif saat kami meluncur!
-                    </p>
-                </div>
-                
-                <!-- Development Progress Bar (Preserved and Enhanced) -->
-                <div class="max-w-md mx-auto bg-white/5 border border-white/5 rounded-2xl p-5 space-y-3">
-                    <div class="flex justify-between items-center text-xs font-semibold">
-                        <span class="text-accentTeal flex items-center gap-1.5 uppercase tracking-wider">
-                            <span class="w-2 h-2 rounded-full bg-accentTeal animate-pulse"></span>
-                            Tahap Pengembangan
-                        </span>
-                        <span class="text-white font-bold" id="progress-val">65%</span>
-                    </div>
-                    <div class="w-full h-2.5 bg-white/10 rounded-full overflow-hidden">
-                        <div class="h-full bg-gradient-to-r from-accentPurple via-accentPink to-accentTeal rounded-full transition-all duration-1000 ease-out" id="progress-bar" style="width: 65%;"></div>
-                    </div>
-                </div>
-                
-                <!-- Waitlist Form (Preserved ID & Target class) -->
-                <div class="max-w-lg mx-auto">
-                    <form id="notify-form" class="flex flex-col sm:flex-row gap-3">
-                        <div class="flex-grow">
-                            <input type="email" id="email-input" required placeholder="Masukkan alamat email Anda" 
-                                   class="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-accentPurple focus:ring-1 focus:ring-accentPurple transition-all text-sm">
-                        </div>
-                        <button type="submit" class="px-6 py-4 bg-gradient-to-r from-accentPurple to-accentPink text-white font-semibold rounded-xl hover:shadow-[0_0_20px_rgba(236,72,153,0.4)] transition-all flex items-center justify-center gap-2 shrink-0">
-                            <span>Kabari Saya</span>
-                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path></svg>
-                        </button>
-                    </form>
+                <div class="pt-4">
+                    <a id="cta-section-whatsapp" href="https://wa.me/6289617390529?text=Halo%20Ruang%20Karsa%2C%20saya%20ingin%20berdiskusi%20mengenai%20layanan%20kreatif..." target="_blank" rel="noopener noreferrer" 
+                       class="px-8 py-4 text-center text-base font-bold rounded-full bg-brand-accent text-brand-dark hover:bg-brand-limeBright hover:shadow-2xl hover:shadow-brand-accent/30 hover:scale-105 transition-all duration-300 inline-flex items-center gap-3">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12.012 2C6.5 2 2.012 6.5 2.012 12c0 2.124.66 4.104 1.8 5.748L2 22l4.38-1.74a9.92 9.92 0 0 0 5.632 1.74c5.5 0 9.988-4.5 9.988-10S17.512 2 12.012 2zm5.72 14.1c-.24.672-1.2 1.224-1.656 1.284-.456.06-1.02.108-3.012-.684-2.544-1.008-4.176-3.6-4.308-3.78-.12-.18-1.008-1.344-1.008-2.556s.636-1.812.864-2.052c.228-.24.504-.3.672-.3.168 0 .336 0 .48.012.156.012.36-.06.564.432.204.504.708 1.716.768 1.836.06.12.108.264.024.432-.084.18-.18.288-.3.432-.12.132-.252.276-.36.372-.12.108-.24.228-.108.456.132.228.588.972 1.26 1.572.864.768 1.584 1.008 1.812 1.116.228.108.36.096.492-.06.132-.156.564-.66.72-.888.156-.228.312-.192.528-.108.216.084 1.38.648 1.62.768.24.12.396.18.456.288.06.096.06.564-.18 1.236z"/>
+                        </svg>
+                        <span>Mulai Konsultasi (WhatsApp)</span>
+                    </a>
                 </div>
             </div>
         </section>
     </main>
 
     <!-- Footer Section -->
-    <footer class="border-t border-white/5 bg-[#050309] py-16 px-6 relative z-10">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-            <!-- Brand & Social links -->
-            <div class="md:col-span-2 space-y-4">
-                <a href="#" class="flex items-center gap-2 text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-accentPurple to-accentPink font-outfit">
-                    Ruang Karsa
-                    <span class="w-2.5 h-2.5 bg-accentTeal rounded-full shadow-[0_0_8px_#14b8a6]"></span>
+    <footer class="bg-brand-dark text-white border-t border-white/5 py-16 px-6 relative z-10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
+            
+            <!-- Brand Column -->
+            <div class="md:col-span-5 space-y-4">
+                <a href="#" class="flex items-center gap-2 text-2xl font-extrabold tracking-tight text-white">
+                    <span>Ruang</span><span class="text-brand-limeBright">Karsa</span>
+                    <span class="w-3 h-3 bg-brand-accent rounded-full animate-pulse shadow-[0_0_8px_#84CC16]"></span>
                 </a>
-                <p class="text-sm text-gray-400 max-w-sm leading-relaxed">
-                    Ekosistem kolaborasi kreatif modern untuk mewadahi ide, memamerkan karya, belajar bersama, dan memperoleh pendanaan proyek kreasi anak bangsa.
+                <p class="text-sm text-gray-300 max-w-sm leading-relaxed">
+                    Merekam momen, membangun cerita, menghadirkan karya yang bermakna.
                 </p>
                 <div class="flex items-center gap-3 pt-2">
-                    <!-- Twitter -->
-                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/5 hover:border-accentTeal/50 hover:bg-white/10 text-gray-400 hover:text-white flex items-center justify-center transition-all hover:-translate-y-1" aria-label="Twitter">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+                    <!-- Instagram Link -->
+                    <a href="https://instagram.com/ruangkarsa" target="_blank" rel="noopener noreferrer" 
+                       class="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:border-brand-accent/50 hover:bg-white/10 text-gray-300 hover:text-white flex items-center justify-center transition-all hover:-translate-y-1" aria-label="Instagram">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
                     </a>
-                    <!-- Instagram -->
-                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/5 hover:border-accentTeal/50 hover:bg-white/10 text-gray-400 hover:text-white flex items-center justify-center transition-all hover:-translate-y-1" aria-label="Instagram">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                    </a>
-                    <!-- GitHub -->
-                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/5 hover:border-accentTeal/50 hover:bg-white/10 text-gray-400 hover:text-white flex items-center justify-center transition-all hover:-translate-y-1" aria-label="GitHub">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                    </a>
-                    <!-- Email -->
-                    <a href="mailto:halo@ruangkarsa.com" class="w-10 h-10 rounded-full bg-white/5 border border-white/5 hover:border-accentTeal/50 hover:bg-white/10 text-gray-400 hover:text-white flex items-center justify-center transition-all hover:-translate-y-1" aria-label="Email">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <!-- Website Link -->
+                    <a href="http://www.ruangkarsa.web.id" target="_blank" rel="noopener noreferrer"
+                       class="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:border-brand-accent/50 hover:bg-white/10 text-gray-300 hover:text-white flex items-center justify-center transition-all hover:-translate-y-1" aria-label="Website">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
                     </a>
                 </div>
             </div>
-            
-            <!-- Sitemap Links -->
-            <div class="space-y-4">
+
+            <!-- Navigation Quick Links -->
+            <div class="md:col-span-3 space-y-4">
                 <h4 class="text-white font-bold text-sm uppercase tracking-wider">Navigasi</h4>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a href="#" class="hover:text-white transition-colors">Beranda</a></li>
-                    <li><a href="#about" class="hover:text-white transition-colors">Visi Kami</a></li>
-                    <li><a href="#features" class="hover:text-white transition-colors">Fitur Utama</a></li>
-                    <li><a href="#playground" class="hover:text-white transition-colors">Karsa Board</a></li>
+                <ul class="space-y-2 text-sm text-gray-300">
+                    <li><a href="#" class="hover:text-brand-limeBright transition-colors">Beranda</a></li>
+                    <li><a href="#tentang" class="hover:text-brand-limeBright transition-colors">Tentang Kami</a></li>
+                    <li><a href="#layanan" class="hover:text-brand-limeBright transition-colors">Layanan Media</a></li>
+                    <li><a href="#keunggulan" class="hover:text-brand-limeBright transition-colors">Keunggulan Utama</a></li>
                 </ul>
             </div>
-            
-            <!-- Community Links -->
-            <div class="space-y-4">
-                <h4 class="text-white font-bold text-sm uppercase tracking-wider">Komunitas</h4>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a href="#" class="hover:text-white transition-colors">Showcase Karya</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Discord Server</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Event Kreatif</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Program Inkubasi</a></li>
-                </ul>
+
+            <!-- Contact Address Column -->
+            <div class="md:col-span-4 space-y-4">
+                <h4 class="text-white font-bold text-sm uppercase tracking-wider">Informasi Kontak</h4>
+                <address class="not-italic space-y-2 text-sm text-gray-300">
+                    <p class="flex items-start gap-2.5">
+                        <span class="text-brand-limeBright shrink-0 mt-0.5">📍</span>
+                        <span>Pasuruan, Jawa Timur</span>
+                    </p>
+                    <p class="flex items-center gap-2.5">
+                        <span class="text-brand-limeBright shrink-0">📞</span>
+                        <a href="https://wa.me/6289617390529" class="hover:text-brand-limeBright transition-colors">WhatsApp: 089617390529</a>
+                    </p>
+                    <p class="flex items-center gap-2.5">
+                        <span class="text-brand-limeBright shrink-0">📧</span>
+                        <a href="mailto:ruangkarsa.creative@gmail.com" class="hover:text-brand-limeBright transition-colors">Email: ruangkarsa</a>
+                    </p>
+                    <p class="flex items-center gap-2.5">
+                        <span class="text-brand-limeBright shrink-0">📱</span>
+                        <a href="https://instagram.com/ruangkarsa" target="_blank" rel="noopener noreferrer" class="hover:text-brand-limeBright transition-colors">Instagram: @ruangkarsa</a>
+                    </p>
+                    <p class="flex items-center gap-2.5">
+                        <span class="text-brand-limeBright shrink-0">🌐</span>
+                        <a href="http://www.ruangkarsa.web.id" target="_blank" rel="noopener noreferrer" class="hover:text-brand-limeBright transition-colors">www.ruangkarsa.web.id</a>
+                    </p>
+                </address>
             </div>
         </div>
-        <div class="max-w-7xl mx-auto border-t border-white/5 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-            <p>&copy; 2026 Ruang Karsa. Hak Cipta Dilindungi Undang-Undang.</p>
+
+        <div class="max-w-7xl mx-auto border-t border-white/10 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-400">
+            <p>&copy; 2026 Ruang Karsa - Creative Media & Production House. Hak Cipta Dilindungi Undang-Undang.</p>
             <div class="flex items-center gap-4">
                 <a href="#" class="hover:text-white transition-colors">Kebijakan Privasi</a>
                 <a href="#" class="hover:text-white transition-colors">Ketentuan Layanan</a>
@@ -510,128 +805,59 @@
         // Mobile Menu Interactivity
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
-        
+        const menuIconPath = document.getElementById('menu-icon-path');
+
         menuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                // Open icon Hamburger
+                menuIconPath.setAttribute('d', 'M4 6h16M4 12h16m-7 6h7');
+            } else {
+                // Close icon (X)
+                menuIconPath.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+            }
         });
 
+        // Hide mobile menu on link clicks
         const mobileLinks = mobileMenu.querySelectorAll('a');
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
+                menuIconPath.setAttribute('d', 'M4 6h16M4 12h16m-7 6h7');
             });
         });
 
-        // Waitlist Form Submission (Original Logic upgraded styling)
-        document.getElementById('notify-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const emailInput = document.getElementById('email-input');
-            const email = emailInput.value;
-            
-            if (email) {
-                const form = document.getElementById('notify-form');
-                form.innerHTML = `
-                    <div class="bg-accentTeal/10 border border-accentTeal/30 rounded-xl p-4 w-full text-center text-accentTeal font-semibold animate-pulse">
-                        Terima kasih! Kami akan segera mengabari Anda ke <strong class="underline">${email}</strong> saat kami meluncur.
-                    </div>
-                `;
+        // Header Background Transition on Scroll
+        const mainHeader = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 30) {
+                mainHeader.classList.remove('bg-transparent', 'py-5');
+                mainHeader.classList.add('bg-white/80', 'backdrop-blur-md', 'shadow-md', 'border-b', 'border-gray-100', 'py-3.5');
+            } else {
+                mainHeader.classList.remove('bg-white/80', 'backdrop-blur-md', 'shadow-md', 'border-b', 'border-gray-100', 'py-3.5');
+                mainHeader.classList.add('bg-transparent', 'py-5');
             }
         });
+
+        // Soft Scroll Reveal Animation (Intersection Observer)
+        const revealElements = document.querySelectorAll('.premium-card, section h2, section p, .stacked-card-group');
         
-        // Simulating development progress increment (Original Logic)
-        setTimeout(() => {
-            const progressBar = document.getElementById('progress-bar');
-            const progressVal = document.getElementById('progress-val');
-            if (progressBar && progressVal) {
-                progressBar.style.width = '68%';
-                progressVal.innerText = '68%';
-            }
-        }, 1500);
-
-        // Karsa Board Interactivity
-        const karsaForm = document.getElementById('karsa-form');
-        const karsaInput = document.getElementById('karsa-input');
-        const karsaBoard = document.getElementById('karsa-board');
-
-        const boardGradients = [
-            { bg: 'from-accentPurple/20 via-transparent to-accentPink/10 border-accentPurple/20', text: 'text-accentPurple', label: '💡 Karsa Kreatif' },
-            { bg: 'from-accentTeal/20 via-transparent to-accentPurple/10 border-accentTeal/20', text: 'text-accentTeal', label: '⚡ Proyek Inovasi' },
-            { bg: 'from-accentPink/20 via-transparent to-accentTeal/10 border-accentPink/20', text: 'text-accentPink', label: '🎨 Desain & Seni' }
-        ];
-
-        const randomUsernames = [
-            '@karsa_ideator', '@imaji_kreatif', '@ruang_bakat', 
-            '@karsa_pemikir', '@sineas_bebas', '@koding_sastra',
-            '@seniman_digital', '@penulis_muda', '@arsitektur_karsa'
-        ];
-
-        // Setting up initial like buttons
-        document.querySelectorAll('.like-btn').forEach(btn => {
-            setupLikeButton(btn);
-        });
-
-        function setupLikeButton(btn) {
-            btn.addEventListener('click', function() {
-                let likes = parseInt(this.getAttribute('data-likes'));
-                if (!this.classList.contains('liked')) {
-                    likes += 1;
-                    this.classList.add('liked', 'text-red-500');
-                    this.classList.remove('text-gray-500');
-                    this.querySelector('svg').setAttribute('fill', 'currentColor');
-                } else {
-                    likes -= 1;
-                    this.classList.remove('liked', 'text-red-500');
-                    this.classList.add('text-gray-500');
-                    this.querySelector('svg').setAttribute('fill', 'none');
+        const revealOnScroll = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-6');
+                    observer.unobserve(entry.target);
                 }
-                this.setAttribute('data-likes', likes);
-                this.querySelector('span').innerText = likes;
             });
-        }
-
-        karsaForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const text = karsaInput.value.trim();
-            if (text) {
-                // Random metadata assignment
-                const style = boardGradients[Math.floor(Math.random() * boardGradients.length)];
-                const username = randomUsernames[Math.floor(Math.random() * randomUsernames.length)];
-                
-                // Card creation
-                const card = document.createElement('div');
-                card.className = `p-6 rounded-2xl bg-gradient-to-br ${style.bg} border shadow-lg relative group transition-all duration-300 hover:scale-105 hover:rotate-1 animate-bounce-in`;
-                card.innerHTML = `
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-[10px] uppercase font-bold tracking-wider ${style.text}">${style.label}</span>
-                        <span class="text-[10px] text-gray-500 font-medium">Baru Saja</span>
-                    </div>
-                    <p class="text-gray-200 text-sm leading-relaxed mb-4">"${escapeHtml(text)}"</p>
-                    <div class="flex items-center justify-between border-t border-white/5 pt-3">
-                        <span class="text-xs text-gray-400 font-semibold">${username}</span>
-                        <button class="like-btn flex items-center gap-1.5 text-xs text-gray-500 hover:text-red-500 transition-colors" data-likes="0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                            <span>0</span>
-                        </button>
-                    </div>
-                `;
-                
-                // Initialize like event on new card
-                setupLikeButton(card.querySelector('.like-btn'));
-                
-                // Insert at the top of the board
-                karsaBoard.insertBefore(card, karsaBoard.firstChild);
-                
-                // Reset form
-                karsaInput.value = '';
-                
-                // Scroll slightly to visual focus
-                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
+        }, {
+            threshold: 0.05
         });
 
-        function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
+        revealElements.forEach(el => {
+            el.classList.add('opacity-0', 'translate-y-6', 'transition-all', 'duration-700', 'ease-out');
+            revealOnScroll.observe(el);
+        });
     </script>
 </body>
 </html>
