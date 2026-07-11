@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Karsa Rental menyediakan sewa peralatan produksi standar industri di Pasuruan, Jawa Timur. Sony FX3, lensa G Master, drone DJI Mavic 3 Pro, lighting Aputure Amaran, dan audio nirkabel.">
+    <title>Karsa Rental | Persewaan Alat & Peralatan Produksi Ruang Karsa</title>
+    <!-- Tailwind CSS Play CDN v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0B0F19',
+                            DEFAULT: '#0F172A',
+                            light: '#1E293B',
+                            soft: '#334155',
+                            accent: '#FBBF24',
+                            limeBright: '#F59E0B',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+                        inter: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body class="bg-brand text-slate-100 min-h-screen relative font-sans overflow-x-hidden antialiased bg-r-pattern">
+
+    <!-- Ambient Background Light Blobs -->
+    <div class="bg-light-blobs">
+        <div class="light-blob blob-purple-1"></div>
+        <div class="light-blob blob-lime-1"></div>
+        <div class="light-blob blob-purple-2"></div>
+    </div>
+
+    <!-- Header / Navbar Section -->
+    <header id="main-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-transparent py-5">
+        <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+            <!-- Logo Brand -->
+            <a href="index.html" class="flex items-center transition-transform hover:scale-102">
+                <img src="logo-ruangkarsa.png" alt="Ruang Karsa" class="h-12 w-auto md:h-14">
+            </a>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-300">
+                <a href="index.html" class="nav-link hover:text-brand-accent transition-colors">Beranda</a>
+                <a href="index.html#tentang" class="nav-link hover:text-brand-accent transition-colors">Tentang</a>
+                <a href="index.html#layanan" class="nav-link hover:text-brand-accent transition-colors">Layanan</a>
+                <a href="rental.html" class="nav-link text-brand-accent hover:text-white transition-colors">Rental</a>
+                <a href="kontak.html" class="nav-link hover:text-brand-accent transition-colors">Kontak</a>
+            </nav>
+
+            <!-- CTA Desktop Button -->
+            <div class="hidden md:block">
+                <a id="cta-nav-whatsapp" href="kontak.html" 
+                   class="px-5 py-2.5 text-sm font-bold rounded-full bg-brand-accent text-brand-dark hover:bg-brand-limeBright hover:shadow-lg hover:shadow-brand-accent/20 transition-all duration-300 transform hover:-translate-y-0.5 inline-flex items-center gap-2">
+                    <span>Hubungi Kami</span>
+                    <svg class="w-4 h-4 fill-none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 10.742h.008v.008h-.008v-.008zM12 8.25c.007 0 .013.006.013.013a.013.013 0 00-.013-.013zm3.316 2.492h.008v.008h-.008v-.008zM12 21a9.003 9.003 0 0 0 8.316-5.56 9 9 0 00-16.632 0A9.003 9.003 0 0012 21z"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="menu-btn" class="md:hidden text-slate-200 hover:text-brand-accent focus:outline-none" aria-label="Toggle Menu">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path id="menu-icon-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 py-6 bg-slate-900/95 border-b border-slate-800 space-y-4 shadow-lg absolute w-full left-0 z-40 backdrop-blur-md transition-all duration-300">
+            <a href="index.html" class="block text-slate-200 hover:text-brand-accent font-semibold py-2">Beranda</a>
+            <a href="index.html#tentang" class="block text-slate-200 hover:text-brand-accent font-semibold py-2">Tentang</a>
+            <a href="index.html#layanan" class="block text-slate-200 hover:text-brand-accent font-semibold py-2">Layanan</a>
+            <a href="rental.html" class="block text-slate-200 hover:text-brand-accent font-semibold py-2">Rental</a>
+            <a href="kontak.html" class="block text-slate-200 hover:text-brand-accent font-semibold py-2">Kontak</a>
+            <a id="cta-mobile-whatsapp" href="kontak.html" 
+               class="block w-full text-center py-3 px-5 text-sm font-bold rounded-full bg-brand-accent text-brand-dark hover:bg-brand-limeBright transition-colors">
+                Hubungi Kami
+            </a>
+        </div>
+    </header>
+
+    <main class="relative z-10 pt-28">
+        <!-- Rental Page Banner -->
+        <section class="relative py-16 md:py-20 px-6 max-w-7xl mx-auto text-center">
+            <div class="absolute w-80 h-80 bg-brand-accent/5 rounded-full filter blur-[80px] -z-10 animate-pulse-slow left-1/2 -translate-x-1/2 top-10"></div>
+            <span class="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-extrabold tracking-wider text-brand-accent uppercase bg-slate-800/60 border border-brand-accent/20 rounded-full mb-6">
+                Karsa Rental
+            </span>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-4">
+                Etalase Persewaan & Peralatan Produksi
+            </h1>
+            <p class="text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
+                Kami menyewakan peralatan produksi standar industri yang kami gunakan sendiri untuk menjamin kualitas karya Anda.
+            </p>
+        </section>
+
+        <!-- Showcase Section (Grid Card-Based) -->
+        <section class="py-16 px-6 relative bg-slate-50 text-slate-900 border-t border-b border-slate-200">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    
+                    <!-- Item 1: Sony FX3 / A7S III -->
+                    <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between overflow-hidden premium-card group">
+                        <div class="relative h-48 overflow-hidden bg-slate-100">
+                            <img src="https://images.unsplash.com/photo-1619597455322-4fbbd820250a?auto=format&fit=crop&w=400&q=80" alt="Sony FX3 Camera" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <span class="absolute top-4 left-4 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-brand-dark bg-brand-accent rounded-full">Kamera</span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-bold text-brand-dark">Sony FX3 / A7S III</h3>
+                                    <!-- Status Badge -->
+                                    <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-100 text-[10px] font-bold rounded-full flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                                        Tersedia
+                                    </span>
+                                </div>
+                                <p class="text-xs text-slate-550 leading-relaxed">
+                                    Cinema Line 4K Full-Frame, Dual Base ISO, 120fps, profil warna S-Cinetone untuk output visual sinematik.
+                                </p>
+                            </div>
+                            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                <div>
+                                    <span class="block text-[10px] text-slate-400 font-semibold uppercase">Harga Sewa</span>
+                                    <span class="text-sm font-extrabold text-brand-dark">Rp 800.000 <span class="text-[10px] text-slate-500 font-normal">/ hari</span></span>
+                                </div>
+                                <a href="https://wa.me/6289617390529?text=Halo%20Ruang%20Karsa%2C%20saya%20tertarik%20untuk%20menyewa%20Sony%20FX3%20%2F%20A7S%20III." target="_blank" rel="noopener noreferrer" 
+                                   class="px-3.5 py-2 text-xs font-bold rounded-xl bg-brand text-white hover:bg-brand-accent hover:text-brand-dark transition-all duration-300 shadow-sm flex items-center gap-1.5">
+                                    <span>Sewa via WA</span>
+                                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.012 2C6.5 2 2.012 6.5 2.012 12c0 2.124.66 4.104 1.8 5.748L2 22l4.38-1.74a9.92 9.92 0 0 0 5.632 1.74c5.5 0 9.988-4.5 9.988-10S17.512 2 12.012 2zm5.72 14.1c-.24.672-1.2 1.224-1.656 1.284-.456.06-1.02.108-3.012-.684-2.544-1.008-4.176-3.6-4.308-3.78-.12-.18-1.008-1.344-1.008-2.556s.636-1.812.864-2.052c.228-.24.504-.3.672-.3.168 0 .336 0 .48.012.156.012.36-.06.564.432.204.504.708 1.716.768 1.836.06.12.108.264.024.432-.084.18-.18.288-.3.432-.12.132-.252.276-.36.372-.12.108-.24.228-.108.456.132.228.588.972 1.26 1.572.864.768 1.584 1.008 1.812 1.116.228.108.36.096.492-.06.132-.156.564-.66.72-.888.156-.228.312-.192.528-.108.216.084 1.38.648 1.62.768.24.12.396.18.456.288.06.096.06.564-.18 1.236z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 2: Sony GM Lenses -->
+                    <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between overflow-hidden premium-card group">
+                        <div class="relative h-48 overflow-hidden bg-slate-100">
+                            <img src="https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=400&q=80" alt="Sony G Master Lens" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <span class="absolute top-4 left-4 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-brand-dark bg-brand-accent rounded-full">Lensa</span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-bold text-brand-dark">Sony G Master</h3>
+                                    <!-- Status Badge -->
+                                    <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-100 text-[10px] font-bold rounded-full flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                                        Tersedia
+                                    </span>
+                                </div>
+                                <p class="text-xs text-slate-550 leading-relaxed">
+                                    Pilihan lensa Sony GM 24-70mm f/2.8 & 70-200mm f/2.8 konstan. Ketajaman tingkat tinggi untuk video dan foto profesional.
+                                </p>
+                            </div>
+                            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                <div>
+                                    <span class="block text-[10px] text-slate-400 font-semibold uppercase">Harga Sewa</span>
+                                    <span class="text-sm font-extrabold text-brand-dark">Rp 350.000 <span class="text-[10px] text-slate-500 font-normal">/ hari</span></span>
+                                </div>
+                                <a href="https://wa.me/6289617390529?text=Halo%20Ruang%20Karsa%2C%20saya%20tertarik%20untuk%20menyewa%20Lensa%20Sony%20G%20Master." target="_blank" rel="noopener noreferrer" 
+                                   class="px-3.5 py-2 text-xs font-bold rounded-xl bg-brand text-white hover:bg-brand-accent hover:text-brand-dark transition-all duration-300 shadow-sm flex items-center gap-1.5">
+                                    <span>Sewa via WA</span>
+                                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.012 2C6.5 2 2.012 6.5 2.012 12c0 2.124.66 4.104 1.8 5.748L2 22l4.38-1.74a9.92 9.92 0 0 0 5.632 1.74c5.5 0 9.988-4.5 9.988-10S17.512 2 12.012 2zm5.72 14.1c-.24.672-1.2 1.224-1.656 1.284-.456.06-1.02.108-3.012-.684-2.544-1.008-4.176-3.6-4.308-3.78-.12-.18-1.008-1.344-1.008-2.556s.636-1.812.864-2.052c.228-.24.504-.3.672-.3.168 0 .336 0 .48.012.156.012.36-.06.564.432.204.504.708 1.716.768 1.836.06.12.108.264.024.432-.084.18-.18.288-.3.432-.12.132-.252.276-.36.372-.12.108-.24.228-.108.456.132.228.588.972 1.26 1.572.864.768 1.584 1.008 1.812 1.116.228.108.36.096.492-.06.132-.156.564-.66.72-.888.156-.228.312-.192.528-.108.216.084 1.38.648 1.62.768.24.12.396.18.456.288.06.096.06.564-.18 1.236z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 3: DJI Mavic 3 Pro / Inspire -->
+                    <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between overflow-hidden premium-card group">
+                        <div class="relative h-48 overflow-hidden bg-slate-100">
+                            <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=400&q=80" alt="DJI Mavic 3 Pro Drone" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <span class="absolute top-4 left-4 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-brand-dark bg-brand-accent rounded-full">Drone</span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-bold text-brand-dark">DJI Mavic 3 / Inspire</h3>
+                                    <!-- Status Badge -->
+                                    <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-100 text-[10px] font-bold rounded-full flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                                        Tersedia
+                                    </span>
+                                </div>
+                                <p class="text-xs text-slate-550 leading-relaxed">
+                                    Drone profesional DJI Mavic 3 Pro & DJI Inspire. Hasil gambar 5.1K, sensor rintangan omnidirectional, dan transmisi stabil.
+                                </p>
+                            </div>
+                            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                <div>
+                                    <span class="block text-[10px] text-slate-400 font-semibold uppercase">Harga Sewa</span>
+                                    <span class="text-sm font-extrabold text-brand-dark">Rp 1.200.000 <span class="text-[10px] text-slate-500 font-normal">/ hari</span></span>
+                                </div>
+                                <a href="https://wa.me/6289617390529?text=Halo%20Ruang%20Karsa%2C%20saya%20tertarik%20untuk%20menyewa%20Drone%20DJI%20Mavic%20%2F%20Inspire." target="_blank" rel="noopener noreferrer" 
+                                   class="px-3.5 py-2 text-xs font-bold rounded-xl bg-brand text-white hover:bg-brand-accent hover:text-brand-dark transition-all duration-300 shadow-sm flex items-center gap-1.5">
+                                    <span>Sewa via WA</span>
+                                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.012 2C6.5 2 2.012 6.5 2.012 12c0 2.124.66 4.104 1.8 5.748L2 22l4.38-1.74a9.92 9.92 0 0 0 5.632 1.74c5.5 0 9.988-4.5 9.988-10S17.512 2 12.012 2zm5.72 14.1c-.24.672-1.2 1.224-1.656 1.284-.456.06-1.02.108-3.012-.684-2.544-1.008-4.176-3.6-4.308-3.78-.12-.18-1.008-1.344-1.008-2.556s.636-1.812.864-2.052c.228-.24.504-.3.672-.3.168 0 .336 0 .48.012.156.012.36-.06.564.432.204.504.708 1.716.768 1.836.06.12.108.264.024.432-.084.18-.18.288-.3.432-.12.132-.252.276-.36.372-.12.108-.24.228-.108.456.132.228.588.972 1.26 1.572.864.768 1.584 1.008 1.812 1.116.228.108.36.096.492-.06.132-.156.564-.66.72-.888.156-.228.312-.192.528-.108.216.084 1.38.648 1.62.768.24.12.396.18.456.288.06.096.06.564-.18 1.236z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 4: Lighting & Audio -->
+                    <div class="bg-white border border-slate-200/80 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between overflow-hidden premium-card group">
+                        <div class="relative h-48 overflow-hidden bg-slate-100">
+                            <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=400&q=80" alt="Lighting and Audio equipment" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <span class="absolute top-4 left-4 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-brand-dark bg-brand-accent rounded-full">Audio & Light</span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-bold text-brand-dark">Lighting & Audio</h3>
+                                    <!-- Status Badge -->
+                                    <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-100 text-[10px] font-bold rounded-full flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                                        Tersedia
+                                    </span>
+                                </div>
+                                <p class="text-xs text-slate-555 leading-relaxed">
+                                    Lampu studio Aputure Amaran COB series, plus paket audio nirkabel/wireless microphone Rode Wireless GO II / DJI Mic.
+                                </p>
+                            </div>
+                            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                <div>
+                                    <span class="block text-[10px] text-slate-400 font-semibold uppercase">Harga Sewa</span>
+                                    <span class="text-sm font-extrabold text-brand-dark">Rp 250.000 <span class="text-[10px] text-slate-500 font-normal">/ hari</span></span>
+                                </div>
+                                <a href="https://wa.me/6289617390529?text=Halo%20Ruang%20Karsa%2C%20saya%20tertarik%20untuk%20menyewa%20Lighting%20%26%20Audio." target="_blank" rel="noopener noreferrer" 
+                                   class="px-3.5 py-2 text-xs font-bold rounded-xl bg-brand text-white hover:bg-brand-accent hover:text-brand-dark transition-all duration-300 shadow-sm flex items-center gap-1.5">
+                                    <span>Sewa via WA</span>
+                                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.012 2C6.5 2 2.012 6.5 2.012 12c0 2.124.66 4.104 1.8 5.748L2 22l4.38-1.74a9.92 9.92 0 0 0 5.632 1.74c5.5 0 9.988-4.5 9.988-10S17.512 2 12.012 2zm5.72 14.1c-.24.672-1.2 1.224-1.656 1.284-.456.06-1.02.108-3.012-.684-2.544-1.008-4.176-3.6-4.308-3.78-.12-.18-1.008-1.344-1.008-2.556s.636-1.812.864-2.052c.228-.24.504-.3.672-.3.168 0 .336 0 .48.012.156.012.36-.06.564.432.204.504.708 1.716.768 1.836.06.12.108.264.024.432-.084.18-.18.288-.3.432-.12.132-.252.276-.36.372-.12.108-.24.228-.108.456.132.228.588.972 1.26 1.572.864.768 1.584 1.008 1.812 1.116.228.108.36.096.492-.06.132-.156.564-.66.72-.888.156-.228.312-.192.528-.108.216.084 1.38.648 1.62.768.24.12.396.18.456.288.06.096.06.564-.18 1.236z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Hubungi Kami (Before Footer) -->
+        <section class="py-24 px-6 relative max-w-5xl mx-auto">
+            <div class="bg-gradient-to-br from-brand via-brand-dark to-slate-950 rounded-3xl p-10 md:p-14 text-center text-white border border-slate-850 shadow-2xl relative overflow-hidden flex flex-col items-center space-y-6">
+                <!-- Glowing elements -->
+                <div class="absolute -top-24 -left-24 w-60 h-60 bg-slate-800/20 rounded-full filter blur-[50px] pointer-events-none"></div>
+                <div class="absolute -bottom-24 -right-24 w-60 h-60 bg-brand-accent/10 rounded-full filter blur-[50px] pointer-events-none"></div>
+
+                <span class="inline-flex items-center gap-2 px-3 py-1 text-xs font-bold tracking-wider text-brand-accent uppercase bg-white/5 border border-brand-accent/20 rounded-full">
+                    KONSULTASI GRATIS
+                </span>
+                
+                <h2 class="text-3xl md:text-4xl font-extrabold max-w-3xl leading-tight">Siap Membangun Cerita & Menghadirkan Karya yang Bermakna Bersama Kami?</h2>
+                
+                <p class="text-slate-300 max-w-2xl text-base leading-relaxed">
+                    Sampaikan ide, rencana acara, atau konsep kampanye produk Anda. Hubungi tim representasi kami di WhatsApp untuk mendapatkan konsultasi awal gratis.
+                </p>
+
+                <div class="pt-4">
+                    <a id="cta-section-whatsapp" href="kontak.html" 
+                       class="px-8 py-4 text-center text-base font-bold rounded-full bg-brand-accent text-slate-950 hover:bg-brand-limeBright hover:shadow-2xl hover:shadow-brand-accent/30 hover:scale-105 transition-all duration-300 inline-flex items-center gap-3">
+                        <svg class="w-5 h-5 fill-none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3h9m-9 3h9m-6.75 5.25a3 3 0 003 3h3a3 3 0 003-3V16.5h-9v3.75z"></path>
+                        </svg>
+                        <span>Hubungi Kami</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-slate-950 text-white border-t border-white/5 py-16 px-6 relative z-10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
+            
+            <!-- Brand Column -->
+            <div class="md:col-span-5 space-y-4">
+                <a href="index.html" class="flex items-center">
+                    <img src="logo-ruangkarsa.png" alt="Ruang Karsa" class="h-10 w-auto">
+                </a>
+                <p class="text-sm text-slate-350 max-w-sm leading-relaxed">
+                    Merekam momen, membangun cerita, menghadirkan karya yang bermakna.
+                </p>
+                <div class="flex items-center gap-3 pt-2">
+                    <!-- Instagram Link -->
+                    <a href="https://instagram.com/ruangkarsa" target="_blank" rel="noopener noreferrer" 
+                       class="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:border-brand-accent hover:bg-white/10 text-gray-300 hover:text-white flex items-center justify-center transition-all hover:-translate-y-1" aria-label="Instagram">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <!-- Website Link -->
+                    <a href="http://www.ruangkarsa.web.id" target="_blank" rel="noopener noreferrer"
+                       class="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:border-brand-accent hover:bg-white/10 text-gray-300 hover:text-white flex items-center justify-center transition-all hover:-translate-y-1" aria-label="Website">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Navigation Quick Links -->
+            <div class="md:col-span-3 space-y-4">
+                <h4 class="text-white font-bold text-sm uppercase tracking-wider">Navigasi</h4>
+                <ul class="space-y-2 text-sm text-slate-350">
+                    <li><a href="index.html" class="hover:text-brand-accent transition-colors">Beranda</a></li>
+                    <li><a href="index.html#tentang" class="hover:text-brand-accent transition-colors">Tentang Kami</a></li>
+                    <li><a href="index.html#layanan" class="hover:text-brand-accent transition-colors">Layanan Media</a></li>
+                    <li><a href="rental.html" class="hover:text-brand-accent transition-colors">Persewaan Alat</a></li>
+                    <li><a href="kontak.html" class="hover:text-brand-accent transition-colors">Kontak Kami</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Address Column -->
+            <div class="md:col-span-4 space-y-4">
+                <h4 class="text-white font-bold text-sm uppercase tracking-wider">Informasi Kontak</h4>
+                <address class="not-italic space-y-2 text-sm text-slate-350">
+                    <p class="flex items-start gap-2.5">
+                        <span class="text-brand-accent shrink-0 mt-0.5">📍</span>
+                        <span>Pasuruan, Jawa Timur</span>
+                    </p>
+                    <p class="flex items-center gap-2.5">
+                        <span class="text-brand-accent shrink-0">📞</span>
+                        <a href="https://wa.me/6289617390529" class="hover:text-brand-accent transition-colors">WhatsApp: 089617390529</a>
+                    </p>
+                    <p class="flex items-center gap-2.5">
+                        <span class="text-brand-accent shrink-0">📧</span>
+                        <a href="mailto:ruangkarsa.creative@gmail.com" class="hover:text-brand-accent transition-colors">Email: ruangkarsa</a>
+                    </p>
+                    <p class="flex items-center gap-2.5">
+                        <span class="text-brand-accent shrink-0">📱</span>
+                        <a href="https://instagram.com/ruangkarsa" target="_blank" rel="noopener noreferrer" class="hover:text-brand-accent transition-colors">Instagram: @ruangkarsa</a>
+                    </p>
+                    <p class="flex items-center gap-2.5">
+                        <span class="text-brand-accent shrink-0">🌐</span>
+                        <a href="http://www.ruangkarsa.web.id" target="_blank" rel="noopener noreferrer" class="hover:text-brand-accent transition-colors">www.ruangkarsa.web.id</a>
+                    </p>
+                </address>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto border-t border-white/10 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400">
+            <p>&copy; 2026 Ruang Karsa - Creative Media & Production House. Hak Cipta Dilindungi Undang-Undang.</p>
+            <div class="flex items-center gap-4">
+                <a href="#" class="hover:text-white transition-colors">Kebijakan Privasi</a>
+                <a href="#" class="hover:text-white transition-colors">Ketentuan Layanan</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Mobile Menu Interactivity
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIconPath = document.getElementById('menu-icon-path');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                // Open icon Hamburger
+                menuIconPath.setAttribute('d', 'M4 6h16M4 12h16m-7 6h7');
+            } else {
+                // Close icon (X)
+                menuIconPath.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+            }
+        });
+
+        // Hide mobile menu on link clicks
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIconPath.setAttribute('d', 'M4 6h16M4 12h16m-7 6h7');
+            });
+        });
+
+        // Header Background Transition on Scroll
+        const mainHeader = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 30) {
+                mainHeader.classList.remove('bg-transparent', 'py-5');
+                mainHeader.classList.add('bg-slate-950/80', 'backdrop-blur-md', 'shadow-md', 'border-b', 'border-slate-800', 'py-3.5');
+            } else {
+                mainHeader.classList.remove('bg-slate-950/80', 'backdrop-blur-md', 'shadow-md', 'border-b', 'border-slate-800', 'py-3.5');
+                mainHeader.classList.add('bg-transparent', 'py-5');
+            }
+        });
+    </script>
+</body>
+</html>
