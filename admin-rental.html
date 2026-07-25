@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard Admin Karsa Rental - Manajemen Item Persewaan Peralatan Produksi">
+    <title>Karsa Multimedia | Admin Rental Management</title>
+    <!-- Tailwind CSS Play CDN v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#0B0F19',
+                            dark: '#05070D',
+                            card: '#111827',
+                            border: '#1F293D',
+                            accent: '#A3E635',
+                            accentHover: '#84CC16',
+                            limeBright: '#BEF264',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Supabase JS Client library via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .modal-backdrop {
+            background-color: rgba(5, 7, 13, 0.75);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="bg-brand text-slate-100 min-h-screen relative font-sans antialiased bg-r-pattern flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 bg-brand/90 backdrop-blur-md border-b border-slate-800/80 py-4 px-6">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="flex items-center transition-transform hover:scale-102">
+                    <img src="karsa-multimedia.png" alt="Karsa Multimedia" class="h-10 w-auto">
+                </a>
+                <span class="h-6 w-px bg-slate-800 hidden sm:block"></span>
+                <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-brand-accent/10 text-brand-accent border border-brand-accent/20 hidden sm:inline-block">
+                    Admin Panel
+                </span>
+            </div>
+
+            <nav class="flex items-center gap-4 text-xs sm:text-sm font-semibold text-slate-300">
+                <a href="rental.html" target="_blank" class="hover:text-brand-accent transition-colors flex items-center gap-1.5 bg-slate-900 border border-slate-800 px-3.5 py-1.5 rounded-full">
+                    <span>Lihat Halaman Rental</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                </a>
+                <button id="btn-supabase-config" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-1.5 rounded-full transition-colors flex items-center gap-1.5 border border-slate-700/60">
+                    <span>⚡ Set Supabase</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8 space-y-8">
+
+        <!-- Top Banner & SQL Schema Info -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4 relative overflow-hidden">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+                <div>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-white">Manajemen Item Rental</h1>
+                    <p class="text-sm text-slate-400 mt-1 max-w-2xl">
+                        Kelola data inventaris, harga sewa, stok, dan status ketersediaan unit peralatan produksi Karsa Rental yang terhubung ke database **Supabase**.
+                    </p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="btn-toggle-sql" class="px-4 py-2.5 text-xs font-semibold rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4 text-brand-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
+                        </svg>
+                        <span>Skema SQL Supabase</span>
+                    </button>
+                    <button id="btn-add-item-top" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-brand-dark hover:bg-brand-limeBright shadow-lg shadow-brand-accent/20 transition-all flex items-center gap-2">
+                        <svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        <span>Tambah Item Baru</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Collapsible SQL Script Guide -->
+            <div id="sql-guide-box" class="hidden pt-4 border-t border-slate-800 space-y-3">
+                <div class="flex items-center justify-between text-xs text-slate-300">
+                    <span class="font-bold text-brand-accent">Jalankan SQL ini di SQL Editor Supabase Anda jika tabel belum dibuat:</span>
+                    <button id="btn-copy-sql" class="text-slate-400 hover:text-white font-semibold flex items-center gap-1">
+                        📋 Copy SQL
+                    </button>
+                </div>
+                <pre class="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs font-mono text-emerald-400 overflow-x-auto select-all leading-relaxed"><code id="sql-code-text">CREATE TABLE IF NOT EXISTS public.rental_items (
+    id BIGINT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    nama TEXT NOT NULL,
+    kategori TEXT NOT NULL DEFAULT 'Kamera',
+    harga_sewa NUMERIC NOT NULL DEFAULT 0,
+    stok INT NOT NULL DEFAULT 1,
+    status TEXT NOT NULL DEFAULT 'Tersedia',
+    deskripsi TEXT,
+    gambar_url TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.rental_items ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR ALL USING (true) WITH CHECK (true);</code></pre>
+            </div>
+        </div>
+
+        <!-- Connection Alert Warning if Supabase Credentials Missing -->
+        <div id="supabase-status-alert" class="hidden p-4 rounded-2xl border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs sm:text-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <span class="text-xl">⚠️</span>
+                <div>
+                    <span class="font-bold block">Kredensial Supabase Belum Dikonfigurasi</span>
+                    <span>Silakan klik tombol **Set Supabase** di kanan atas untuk memasukkan URL & Anon Key proyek Supabase Anda.</span>
+                </div>
+            </div>
+            <button onclick="openConfigModal()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs shrink-0">
+                Konfigurasi Sekarang
+            </button>
+        </div>
+
+        <!-- Statistics Overview Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-1">
+                <span class="text-xs font-medium text-slate-400">Total Jenis Item</span>
+                <div id="stat-total-items" class="text-2xl font-extrabold text-white">0</div>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-1">
+                <span class="text-xs font-medium text-slate-400">Total Unit Stok</span>
+                <div id="stat-total-stock" class="text-2xl font-extrabold text-white">0</div>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-1">
+                <span class="text-xs font-medium text-emerald-400">Item Ready (Tersedia)</span>
+                <div id="stat-available-items" class="text-2xl font-extrabold text-emerald-400">0</div>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-1">
+                <span class="text-xs font-medium text-amber-400">Sedang Disewa / Perawatan</span>
+                <div id="stat-rented-items" class="text-2xl font-extrabold text-amber-400">0</div>
+            </div>
+        </div>
+
+        <!-- Filters & Search Toolbar -->
+        <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4">
+            <!-- Search Box -->
+            <div class="relative w-full md:w-80">
+                <input type="text" id="search-input" placeholder="Cari nama item..." 
+                       class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-accent transition-colors">
+                <svg class="w-4 h-4 text-slate-500 absolute left-3.5 top-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                <select id="filter-kategori" class="bg-slate-950 border border-slate-800 text-xs text-slate-300 px-3.5 py-2.5 rounded-xl focus:outline-none focus:border-brand-accent">
+                    <option value="ALL">Semua Kategori</option>
+                    <option value="Kamera">Kamera</option>
+                    <option value="Lensa">Lensa</option>
+                    <option value="Drone">Drone</option>
+                    <option value="Audio & Light">Audio & Light</option>
+                    <option value="Aksesoris">Aksesoris</option>
+                </select>
+
+                <select id="filter-status" class="bg-slate-950 border border-slate-800 text-xs text-slate-300 px-3.5 py-2.5 rounded-xl focus:outline-none focus:border-brand-accent">
+                    <option value="ALL">Semua Status</option>
+                    <option value="Tersedia">Tersedia</option>
+                    <option value="Disewa">Disewa</option>
+                    <option value="Dalam Perawatan">Dalam Perawatan</option>
+                </select>
+
+                <button id="btn-refresh" class="p-2.5 bg-slate-950 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 rounded-xl transition-colors" title="Refresh Data">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Rental Items Data Table -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs sm:text-sm">
+                    <thead class="bg-slate-950/80 text-slate-400 font-semibold border-b border-slate-800 uppercase tracking-wider text-[11px]">
+                        <tr>
+                            <th class="py-4 px-6">ID</th>
+                            <th class="py-4 px-6">Item Rental</th>
+                            <th class="py-4 px-6">Kategori</th>
+                            <th class="py-4 px-6">Harga Sewa / Hari</th>
+                            <th class="py-4 px-6 text-center">Stok</th>
+                            <th class="py-4 px-6 text-center">Status</th>
+                            <th class="py-4 px-6 text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body-items" class="divide-y divide-slate-800/60 text-slate-200">
+                        <!-- Loading skeleton placeholder -->
+                        <tr>
+                            <td colspan="7" class="py-12 text-center text-slate-400">
+                                <div class="inline-flex items-center gap-3">
+                                    <div class="w-5 h-5 border-2 border-brand-accent border-t-transparent rounded-full animate-spin"></div>
+                                    <span>Memuat data item rental dari Supabase...</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal Form (Tambah / Edit Item) -->
+    <div id="modal-item-form" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-xl rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl relative transform transition-all">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <h3 id="modal-form-title" class="text-xl font-bold text-white">Tambah Item Rental Baru</h3>
+                <button onclick="closeFormModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <form id="rental-form" class="space-y-4">
+                <input type="hidden" id="form-item-id">
+
+                <div>
+                    <label for="form-nama" class="block text-xs font-bold text-slate-300 mb-1">Nama Item Rental <span class="text-rose-500">*</span></label>
+                    <input type="text" id="form-nama" required placeholder="Contoh: Sony FX3 Cinema Line" 
+                           class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="form-kategori" class="block text-xs font-bold text-slate-300 mb-1">Kategori <span class="text-rose-500">*</span></label>
+                        <select id="form-kategori" required class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                            <option value="Kamera">Kamera</option>
+                            <option value="Lensa">Lensa</option>
+                            <option value="Drone">Drone</option>
+                            <option value="Audio & Light">Audio & Light</option>
+                            <option value="Aksesoris">Aksesoris</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="form-harga" class="block text-xs font-bold text-slate-300 mb-1">Harga Sewa (Rp / hari) <span class="text-rose-500">*</span></label>
+                        <input type="number" id="form-harga" required min="0" step="5000" placeholder="800000" 
+                               class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="form-stok" class="block text-xs font-bold text-slate-300 mb-1">Stok Unit <span class="text-rose-500">*</span></label>
+                        <input type="number" id="form-stok" required min="0" value="1" placeholder="1" 
+                               class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                    </div>
+
+                    <div>
+                        <label for="form-status" class="block text-xs font-bold text-slate-300 mb-1">Status Ketersediaan <span class="text-rose-500">*</span></label>
+                        <select id="form-status" required class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                            <option value="Tersedia">Tersedia</option>
+                            <option value="Disewa">Disewa</option>
+                            <option value="Dalam Perawatan">Dalam Perawatan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="form-deskripsi" class="block text-xs font-bold text-slate-300 mb-1">Deskripsi Singkat</label>
+                    <textarea id="form-deskripsi" rows="2" placeholder="Spesifikasi atau deskripsi item..." 
+                              class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent"></textarea>
+                </div>
+
+                <div>
+                    <label for="form-gambar" class="block text-xs font-bold text-slate-300 mb-1">URL Gambar (Opsional)</label>
+                    <input type="url" id="form-gambar" placeholder="https://images.unsplash.com/..." 
+                           class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                </div>
+
+                <div class="pt-4 border-t border-slate-800 flex justify-end gap-3">
+                    <button type="button" onclick="closeFormModal()" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors">
+                        Batal
+                    </button>
+                    <button type="submit" id="btn-submit-form" class="px-6 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-brand-dark hover:bg-brand-limeBright transition-all shadow-md">
+                        Simpan Item
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Delete Confirmation -->
+    <div id="modal-delete" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 space-y-5 text-center shadow-2xl">
+            <div class="w-12 h-12 bg-rose-500/10 text-rose-500 rounded-full flex items-center justify-center mx-auto text-xl">
+                🗑️
+            </div>
+            <div>
+                <h4 class="text-lg font-bold text-white">Konfirmasi Hapus Item</h4>
+                <p class="text-xs text-slate-400 mt-1">Apakah Anda yakin ingin menghapus item "<span id="delete-item-name" class="text-slate-200 font-semibold"></span>" dari database Supabase?</p>
+            </div>
+            <div class="flex justify-center gap-3 pt-2">
+                <button onclick="closeDeleteModal()" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors">
+                    Batal
+                </button>
+                <button id="btn-confirm-delete" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-rose-600 text-white hover:bg-rose-500 transition-all shadow-md">
+                    Ya, Hapus Permanent
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Supabase Credentials Settings -->
+    <div id="modal-config" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <span>⚡ Konfigurasi Supabase</span>
+                </h3>
+                <button onclick="closeConfigModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <form id="config-form" class="space-y-4">
+                <div>
+                    <label for="cfg-url" class="block text-xs font-bold text-slate-300 mb-1">Supabase Project URL</label>
+                    <input type="url" id="cfg-url" required placeholder="https://xxxx.supabase.co" 
+                           class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent font-mono">
+                </div>
+
+                <div>
+                    <label for="cfg-key" class="block text-xs font-bold text-slate-300 mb-1">Supabase Anon Key</label>
+                    <textarea id="cfg-key" required rows="3" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." 
+                              class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-100 focus:outline-none focus:border-brand-accent font-mono"></textarea>
+                </div>
+
+                <p class="text-[11px] text-slate-400">
+                    Kredensial disimpan dengan aman di <code>localStorage</code> browser Anda untuk keperluan manajemen item rental ini.
+                </p>
+
+                <div class="pt-4 border-t border-slate-800 flex justify-end gap-3">
+                    <button type="button" onclick="resetConfig()" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-800 text-rose-400 hover:bg-slate-700 transition-colors">
+                        Reset Config
+                    </button>
+                    <button type="submit" class="px-6 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-brand-dark hover:bg-brand-limeBright transition-all">
+                        Simpan & Hubungkan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Popup Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Embedded Default Supabase Project Credentials
+        const DEFAULT_SUPABASE_URL = 'https://kolgqqvurvbjbtuufnai.supabase.co';
+        const DEFAULT_SUPABASE_KEY = 'sb_publishable_U0idj52nArjoczbEFXcXAw_gvfyGuzg';
+
+        let SUPABASE_URL = localStorage.getItem('KARSA_SUPABASE_URL') || DEFAULT_SUPABASE_URL;
+        let SUPABASE_KEY = localStorage.getItem('KARSA_SUPABASE_KEY') || DEFAULT_SUPABASE_KEY;
+        let supabaseClient = null;
+
+        let itemsData = [];
+        let itemToDeleteId = null;
+
+        // Initialize Supabase Client
+        function initSupabase() {
+            if (SUPABASE_URL && SUPABASE_KEY && window.supabase) {
+                try {
+                    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                    document.getElementById('supabase-status-alert').classList.add('hidden');
+                    fetchItems();
+                } catch (err) {
+                    console.error('Supabase init error:', err);
+                    showToast('Gagal inisialisasi Supabase client', 'error');
+                }
+            } else {
+                document.getElementById('supabase-status-alert').classList.remove('hidden');
+                renderTablePlaceholderMissingConfig();
+            }
+        }
+
+        // Fetch Items (Read)
+        async function fetchItems() {
+            if (!supabaseClient) return;
+
+            renderTableLoading();
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('rental_items')
+                    .select('*')
+                    .order('id', { ascending: true });
+
+                if (error) throw error;
+
+                itemsData = data || [];
+                renderTable();
+                updateStats();
+            } catch (err) {
+                console.error('Fetch items error:', err);
+                showToast(`Gagal memuat data: ${err.message}`, 'error');
+                renderTableError(err.message);
+            }
+        }
+
+        // Render Data Table
+        function renderTable() {
+            const tbody = document.getElementById('table-body-items');
+            const searchVal = document.getElementById('search-input').value.toLowerCase();
+            const filterKat = document.getElementById('filter-kategori').value;
+            const filterStat = document.getElementById('filter-status').value;
+
+            // Apply Filters
+            const filtered = itemsData.filter(item => {
+                const matchSearch = item.nama.toLowerCase().includes(searchVal) || 
+                                    (item.deskripsi && item.deskripsi.toLowerCase().includes(searchVal));
+                const matchKat = filterKat === 'ALL' || item.kategori === filterKat;
+                const matchStat = filterStat === 'ALL' || item.status === filterStat;
+                return matchSearch && matchKat && matchStat;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="py-12 text-center text-slate-500">
+                            Tidak ada item rental yang ditemukan.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(item => {
+                const priceFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(item.harga_sewa || 0);
+
+                let statusBadge = '';
+                if (item.status === 'Tersedia') {
+                    statusBadge = `<span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold rounded-full">Tersedia</span>`;
+                } else if (item.status === 'Disewa') {
+                    statusBadge = `<span class="px-2.5 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-bold rounded-full">Disewa</span>`;
+                } else {
+                    statusBadge = `<span class="px-2.5 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-xs font-bold rounded-full">Perawatan</span>`;
+                }
+
+                return `
+                    <tr class="hover:bg-slate-800/40 transition-colors">
+                        <td class="py-4 px-6 font-mono text-xs text-slate-400">#${item.id}</td>
+                        <td class="py-4 px-6">
+                            <div class="flex items-center gap-3">
+                                ${item.gambar_url ? `<img src="${item.gambar_url}" alt="${item.nama}" class="w-10 h-10 object-cover rounded-xl border border-slate-800 shrink-0">` : `<div class="w-10 h-10 bg-slate-800 rounded-xl flex items-center justify-center text-slate-500 font-bold shrink-0">📷</div>`}
+                                <div>
+                                    <div class="font-bold text-white">${escapeHtml(item.nama)}</div>
+                                    ${item.deskripsi ? `<div class="text-xs text-slate-400 truncate max-w-xs">${escapeHtml(item.deskripsi)}</div>` : ''}
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-4 px-6 text-slate-300">
+                            <span class="px-2.5 py-1 bg-slate-800 text-slate-300 rounded-lg text-xs font-medium border border-slate-700/60">${escapeHtml(item.kategori || 'Lainnya')}</span>
+                        </td>
+                        <td class="py-4 px-6 font-bold text-brand-accent">${priceFormatted}</td>
+                        <td class="py-4 px-6 text-center font-bold text-slate-200">${item.stok ?? 1}</td>
+                        <td class="py-4 px-6 text-center">${statusBadge}</td>
+                        <td class="py-4 px-6 text-right">
+                            <div class="inline-flex items-center gap-2">
+                                <button onclick="editItem(${item.id})" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-brand-accent rounded-lg text-xs font-semibold border border-slate-700 transition-colors flex items-center gap-1">
+                                    <span>Edit</span>
+                                </button>
+                                <button onclick="openDeleteModal(${item.id}, '${escapeHtml(item.nama)}')" class="px-3 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 rounded-lg text-xs font-semibold border border-rose-500/30 transition-colors flex items-center gap-1">
+                                    <span>Hapus</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Stats Calculation
+        function updateStats() {
+            document.getElementById('stat-total-items').textContent = itemsData.length;
+            const totalStock = itemsData.reduce((acc, curr) => acc + Number(curr.stok || 0), 0);
+            document.getElementById('stat-total-stock').textContent = totalStock;
+
+            const available = itemsData.filter(i => i.status === 'Tersedia').length;
+            document.getElementById('stat-available-items').textContent = available;
+
+            const rented = itemsData.filter(i => i.status === 'Disewa' || i.status === 'Dalam Perawatan').length;
+            document.getElementById('stat-rented-items').textContent = rented;
+        }
+
+        // Open Form Modal for Create or Edit
+        function openFormModal(item = null) {
+            const modal = document.getElementById('modal-item-form');
+            const title = document.getElementById('modal-form-title');
+            const form = document.getElementById('rental-form');
+
+            form.reset();
+
+            if (item) {
+                title.textContent = 'Edit Item Rental';
+                document.getElementById('form-item-id').value = item.id;
+                document.getElementById('form-nama').value = item.nama;
+                document.getElementById('form-kategori').value = item.kategori || 'Kamera';
+                document.getElementById('form-harga').value = item.harga_sewa || 0;
+                document.getElementById('form-stok').value = item.stok ?? 1;
+                document.getElementById('form-status').value = item.status || 'Tersedia';
+                document.getElementById('form-deskripsi').value = item.deskripsi || '';
+                document.getElementById('form-gambar').value = item.gambar_url || '';
+            } else {
+                title.textContent = 'Tambah Item Rental Baru';
+                document.getElementById('form-item-id').value = '';
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeFormModal() {
+            const modal = document.getElementById('modal-item-form');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Edit Item Click Action
+        function editItem(id) {
+            const item = itemsData.find(i => i.id === id);
+            if (item) {
+                openFormModal(item);
+            }
+        }
+
+        // Form Submit Handler (Create & Update)
+        document.getElementById('rental-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!supabaseClient) {
+                showToast('Supabase belum dikonfigurasi!', 'error');
+                return;
+            }
+
+            const id = document.getElementById('form-item-id').value;
+            const payload = {
+                nama: document.getElementById('form-nama').value.trim(),
+                kategori: document.getElementById('form-kategori').value,
+                harga_sewa: Number(document.getElementById('form-harga').value),
+                stok: Number(document.getElementById('form-stok').value),
+                status: document.getElementById('form-status').value,
+                deskripsi: document.getElementById('form-deskripsi').value.trim(),
+                gambar_url: document.getElementById('form-gambar').value.trim()
+            };
+
+            const submitBtn = document.getElementById('btn-submit-form');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Menyimpan...';
+
+            try {
+                if (id) {
+                    // Update existing item
+                    const { error } = await supabaseClient
+                        .from('rental_items')
+                        .update(payload)
+                        .eq('id', id);
+
+                    if (error) throw error;
+                    showToast('Item berhasil diperbarui!', 'success');
+                } else {
+                    // Create new item
+                    const { error } = await supabaseClient
+                        .from('rental_items')
+                        .insert([payload]);
+
+                    if (error) throw error;
+                    showToast('Item baru berhasil ditambahkan!', 'success');
+                }
+
+                closeFormModal();
+                fetchItems();
+            } catch (err) {
+                console.error('Save error:', err);
+                showToast(`Gagal menyimpan: ${err.message}`, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Simpan Item';
+            }
+        });
+
+        // Delete Modal Handlers
+        function openDeleteModal(id, name) {
+            itemToDeleteId = id;
+            document.getElementById('delete-item-name').textContent = name;
+            const modal = document.getElementById('modal-delete');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeDeleteModal() {
+            itemToDeleteId = null;
+            const modal = document.getElementById('modal-delete');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        document.getElementById('btn-confirm-delete').addEventListener('click', async () => {
+            if (!itemToDeleteId || !supabaseClient) return;
+
+            const btn = document.getElementById('btn-confirm-delete');
+            btn.disabled = true;
+            btn.textContent = 'Menghapus...';
+
+            try {
+                const { error } = await supabaseClient
+                    .from('rental_items')
+                    .delete()
+                    .eq('id', itemToDeleteId);
+
+                if (error) throw error;
+
+                showToast('Item berhasil dihapus dari database Supabase!', 'success');
+                closeDeleteModal();
+                fetchItems();
+            } catch (err) {
+                console.error('Delete error:', err);
+                showToast(`Gagal menghapus: ${err.message}`, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Ya, Hapus Permanent';
+            }
+        });
+
+        // Supabase Config Modal Handlers
+        function openConfigModal() {
+            document.getElementById('cfg-url').value = SUPABASE_URL;
+            document.getElementById('cfg-key').value = SUPABASE_KEY;
+            const modal = document.getElementById('modal-config');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeConfigModal() {
+            const modal = document.getElementById('modal-config');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        document.getElementById('config-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            SUPABASE_URL = document.getElementById('cfg-url').value.trim();
+            SUPABASE_KEY = document.getElementById('cfg-key').value.trim();
+
+            localStorage.setItem('KARSA_SUPABASE_URL', SUPABASE_URL);
+            localStorage.setItem('KARSA_SUPABASE_KEY', SUPABASE_KEY);
+
+            closeConfigModal();
+            showToast('Konfigurasi Supabase berhasil disimpan!', 'success');
+            initSupabase();
+        });
+
+        function resetConfig() {
+            if (confirm('Reset konfigurasi Supabase ke kredensial default?')) {
+                localStorage.removeItem('KARSA_SUPABASE_URL');
+                localStorage.removeItem('KARSA_SUPABASE_KEY');
+                SUPABASE_URL = DEFAULT_SUPABASE_URL;
+                SUPABASE_KEY = DEFAULT_SUPABASE_KEY;
+                closeConfigModal();
+                showToast('Konfigurasi Supabase telah direset ke default.', 'info');
+                initSupabase();
+            }
+        }
+
+        // Toggle SQL Guide Box
+        document.getElementById('btn-toggle-sql').addEventListener('click', () => {
+            const box = document.getElementById('sql-guide-box');
+            box.classList.toggle('hidden');
+        });
+
+        document.getElementById('btn-copy-sql').addEventListener('click', () => {
+            const sqlText = document.getElementById('sql-code-text').textContent;
+            navigator.clipboard.writeText(sqlText);
+            showToast('Script SQL berhasil dicopy ke clipboard!', 'success');
+        });
+
+        // UI Helpers & Loaders
+        function renderTableLoading() {
+            document.getElementById('table-body-items').innerHTML = `
+                <tr>
+                    <td colspan="7" class="py-12 text-center text-slate-400">
+                        <div class="inline-flex items-center gap-3">
+                            <div class="w-5 h-5 border-2 border-brand-accent border-t-transparent rounded-full animate-spin"></div>
+                            <span>Memuat data item rental...</span>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function renderTablePlaceholderMissingConfig() {
+            document.getElementById('table-body-items').innerHTML = `
+                <tr>
+                    <td colspan="7" class="py-12 text-center text-slate-400">
+                        <div class="space-y-3">
+                            <div class="text-3xl">⚡</div>
+                            <div class="font-bold text-slate-300">Belum Terhubung ke Supabase</div>
+                            <div class="text-xs text-slate-500 max-w-sm mx-auto">Klik tombol "Set Supabase" untuk memasukkan URL & Anon Key Supabase project Anda.</div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function renderTableError(msg) {
+            document.getElementById('table-body-items').innerHTML = `
+                <tr>
+                    <td colspan="7" class="py-12 text-center text-rose-400">
+                        <div class="space-y-2">
+                            <div class="font-bold text-sm">Gagal Mengambil Data Dari Supabase</div>
+                            <div class="text-xs font-mono text-slate-400 max-w-lg mx-auto bg-slate-950 p-3 rounded-xl border border-slate-800">${escapeHtml(msg)}</div>
+                            <div class="text-xs text-slate-500 pt-2">Pastikan tabel <code>rental_items</code> sudah dibuat di Supabase & RLS diizinkan.</div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }
+
+        // Toast Messages
+        function showToast(msg, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+
+            let bgClass = 'bg-slate-900 border-slate-700 text-slate-200';
+            if (type === 'success') bgClass = 'bg-emerald-950 border-emerald-600/40 text-emerald-300';
+            if (type === 'error') bgClass = 'bg-rose-950 border-rose-600/40 text-rose-300';
+
+            toast.className = `px-4 py-3 rounded-2xl border text-xs font-semibold shadow-xl transition-all duration-300 opacity-0 transform translate-y-2 pointer-events-auto flex items-center gap-2 ${bgClass}`;
+            toast.innerHTML = `<span>${msg}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-0', 'translate-y-2');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
+        }
+
+        // Event Listeners
+        document.getElementById('btn-add-item-top').addEventListener('click', () => openFormModal(null));
+        document.getElementById('btn-supabase-config').addEventListener('click', openConfigModal);
+        document.getElementById('btn-refresh').addEventListener('click', fetchItems);
+
+        document.getElementById('search-input').addEventListener('input', renderTable);
+        document.getElementById('filter-kategori').addEventListener('change', renderTable);
+        document.getElementById('filter-status').addEventListener('change', renderTable);
+
+        // Run Init
+        window.addEventListener('DOMContentLoaded', initSupabase);
+    </script>
+</body>
+</html>
