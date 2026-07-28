@@ -56,12 +56,14 @@
         .line-clamp-1 {
             display: -webkit-box;
             -webkit-line-clamp: 1;
+            line-clamp: 1;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
         .line-clamp-2 {
             display: -webkit-box;
             -webkit-line-clamp: 2;
+            line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -1113,6 +1115,10 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 clientLogosData = [...DEMO_LOGOS];
                 localStorage.setItem('rk_client_logos', JSON.stringify(clientLogosData));
             }
+            renderAdminLogos();
+        }
+
+        function renderClientLogos() {
             renderAdminLogos();
         }
 
