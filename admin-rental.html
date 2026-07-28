@@ -1890,25 +1890,34 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             if (supabaseClient) {
                 try {
                     if (itemId) {
-                        const { error } = await supabaseClient
+                        const { data, error } = await supabaseClient
                             .from('rental_items')
                             .update(payload)
                             .eq('id', itemId);
-                        if (error) throw error;
-                        showToast('Item berhasil diperbarui!', 'success');
+                        if (error) {
+                            console.error('SUPABASE UPDATE ERROR:', error);
+                            alert('Error Supabase Update: ' + error.message);
+                            showToast('Error Supabase: ' + error.message, 'error');
+                            return;
+                        }
+                        showToast('Item berhasil diperbarui di Supabase!', 'success');
                     } else {
-                        const { error } = await supabaseClient
+                        const { data, error } = await supabaseClient
                             .from('rental_items')
                             .insert([payload]);
-                        if (error) throw error;
-                        showToast('Item baru berhasil ditambahkan!', 'success');
+                        if (error) {
+                            console.error('SUPABASE INSERT ERROR:', error);
+                            alert('Error Supabase Insert: ' + error.message);
+                            showToast('Error Supabase: ' + error.message, 'error');
+                            return;
+                        }
+                        showToast('Item baru berhasil ditambahkan ke Supabase!', 'success');
                     }
                     closeFormModal();
                     fetchItems();
                 } catch (err) {
-                    console.error('Save item error:', err);
-                    showToast('Gagal menyimpan di Supabase. Menyimpan lokal...', 'error');
-                    saveItemLocal(itemId, payload);
+                    console.error('Save item exception:', err);
+                    alert('Supabase Exception: ' + (err.message || err));
                 } finally {
                     submitBtn.disabled = false;
                     submitBtn.innerText = 'Simpan Item';
