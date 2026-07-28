@@ -12,13 +12,25 @@
             theme: {
                 extend: {
                     colors: {
+                        slate: {
+                            750: '#0c2266',
+                            800: '#0a1a4a',        /* Card Background Option 1 (#0a1a4a) */
+                            850: '#081640',
+                            900: '#061238',        /* Card Background Option 2 (#061238) */
+                            950: '#040d2b',        /* Deep Translucent Card Background */
+                        },
                         brand: {
-                            dark: '#0B0F19',
-                            DEFAULT: '#0F172A',
-                            light: '#1E293B',
-                            soft: '#334155',
-                            accent: '#FBBF24',
-                            limeBright: '#F59E0B',
+                            dark: '#03091e',       /* Main Background Top */
+                            DEFAULT: '#0523a0',    /* Main Background Mid */
+                            gradientEnd: '#0d52ff',/* Main Background Bottom */
+                            electric: '#1a68ff',   /* Bright Electric Blue Hover/Highlight */
+                            cobalt: '#2f78ff',     /* Saturated Cobalt Accent */
+                            card: 'rgba(6, 18, 56, 0.8)',
+                            cardAlt: 'rgba(10, 26, 74, 0.7)',
+                            border: 'rgba(47, 120, 255, 0.25)',
+                            accent: '#f59e0b',     /* Gold/Yellow Accent (#f59e0b) */
+                            accentHover: '#eab308',
+                            limeBright: '#f59e0b',
                         }
                     },
                     fontFamily: {
@@ -31,7 +43,7 @@
     </script>
     <link rel="stylesheet" href="index.css">
 </head>
-<body class="bg-brand text-slate-100 min-h-screen relative font-sans overflow-x-hidden antialiased bg-r-pattern">
+<body class="text-slate-100 min-h-screen relative font-sans overflow-x-hidden antialiased bg-r-pattern" style="background: linear-gradient(180deg, #020617 0%, #031242 40%, #082fc4 80%, #1e62ff 100%) fixed !important;">
 
     <!-- Ambient Background Light Blobs -->
     <div class="bg-light-blobs">
