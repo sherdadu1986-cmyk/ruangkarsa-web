@@ -70,7 +70,7 @@
                 </span>
             </div>
 
-            <nav class="flex items-center gap-4 text-xs sm:text-sm font-semibold text-slate-300">
+            <nav class="flex items-center gap-3 text-xs sm:text-sm font-semibold text-slate-300">
                 <a href="rental.html" target="_blank" class="hover:text-brand-accent transition-colors flex items-center gap-1.5 bg-slate-900 border border-slate-800 px-3.5 py-1.5 rounded-full">
                     <span>Lihat Halaman Rental</span>
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -79,6 +79,9 @@
                 </a>
                 <button id="btn-supabase-config" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-1.5 rounded-full transition-colors flex items-center gap-1.5 border border-slate-700/60">
                     <span>⚡ Set Supabase</span>
+                </button>
+                <button id="btn-logout-admin" onclick="logoutAdmin()" class="bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 px-3.5 py-1.5 rounded-full transition-colors flex items-center gap-1.5 font-bold">
+                    <span>🚪 Logout</span>
                 </button>
             </nav>
         </div>
@@ -401,21 +404,67 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
         let itemsData = [];
         let itemToDeleteId = null;
 
-        // Initialize Supabase Client
-        function initSupabase() {
+        // Initialize Supabase Client & Protect Admin Session
+        async function initSupabase() {
+            const isLocalAdmin = localStorage.getItem('isAdminLoggedIn') === 'true';
+
             if (SUPABASE_URL && SUPABASE_KEY && window.supabase) {
                 try {
                     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
                     document.getElementById('supabase-status-alert').classList.add('hidden');
+
+                    // Check Supabase Auth or Local Admin Session
+                    let hasSupabaseSession = false;
+                    try {
+                        const { data: { session } } = await supabaseClient.auth.getSession();
+                        hasSupabaseSession = !!session;
+                    } catch (sErr) {
+                        console.log('Session check error:', sErr);
+                    }
+
+                    if (!isLocalAdmin && !hasSupabaseSession) {
+                        console.warn('Akses Ditolak: Sesi admin tidak ditemukan. Mengalihkan ke index.html...');
+                        window.location.href = 'index.html';
+                        return;
+                    }
+
+                    // Subscribe to auth changes (auto redirect if signed out and no local admin flag)
+                    supabaseClient.auth.onAuthStateChange((event, currentSession) => {
+                        if (event === 'SIGNED_OUT' && !localStorage.getItem('isAdminLoggedIn')) {
+                            window.location.href = 'index.html';
+                        }
+                    });
+
                     fetchItems();
                 } catch (err) {
                     console.error('Supabase init error:', err);
-                    showToast('Gagal inisialisasi Supabase client', 'error');
+                    if (!isLocalAdmin) {
+                        window.location.href = 'index.html';
+                        return;
+                    }
+                    fetchItems();
                 }
             } else {
+                if (!isLocalAdmin) {
+                    window.location.href = 'index.html';
+                    return;
+                }
                 document.getElementById('supabase-status-alert').classList.remove('hidden');
                 renderTablePlaceholderMissingConfig();
             }
+        }
+
+        // Logout Admin Handler
+        async function logoutAdmin() {
+            localStorage.removeItem('isAdminLoggedIn');
+            if (supabaseClient) {
+                try {
+                    await supabaseClient.auth.signOut();
+                } catch (err) {
+                    console.error('Logout error:', err);
+                }
+            }
+            window.location.href = 'index.html';
         }
 
         // Fetch Items (Read)

@@ -41,6 +41,9 @@
             }
         }
     </script>
+    <!-- Supabase JS Client library via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
     <link rel="stylesheet" href="index.css">
 </head>
 <body class="text-slate-100 min-h-screen relative font-sans overflow-x-hidden antialiased bg-r-pattern" style="background: linear-gradient(180deg, #020617 0%, #031242 40%, #082fc4 80%, #1e62ff 100%) fixed !important;">
@@ -69,8 +72,15 @@
                 <a href="kontak.html" class="nav-link hover:text-brand-accent transition-colors">Kontak</a>
             </nav>
 
-            <!-- CTA Desktop Button -->
-            <div class="hidden md:block">
+            <!-- CTA Desktop Buttons -->
+            <div class="hidden md:flex items-center gap-3">
+                <button type="button" onclick="handleAdminLoginBtnClick(event)" 
+                        class="px-4 py-2.5 text-xs font-bold rounded-full border border-brand-accent/50 text-brand-accent hover:bg-brand-accent/15 hover:text-white transition-all duration-300 transform hover:-translate-y-0.5 inline-flex items-center gap-2 shadow-sm">
+                    <svg class="w-4 h-4 text-brand-accent shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    <span>Login Admin</span>
+                </button>
                 <a id="cta-nav-whatsapp" href="kontak.html" 
                    class="px-5 py-2.5 text-sm font-bold rounded-full bg-brand-accent text-brand-dark hover:bg-brand-limeBright hover:shadow-lg hover:shadow-brand-accent/20 transition-all duration-300 transform hover:-translate-y-0.5 inline-flex items-center gap-2">
                     <span>Hubungi Kami</span>
@@ -95,6 +105,12 @@
             <a href="index.html#layanan" class="block text-slate-200 hover:text-brand-accent font-semibold py-2">Layanan</a>
             <a href="rental.html" class="block text-slate-200 hover:text-brand-accent font-semibold py-2">Rental</a>
             <a href="kontak.html" class="block text-slate-200 hover:text-brand-accent font-semibold py-2">Kontak</a>
+            <button type="button" onclick="handleAdminLoginBtnClick(event)" class="w-full text-left text-brand-accent hover:text-white font-bold py-2 border-t border-slate-800 flex items-center gap-2">
+                <svg class="w-4 h-4 text-brand-accent shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <span>Login Admin</span>
+            </button>
             <a id="cta-mobile-whatsapp" href="kontak.html" 
                class="block w-full text-center py-3 px-5 text-sm font-bold rounded-full bg-brand-accent text-brand-dark hover:bg-brand-limeBright transition-colors">
                 Hubungi Kami
@@ -434,5 +450,58 @@
             }
         });
     </script>
+
+    <!-- Login Admin Modal Popup -->
+    <div id="login-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop" style="background-color: rgba(2, 6, 23, 0.85); backdrop-filter: blur(10px);">
+        <div class="relative w-full max-w-md rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl overflow-hidden" style="background: rgba(6, 18, 56, 0.95); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.12);">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between border-b border-slate-700/60 pb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-brand-accent/10 border border-brand-accent/30 flex items-center justify-center text-brand-accent">
+                        <svg class="w-5 h-5 text-brand-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Login Admin Panel</h3>
+                        <p class="text-xs text-slate-400">Masuk untuk mengelola rental & inventaris</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeLoginModal()" class="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800 transition-colors">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Error Alert -->
+            <div id="login-error-alert" class="hidden p-3.5 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-semibold flex items-start gap-2.5">
+                <span class="shrink-0 text-base">⚠️</span>
+                <span id="login-error-text">Email atau password salah</span>
+            </div>
+
+            <!-- Form -->
+            <form onsubmit="submitAdminLogin(event)" class="space-y-4">
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-semibold text-slate-300">Email Admin</label>
+                    <input type="email" id="login-email" required placeholder="admin@ruangkarsa.com"
+                           class="w-full px-4 py-3 bg-slate-950/80 border border-slate-700/80 rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-brand-accent transition-colors">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-semibold text-slate-300">Password</label>
+                    <input type="password" id="login-password" required placeholder="••••••••"
+                           class="w-full px-4 py-3 bg-slate-950/80 border border-slate-700/80 rounded-xl text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-brand-accent transition-colors">
+                </div>
+
+                <div class="pt-2 flex items-center justify-end gap-3">
+                    <button type="button" onclick="closeLoginModal()" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-colors">
+                        Batal
+                    </button>
+                    <button type="submit" id="btn-submit-login" class="px-6 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-slate-950 hover:bg-brand-limeBright hover:shadow-lg transition-all duration-300">
+                        Login ke Admin Panel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
