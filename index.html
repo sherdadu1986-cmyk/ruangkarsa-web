@@ -1216,8 +1216,31 @@
             track.innerHTML = htmlContent + htmlContent;
         }
 
+        async function loadRentalItems() {
+            if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('rental_items')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+
+                    if (error) {
+                        console.error('Gagal mengambil data rental:', error.message);
+                        return;
+                    }
+
+                    if (data && data.length > 0) {
+                        console.log('Data rental_items dari Supabase:', data);
+                    }
+                } catch (err) {
+                    console.error('Error loadRentalItems:', err);
+                }
+            }
+        }
+
         function initRealtimeSync() {
             renderDynamicMarquee();
+            loadRentalItems();
 
             window.addEventListener('storage', (e) => {
                 if (!e.key || e.key === 'rk_client_logos') {
@@ -1237,6 +1260,13 @@
 
             if (typeof supabaseClient !== 'undefined' && supabaseClient) {
                 try {
+                    supabaseClient.channel('public:rental_items')
+                        .on('postgres_changes', { event: '*', schema: 'public', table: 'rental_items' }, payload => {
+                            console.log('Perubahan database rental_items terdeteksi:', payload);
+                            loadRentalItems();
+                        })
+                        .subscribe();
+
                     supabaseClient.channel('public:client_logos')
                         .on('postgres_changes', { event: '*', schema: 'public', table: 'client_logos' }, async () => {
                             const { data } = await supabaseClient.from('client_logos').select('*').order('urutan', { ascending: true });

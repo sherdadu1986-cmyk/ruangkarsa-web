@@ -1020,6 +1020,14 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                         }
                     });
 
+                    // Activate Supabase Realtime for rental_items
+                    supabaseClient.channel('public:rental_items')
+                        .on('postgres_changes', { event: '*', schema: 'public', table: 'rental_items' }, payload => {
+                            console.log('Perubahan database rental_items terdeteksi di Admin:', payload);
+                            fetchItems();
+                        })
+                        .subscribe();
+
                     fetchItems();
                 } catch (err) {
                     console.error('Supabase init error:', err);
@@ -1533,6 +1541,10 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
         }
 
         // Fetch Items (Read from Supabase)
+        async function loadRentalItems() {
+            return await fetchItems();
+        }
+
         async function fetchItems() {
             if (!supabaseClient) {
                 itemsData = [...DEMO_ITEMS];
