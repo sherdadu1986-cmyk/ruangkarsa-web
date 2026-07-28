@@ -114,6 +114,10 @@
                         class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white shrink-0">
                     <span>🎬 Portofolio Karya</span>
                 </button>
+                <button id="tab-btn-logos" onclick="switchModule('logos')" 
+                        class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white shrink-0">
+                    <span>🏢 Logo Partner & Klien</span>
+                </button>
                 <button id="tab-btn-konten" onclick="switchModule('konten')" 
                         class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white shrink-0">
                     <span>📝 Konten Landing Page</span>
@@ -324,9 +328,29 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                     <!-- Dynamic Portfolio Manager Cards -->
                 </div>
             </div>
+        <!-- ================= MODULE 3: LOGO PARTNER & KLIEN ================= -->
+        <div id="module-logos-section" class="hidden space-y-6">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <span>🏢 Manajemen Logo Partner & Klien (Marquee Slider)</span>
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">Kelola daftar instansi & brand yang ditampilkan di auto-scrolling marquee slider.</p>
+                    </div>
+                    <button onclick="openLogoModal()" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-brand-dark hover:bg-brand-limeBright shadow-lg shadow-brand-accent/20 transition-all flex items-center gap-2 shrink-0">
+                        <span>+ Tambah Logo Klien</span>
+                    </button>
+                </div>
+
+                <!-- Client Logo Grid Manager -->
+                <div id="admin-logos-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <!-- Dynamic Client Logo Cards -->
+                </div>
+            </div>
         </div>
 
-        <!-- ================= MODULE 3: KONTEN LANDING PAGE ================= -->
+        <!-- ================= MODULE 4: KONTEN LANDING PAGE ================= -->
         <div id="module-konten-section" class="hidden space-y-6">
             <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
                 <div>
@@ -624,10 +648,40 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                            class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
                 </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">URL Cover / Thumbnail Image <span class="text-rose-500">*</span></label>
-                    <input type="url" id="form-port-gambar" required placeholder="https://images.unsplash.com/..." 
-                           class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                <!-- Image Input Section (Dual Option: Upload File vs Input URL) -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-300">Thumbnail Gambar Karya <span class="text-rose-500">*</span></label>
+                    
+                    <div class="flex items-center gap-2 bg-slate-950 p-1 rounded-xl border border-slate-800">
+                        <button type="button" id="tab-port-file" onclick="switchPortInputMode('file')" 
+                                class="flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-brand-accent text-slate-950 shadow">
+                            📁 Upload dari Komputer
+                        </button>
+                        <button type="button" id="tab-port-url" onclick="switchPortInputMode('url')" 
+                                class="flex-1 py-1.5 text-xs font-bold rounded-lg transition-all text-slate-400 hover:text-white">
+                            🔗 Input URL Gambar
+                        </button>
+                    </div>
+
+                    <div id="port-input-file-container" class="space-y-2">
+                        <div onclick="document.getElementById('form-port-file-input').click()" 
+                             class="border-2 border-dashed border-slate-700 hover:border-brand-accent rounded-2xl p-4 text-center cursor-pointer transition-colors bg-slate-950/60 group">
+                            <input type="file" id="form-port-file-input" accept="image/*" class="hidden" onchange="handlePortFileSelect(event)">
+                            <div class="flex flex-col items-center gap-1">
+                                <span class="text-xl">📁</span>
+                                <span class="text-xs font-bold text-slate-200">Klik / Tarik File Gambar Ke Sini</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="port-input-url-container" class="hidden space-y-2">
+                        <input type="url" id="form-port-gambar" placeholder="https://images.unsplash.com/..." oninput="updatePortPreview(this.value)"
+                               class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                    </div>
+
+                    <div id="port-preview-box" class="w-full h-28 bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden hidden flex items-center justify-center relative shadow-inner">
+                        <img id="port-preview-img" src="" alt="Preview" class="w-full h-full object-cover">
+                    </div>
                 </div>
 
                 <div>
@@ -648,6 +702,72 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                     </button>
                     <button type="submit" id="btn-submit-port" class="px-6 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-slate-950 hover:bg-brand-limeBright transition-all shadow-md">
                         Simpan Portofolio
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Add/Edit Client Logo Form -->
+    <div id="modal-logo-form" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl relative">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <h3 id="modal-logo-title" class="text-lg font-bold text-white">Tambah Logo Partner / Klien</h3>
+                <button type="button" onclick="closeLogoModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">✕</button>
+            </div>
+
+            <form onsubmit="saveClientLogoItem(event)" class="space-y-4">
+                <input type="hidden" id="form-logo-id">
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Nama Partner / Brand Klien <span class="text-rose-500">*</span></label>
+                    <input type="text" id="form-logo-nama" required placeholder="Contoh: TELKOM GROUP" 
+                           class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                </div>
+
+                <!-- Dual Option: Upload File vs Input URL -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-300">Logo Gambar (Upload File / URL) <span class="text-rose-500">*</span></label>
+                    
+                    <div class="flex items-center gap-2 bg-slate-950 p-1 rounded-xl border border-slate-800">
+                        <button type="button" id="tab-logo-file" onclick="switchLogoInputMode('file')" 
+                                class="flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-brand-accent text-slate-950 shadow">
+                            📁 Upload File
+                        </button>
+                        <button type="button" id="tab-logo-url" onclick="switchLogoInputMode('url')" 
+                                class="flex-1 py-1.5 text-xs font-bold rounded-lg transition-all text-slate-400 hover:text-white">
+                            🔗 Input URL
+                        </button>
+                    </div>
+
+                    <div id="logo-input-file-container" class="space-y-2">
+                        <div onclick="document.getElementById('form-logo-file-input').click()" 
+                             class="border-2 border-dashed border-slate-700 hover:border-brand-accent rounded-2xl p-4 text-center cursor-pointer transition-colors bg-slate-950/60 group">
+                            <input type="file" id="form-logo-file-input" accept="image/*" class="hidden" onchange="handleLogoFileSelect(event)">
+                            <div class="flex flex-col items-center gap-1">
+                                <span class="text-xl">📁</span>
+                                <span class="text-xs font-bold text-slate-200">Pilih File Logo dari Komputer</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="logo-input-url-container" class="hidden space-y-2">
+                        <input type="url" id="form-logo-url" placeholder="https://..." oninput="updateLogoPreview(this.value)"
+                               class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                    </div>
+
+                    <!-- Live Logo Preview Box -->
+                    <div id="logo-preview-box" class="w-full h-24 bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden hidden flex items-center justify-center relative p-3">
+                        <img id="logo-preview-img" src="" alt="Preview" class="max-h-full max-w-full object-contain">
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-800 flex justify-end gap-3">
+                    <button type="button" onclick="closeLogoModal()" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors">
+                        Batal
+                    </button>
+                    <button type="submit" id="btn-submit-logo" class="px-6 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-slate-950 hover:bg-brand-limeBright transition-all shadow-md">
+                        Simpan Logo
                     </button>
                 </div>
             </form>
@@ -924,16 +1044,18 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
         function switchModule(moduleName) {
             const secKatalog = document.getElementById('module-katalog-section');
             const secPortofolio = document.getElementById('module-portofolio-section');
+            const secLogos = document.getElementById('module-logos-section');
             const secKonten = document.getElementById('module-konten-section');
             const secPengaturan = document.getElementById('module-pengaturan-section');
 
             const btnKatalog = document.getElementById('tab-btn-katalog');
             const btnPortofolio = document.getElementById('tab-btn-portofolio');
+            const btnLogos = document.getElementById('tab-btn-logos');
             const btnKonten = document.getElementById('tab-btn-konten');
             const btnPengaturan = document.getElementById('tab-btn-pengaturan');
 
-            [secKatalog, secPortofolio, secKonten, secPengaturan].forEach(s => s?.classList.add('hidden'));
-            [btnKatalog, btnPortofolio, btnKonten, btnPengaturan].forEach(b => {
+            [secKatalog, secPortofolio, secLogos, secKonten, secPengaturan].forEach(s => s?.classList.add('hidden'));
+            [btnKatalog, btnPortofolio, btnLogos, btnKonten, btnPengaturan].forEach(b => {
                 if (b) b.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white shrink-0";
             });
 
@@ -944,6 +1066,10 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 secPortofolio?.classList.remove('hidden');
                 if (btnPortofolio) btnPortofolio.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
                 renderAdminPortfolio();
+            } else if (moduleName === 'logos') {
+                secLogos?.classList.remove('hidden');
+                if (btnLogos) btnLogos.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
+                renderAdminLogos();
             } else if (moduleName === 'konten') {
                 secKonten?.classList.remove('hidden');
                 if (btnKonten) btnKonten.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
@@ -951,6 +1077,170 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 secPengaturan?.classList.remove('hidden');
                 if (btnPengaturan) btnPengaturan.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
             }
+        }
+
+        // ================= CLIENT LOGO ADMIN MANAGER =================
+        const DEMO_LOGOS = [
+            { id: 1, nama: "TELKOM GROUP", logo_url: "" },
+            { id: 2, nama: "PERTAMINA", logo_url: "" },
+            { id: 3, nama: "BANK MANDIRI", logo_url: "" },
+            { id: 4, nama: "KEMENPUPR", logo_url: "" },
+            { id: 5, nama: "LUXE TIMEPIECE", logo_url: "" },
+            { id: 6, nama: "SOUNDSCAPE FEST", logo_url: "" },
+            { id: 7, nama: "SHOPEE MEDIA", logo_url: "" },
+            { id: 8, nama: "GOTO IMPACT", logo_url: "" }
+        ];
+
+        let clientLogosData = [...DEMO_LOGOS];
+        let currentLogoMode = 'file';
+        let selectedLogoLocalFile = null;
+
+        function switchLogoInputMode(mode) {
+            currentLogoMode = mode;
+            const tabFile = document.getElementById('tab-logo-file');
+            const tabUrl = document.getElementById('tab-logo-url');
+            const containerFile = document.getElementById('logo-input-file-container');
+            const containerUrl = document.getElementById('logo-input-url-container');
+
+            if (!tabFile || !tabUrl) return;
+
+            if (mode === 'file') {
+                tabFile.className = "flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-brand-accent text-slate-950 shadow";
+                tabUrl.className = "flex-1 py-1.5 text-xs font-bold rounded-lg transition-all text-slate-400 hover:text-white";
+                containerFile.classList.remove('hidden');
+                containerUrl.classList.add('hidden');
+            } else {
+                tabUrl.className = "flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-brand-accent text-slate-950 shadow";
+                tabFile.className = "flex-1 py-1.5 text-xs font-bold rounded-lg transition-all text-slate-400 hover:text-white";
+                containerUrl.classList.remove('hidden');
+                containerFile.classList.add('hidden');
+            }
+        }
+
+        function handleLogoFileSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            selectedLogoLocalFile = file;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                updateLogoPreview(evt.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateLogoPreview(url) {
+            const box = document.getElementById('logo-preview-box');
+            const img = document.getElementById('logo-preview-img');
+            if (!box || !img) return;
+            if (url && url.trim()) {
+                img.src = url.trim();
+                box.classList.remove('hidden');
+                box.classList.add('flex');
+            } else {
+                box.classList.add('hidden');
+                box.classList.remove('flex');
+            }
+        }
+
+        function renderAdminLogos() {
+            const grid = document.getElementById('admin-logos-grid');
+            if (!grid) return;
+
+            grid.innerHTML = clientLogosData.map(logo => {
+                return `
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3 flex flex-col justify-between items-center text-center space-y-2 group hover:border-brand-accent/40 transition-all">
+                        <div class="w-full h-16 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center p-2">
+                            ${logo.logo_url ? `<img src="${logo.logo_url}" alt="${escapeHtml(logo.nama)}" class="max-h-full max-w-full object-contain">` : `<span class="text-xs font-extrabold text-slate-300 tracking-wider">${escapeHtml(logo.nama)}</span>`}
+                        </div>
+                        <span class="text-[11px] font-bold text-slate-200 truncate w-full">${escapeHtml(logo.nama)}</span>
+                        <div class="flex items-center gap-1 w-full pt-1">
+                            <button onclick="editLogoItem(${logo.id})" class="flex-1 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold rounded-lg">Edit</button>
+                            <button onclick="deleteLogoItem(${logo.id})" class="flex-1 py-1 bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-[10px] font-bold rounded-lg border border-rose-500/30">Hapus</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openLogoModal(item = null) {
+            const modal = document.getElementById('modal-logo-form');
+            const title = document.getElementById('modal-logo-title');
+            if (!modal) return;
+
+            selectedLogoLocalFile = null;
+            switchLogoInputMode('file');
+
+            if (item) {
+                title.innerText = 'Edit Logo Partner / Klien';
+                document.getElementById('form-logo-id').value = item.id;
+                document.getElementById('form-logo-nama').value = item.nama;
+                document.getElementById('form-logo-url').value = item.logo_url || '';
+                if (item.logo_url) {
+                    switchLogoInputMode('url');
+                    updateLogoPreview(item.logo_url);
+                }
+            } else {
+                title.innerText = 'Tambah Logo Partner / Klien';
+                document.getElementById('form-logo-id').value = '';
+                document.getElementById('form-logo-nama').value = '';
+                document.getElementById('form-logo-url').value = '';
+                updateLogoPreview('');
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeLogoModal() {
+            const modal = document.getElementById('modal-logo-form');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function editLogoItem(id) {
+            const item = clientLogosData.find(l => l.id == id);
+            if (item) openLogoModal(item);
+        }
+
+        function deleteLogoItem(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus logo klien ini?')) {
+                clientLogosData = clientLogosData.filter(l => l.id != id);
+                renderAdminLogos();
+                showToast('Logo klien berhasil dihapus', 'info');
+            }
+        }
+
+        async function saveClientLogoItem(e) {
+            if (e) e.preventDefault();
+            const id = document.getElementById('form-logo-id').value;
+            const nama = document.getElementById('form-logo-nama').value.trim();
+            
+            let logo_url = document.getElementById('form-logo-url').value.trim();
+
+            if (currentLogoMode === 'file' && selectedLogoLocalFile) {
+                logo_url = await new Promise(resolve => {
+                    const reader = new FileReader();
+                    reader.onload = evt => resolve(evt.target.result);
+                    reader.readAsDataURL(selectedLogoLocalFile);
+                });
+            }
+
+            if (id) {
+                const index = clientLogosData.findIndex(l => l.id == id);
+                if (index !== -1) {
+                    clientLogosData[index] = { id: Number(id), nama, logo_url };
+                }
+                showToast('Logo klien berhasil diperbarui!', 'success');
+            } else {
+                clientLogosData.unshift({ id: Date.now(), nama, logo_url });
+                showToast('Logo klien baru berhasil ditambahkan!', 'success');
+            }
+
+            renderAdminLogos();
+            closeLogoModal();
         }
 
         // ================= PORTOFOLIO ADMIN MANAGER =================
@@ -1001,10 +1291,64 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             }).join('');
         }
 
+        let currentPortImageMode = 'file';
+        let selectedPortLocalFile = null;
+
+        function switchPortInputMode(mode) {
+            currentPortImageMode = mode;
+            const tabFile = document.getElementById('tab-port-file');
+            const tabUrl = document.getElementById('tab-port-url');
+            const containerFile = document.getElementById('port-input-file-container');
+            const containerUrl = document.getElementById('port-input-url-container');
+
+            if (!tabFile || !tabUrl) return;
+
+            if (mode === 'file') {
+                tabFile.className = "flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-brand-accent text-slate-950 shadow";
+                tabUrl.className = "flex-1 py-1.5 text-xs font-bold rounded-lg transition-all text-slate-400 hover:text-white";
+                containerFile.classList.remove('hidden');
+                containerUrl.classList.add('hidden');
+            } else {
+                tabUrl.className = "flex-1 py-1.5 text-xs font-bold rounded-lg transition-all bg-brand-accent text-slate-950 shadow";
+                tabFile.className = "flex-1 py-1.5 text-xs font-bold rounded-lg transition-all text-slate-400 hover:text-white";
+                containerUrl.classList.remove('hidden');
+                containerFile.classList.add('hidden');
+            }
+        }
+
+        function handlePortFileSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            selectedPortLocalFile = file;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                updatePortPreview(evt.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updatePortPreview(url) {
+            const box = document.getElementById('port-preview-box');
+            const img = document.getElementById('port-preview-img');
+            if (!box || !img) return;
+            if (url && url.trim()) {
+                img.src = url.trim();
+                box.classList.remove('hidden');
+                box.classList.add('flex');
+            } else {
+                box.classList.add('hidden');
+                box.classList.remove('flex');
+            }
+        }
+
         function openPortfolioModal(item = null) {
             const modal = document.getElementById('modal-portfolio-form');
             const title = document.getElementById('modal-portfolio-title');
             if (!modal) return;
+
+            selectedPortLocalFile = null;
+            switchPortInputMode('file');
             
             if (item) {
                 title.innerText = 'Edit Karya Portofolio';
@@ -1013,9 +1357,14 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 document.getElementById('form-port-kategori').value = item.kategori;
                 document.getElementById('form-port-tipe').value = item.tipe;
                 document.getElementById('form-port-klien').value = item.klien;
-                document.getElementById('form-port-gambar').value = item.gambar_url;
+                document.getElementById('form-port-gambar').value = item.gambar_url || '';
                 document.getElementById('form-port-embed').value = item.embed_url || '';
                 document.getElementById('form-port-deskripsi').value = item.deskripsi || '';
+
+                if (item.gambar_url) {
+                    switchPortInputMode('url');
+                    updatePortPreview(item.gambar_url);
+                }
             } else {
                 title.innerText = 'Tambah Karya Portofolio Baru';
                 document.getElementById('form-port-id').value = '';
@@ -1026,6 +1375,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 document.getElementById('form-port-gambar').value = '';
                 document.getElementById('form-port-embed').value = '';
                 document.getElementById('form-port-deskripsi').value = '';
+                updatePortPreview('');
             }
 
             modal.classList.remove('hidden');
@@ -1053,16 +1403,24 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             }
         }
 
-        function savePortfolioItem(e) {
+        async function savePortfolioItem(e) {
             if (e) e.preventDefault();
             const id = document.getElementById('form-port-id').value;
             const judul = document.getElementById('form-port-judul').value.trim();
             const kategori = document.getElementById('form-port-kategori').value;
             const tipe = document.getElementById('form-port-tipe').value;
             const klien = document.getElementById('form-port-klien').value.trim();
-            const gambar_url = document.getElementById('form-port-gambar').value.trim();
+            let gambar_url = document.getElementById('form-port-gambar').value.trim();
             const embed_url = document.getElementById('form-port-embed').value.trim();
             const deskripsi = document.getElementById('form-port-deskripsi').value.trim();
+
+            if (currentPortImageMode === 'file' && selectedPortLocalFile) {
+                gambar_url = await new Promise(resolve => {
+                    const reader = new FileReader();
+                    reader.onload = evt => resolve(evt.target.result);
+                    reader.readAsDataURL(selectedPortLocalFile);
+                });
+            }
 
             if (id) {
                 const index = portfolioData.findIndex(p => p.id == id);
