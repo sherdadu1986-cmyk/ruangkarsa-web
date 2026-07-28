@@ -1548,7 +1548,20 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                     .order('id', { ascending: true });
 
                 if (error) throw error;
-                itemsData = (data && data.length > 0) ? data : [...DEMO_ITEMS];
+                if (data && data.length > 0) {
+                    itemsData = data.map(item => ({
+                        id: item.id,
+                        nama: item.nama || item.name || 'Tanpa Nama',
+                        kategori: item.kategori || item.category || 'Kamera',
+                        harga_sewa: Number(item.harga_sewa ?? item.price ?? 0),
+                        stok: Number(item.stok ?? item.stock ?? 1),
+                        status: item.status || 'Tersedia',
+                        deskripsi: item.deskripsi || '',
+                        gambar_url: item.gambar_url || item.image_url || ''
+                    }));
+                } else {
+                    itemsData = [...DEMO_ITEMS];
+                }
                 renderItems();
                 updateStats();
             } catch (err) {
@@ -1883,17 +1896,34 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             submitBtn.disabled = true;
             submitBtn.innerText = 'Uploading & Menyimpan...';
 
-            const gambar_url = await processImageForSave();
-
-            const payload = { nama, kategori, harga_sewa, stok, status, deskripsi, gambar_url };
+            // Build payload WITHOUT 'deskripsi' property to prevent Supabase column mismatch
+            const payload = { nama, kategori, harga_sewa, stok, status, gambar_url };
 
             if (supabaseClient) {
                 try {
                     if (itemId) {
-                        const { data, error } = await supabaseClient
+                        let { error } = await supabaseClient
                             .from('rental_items')
                             .update(payload)
                             .eq('id', itemId);
+
+                        // Fallback for tables with English column names (name, category, price, stock, status, image_url)
+                        if (error && (error.message.includes('column') || error.code === 'PGRST204')) {
+                            const englishPayload = {
+                                name: nama,
+                                category: kategori,
+                                price: harga_sewa,
+                                stock: stok,
+                                status: status,
+                                image_url: gambar_url
+                            };
+                            const res2 = await supabaseClient
+                                .from('rental_items')
+                                .update(englishPayload)
+                                .eq('id', itemId);
+                            error = res2.error;
+                        }
+
                         if (error) {
                             console.error('SUPABASE UPDATE ERROR:', error);
                             alert('Error Supabase Update: ' + error.message);
@@ -1902,9 +1932,26 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                         }
                         showToast('Item berhasil diperbarui di Supabase!', 'success');
                     } else {
-                        const { data, error } = await supabaseClient
+                        let { error } = await supabaseClient
                             .from('rental_items')
                             .insert([payload]);
+
+                        // Fallback for tables with English column names (name, category, price, stock, status, image_url)
+                        if (error && (error.message.includes('column') || error.code === 'PGRST204')) {
+                            const englishPayload = {
+                                name: nama,
+                                category: kategori,
+                                price: harga_sewa,
+                                stock: stok,
+                                status: status,
+                                image_url: gambar_url
+                            };
+                            const res2 = await supabaseClient
+                                .from('rental_items')
+                                .insert([englishPayload]);
+                            error = res2.error;
+                        }
+
                         if (error) {
                             console.error('SUPABASE INSERT ERROR:', error);
                             alert('Error Supabase Insert: ' + error.message);
@@ -1923,7 +1970,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                     submitBtn.innerText = 'Simpan Item';
                 }
             } else {
-                saveItemLocal(itemId, payload);
+                saveItemLocal(itemId, { ...payload, deskripsi });
                 submitBtn.disabled = false;
                 submitBtn.innerText = 'Simpan Item';
             }
