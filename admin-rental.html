@@ -331,67 +331,24 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 </div>
             </div>
         <!-- ================= MODULE 3: LOGO PARTNER & KLIEN ================= -->
+        <!-- Tab Content: Logo Partner & Klien -->
         <div id="tab-logo-partner" class="tab-content hidden space-y-6">
-            <!-- Control Header -->
-            <div class="flex justify-between items-center bg-slate-800/60 p-5 rounded-2xl border border-slate-700 shadow-xl">
+            <!-- Top Bar -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-800/80 p-5 rounded-2xl border border-slate-700/60 shadow-lg">
                 <div>
-                    <h2 class="text-xl font-bold text-white">Manajemen Logo Partner & Klien</h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Atur logo brand yang tampil pada marquee slider halaman depan.</p>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <span>🏢</span> Manajemen Logo Partner & Klien
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Atur, tambah, dan ubah logo brand/instansi yang tampil di marquee landing page.</p>
                 </div>
-                <button type="button" onclick="openLogoModal()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-sm transition shadow-md flex items-center gap-1.5">
-                    + Tambah Logo Klien
+                <button type="button" onclick="openModalAddLogo()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-sm transition flex items-center gap-2 shadow-md">
+                    <span class="text-lg">+</span> Tambah Logo Partner
                 </button>
             </div>
 
-            <!-- Grid Preview -->
-            <div id="grid-logo-partner" class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between items-center text-center space-y-3 group hover:border-brand-accent/40 transition-all relative shadow-lg">
-                    <span class="absolute top-2.5 left-2.5 px-2 py-0.5 bg-slate-900 border border-slate-800 text-[10px] font-mono text-brand-accent font-bold rounded-md">#1</span>
-                    <div class="w-full h-20 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center p-3 mt-3">
-                        <span class="text-xs font-extrabold text-slate-300 tracking-wider">TELKOM GROUP</span>
-                    </div>
-                    <span class="text-xs font-extrabold text-slate-100 truncate w-full">TELKOM GROUP</span>
-                    <div class="flex items-center gap-2 w-full pt-1">
-                        <button onclick="openLogoModal({id:1, nama:'TELKOM GROUP'})" class="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg transition-colors">Edit</button>
-                        <button onclick="deleteLogoItem(1)" class="flex-1 py-1.5 bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs font-bold rounded-lg border border-rose-500/30 transition-colors">🗑️ Hapus</button>
-                    </div>
-                </div>
-
-                <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between items-center text-center space-y-3 group hover:border-brand-accent/40 transition-all relative shadow-lg">
-                    <span class="absolute top-2.5 left-2.5 px-2 py-0.5 bg-slate-900 border border-slate-800 text-[10px] font-mono text-brand-accent font-bold rounded-md">#2</span>
-                    <div class="w-full h-20 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center p-3 mt-3">
-                        <span class="text-xs font-extrabold text-slate-300 tracking-wider">PERTAMINA</span>
-                    </div>
-                    <span class="text-xs font-extrabold text-slate-100 truncate w-full">PERTAMINA</span>
-                    <div class="flex items-center gap-2 w-full pt-1">
-                        <button onclick="openLogoModal({id:2, nama:'PERTAMINA'})" class="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg transition-colors">Edit</button>
-                        <button onclick="deleteLogoItem(2)" class="flex-1 py-1.5 bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs font-bold rounded-lg border border-rose-500/30 transition-colors">🗑️ Hapus</button>
-                    </div>
-                </div>
-
-                <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between items-center text-center space-y-3 group hover:border-brand-accent/40 transition-all relative shadow-lg">
-                    <span class="absolute top-2.5 left-2.5 px-2 py-0.5 bg-slate-900 border border-slate-800 text-[10px] font-mono text-brand-accent font-bold rounded-md">#3</span>
-                    <div class="w-full h-20 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center p-3 mt-3">
-                        <span class="text-xs font-extrabold text-slate-300 tracking-wider">TOKOPEDIA</span>
-                    </div>
-                    <span class="text-xs font-extrabold text-slate-100 truncate w-full">TOKOPEDIA</span>
-                    <div class="flex items-center gap-2 w-full pt-1">
-                        <button onclick="openLogoModal({id:3, nama:'TOKOPEDIA'})" class="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg transition-colors">Edit</button>
-                        <button onclick="deleteLogoItem(3)" class="flex-1 py-1.5 bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs font-bold rounded-lg border border-rose-500/30 transition-colors">🗑️ Hapus</button>
-                    </div>
-                </div>
-
-                <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between items-center text-center space-y-3 group hover:border-brand-accent/40 transition-all relative shadow-lg">
-                    <span class="absolute top-2.5 left-2.5 px-2 py-0.5 bg-slate-900 border border-slate-800 text-[10px] font-mono text-brand-accent font-bold rounded-md">#4</span>
-                    <div class="w-full h-20 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center p-3 mt-3">
-                        <span class="text-xs font-extrabold text-slate-300 tracking-wider">SHOPEE</span>
-                    </div>
-                    <span class="text-xs font-extrabold text-slate-100 truncate w-full">SHOPEE</span>
-                    <div class="flex items-center gap-2 w-full pt-1">
-                        <button onclick="openLogoModal({id:4, nama:'SHOPEE'})" class="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg transition-colors">Edit</button>
-                        <button onclick="deleteLogoItem(4)" class="flex-1 py-1.5 bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs font-bold rounded-lg border border-rose-500/30 transition-colors">🗑️ Hapus</button>
-                    </div>
-                </div>
+            <!-- Grid Daftar Logo -->
+            <div id="grid-logo-partner" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                <!-- KARTU LOGO DIVERIKAN SECARA DINAMIS VIA JS -->
             </div>
             <div id="logo-list-grid" class="hidden"></div>
         </div>
@@ -755,7 +712,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
     </div>
 
     <!-- Modal Add/Edit Client Logo Form -->
-    <div id="modal-logo" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
+    <div id="modal-logo-partner" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl relative">
             <div class="flex items-center justify-between border-b border-slate-800 pb-4">
                 <h3 id="modal-logo-title" class="text-lg font-bold text-white">Tambah Logo Partner / Klien</h3>
@@ -1290,6 +1247,22 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
             }
+        }
+
+        function openModalAddLogo() {
+            openLogoModal();
+        }
+
+        function addLogo() {
+            openLogoModal();
+        }
+
+        function editLogo(id) {
+            editLogoItem(id);
+        }
+
+        function deleteLogo(id) {
+            deleteLogoItem(id);
         }
 
         function editLogoItem(id) {
