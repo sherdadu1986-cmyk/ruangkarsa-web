@@ -110,6 +110,10 @@
                         class="px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0">
                     <span>📦 Katalog Rental</span>
                 </button>
+                <button id="tab-btn-portofolio" onclick="switchModule('portofolio')" 
+                        class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white shrink-0">
+                    <span>🎬 Portofolio Karya</span>
+                </button>
                 <button id="tab-btn-konten" onclick="switchModule('konten')" 
                         class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white shrink-0">
                     <span>📝 Konten Landing Page</span>
@@ -300,7 +304,29 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             </div>
         </div>
 
-        <!-- ================= MODULE 2: KONTEN LANDING PAGE ================= -->
+        <!-- ================= MODULE 2: PORTOFOLIO KARYA ================= -->
+        <div id="module-portofolio-section" class="hidden space-y-6">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <span>🎬 Kelola Portofolio & Client Showcase</span>
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">Tambah, edit, dan atur video sinematik serta galeri karya yang tampil di website.</p>
+                    </div>
+                    <button onclick="openPortfolioModal()" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-brand-dark hover:bg-brand-limeBright shadow-lg shadow-brand-accent/20 transition-all flex items-center gap-2 shrink-0">
+                        <span>+ Tambah Karya Baru</span>
+                    </button>
+                </div>
+
+                <!-- Portfolio Grid Manager -->
+                <div id="admin-portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Dynamic Portfolio Manager Cards -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MODULE 3: KONTEN LANDING PAGE ================= -->
         <div id="module-konten-section" class="hidden space-y-6">
             <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
                 <div>
@@ -549,6 +575,79 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                     </button>
                     <button type="submit" id="btn-submit-form" class="px-6 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-slate-950 hover:bg-brand-limeBright transition-all shadow-md">
                         Simpan Item
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Add/Edit Portfolio Form -->
+    <div id="modal-portfolio-form" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl relative">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <h3 id="modal-portfolio-title" class="text-lg font-bold text-white">Tambah Karya Portofolio</h3>
+                <button type="button" onclick="closePortfolioModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">✕</button>
+            </div>
+
+            <form onsubmit="savePortfolioItem(event)" class="space-y-4">
+                <input type="hidden" id="form-port-id">
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Judul Karya <span class="text-rose-500">*</span></label>
+                    <input type="text" id="form-port-judul" required placeholder="Contoh: Sinematik Iklan Komersial" 
+                           class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Kategori Karya <span class="text-rose-500">*</span></label>
+                        <select id="form-port-kategori" required class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                            <option value="Video Sinematik">Video Sinematik</option>
+                            <option value="Drone Aerial">Drone Aerial</option>
+                            <option value="Live Streaming">Live Streaming</option>
+                            <option value="Foto Produk">Foto Produk</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Tipe Media <span class="text-rose-500">*</span></label>
+                        <select id="form-port-tipe" required class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                            <option value="video">Video (Playable Modal)</option>
+                            <option value="image">Foto (Lightbox HD)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Nama Brand / Klien <span class="text-rose-500">*</span></label>
+                    <input type="text" id="form-port-klien" required placeholder="Contoh: Telkom Indonesia" 
+                           class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">URL Cover / Thumbnail Image <span class="text-rose-500">*</span></label>
+                    <input type="url" id="form-port-gambar" required placeholder="https://images.unsplash.com/..." 
+                           class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">URL Video Embed (YouTube/Vimeo Embed Link)</label>
+                    <input type="url" id="form-port-embed" placeholder="https://www.youtube.com/embed/..." 
+                           class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Deskripsi Singkat Karya</label>
+                    <textarea id="form-port-deskripsi" rows="2" placeholder="Deskripsi ringkas mengenai proyek karya..." 
+                              class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent"></textarea>
+                </div>
+
+                <div class="pt-4 border-t border-slate-800 flex justify-end gap-3">
+                    <button type="button" onclick="closePortfolioModal()" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors">
+                        Batal
+                    </button>
+                    <button type="submit" id="btn-submit-port" class="px-6 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-slate-950 hover:bg-brand-limeBright transition-all shadow-md">
+                        Simpan Portofolio
                     </button>
                 </div>
             </form>
@@ -824,28 +923,161 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
         // Switch Module Tabs
         function switchModule(moduleName) {
             const secKatalog = document.getElementById('module-katalog-section');
+            const secPortofolio = document.getElementById('module-portofolio-section');
             const secKonten = document.getElementById('module-konten-section');
             const secPengaturan = document.getElementById('module-pengaturan-section');
 
             const btnKatalog = document.getElementById('tab-btn-katalog');
+            const btnPortofolio = document.getElementById('tab-btn-portofolio');
             const btnKonten = document.getElementById('tab-btn-konten');
             const btnPengaturan = document.getElementById('tab-btn-pengaturan');
 
-            [secKatalog, secKonten, secPengaturan].forEach(s => s.classList.add('hidden'));
-            [btnKatalog, btnKonten, btnPengaturan].forEach(b => {
-                b.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white shrink-0";
+            [secKatalog, secPortofolio, secKonten, secPengaturan].forEach(s => s?.classList.add('hidden'));
+            [btnKatalog, btnPortofolio, btnKonten, btnPengaturan].forEach(b => {
+                if (b) b.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white shrink-0";
             });
 
             if (moduleName === 'katalog') {
-                secKatalog.classList.remove('hidden');
-                btnKatalog.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
+                secKatalog?.classList.remove('hidden');
+                if (btnKatalog) btnKatalog.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
+            } else if (moduleName === 'portofolio') {
+                secPortofolio?.classList.remove('hidden');
+                if (btnPortofolio) btnPortofolio.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
+                renderAdminPortfolio();
             } else if (moduleName === 'konten') {
-                secKonten.classList.remove('hidden');
-                btnKonten.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
+                secKonten?.classList.remove('hidden');
+                if (btnKonten) btnKonten.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
             } else if (moduleName === 'pengaturan') {
-                secPengaturan.classList.remove('hidden');
-                btnPengaturan.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
+                secPengaturan?.classList.remove('hidden');
+                if (btnPengaturan) btnPengaturan.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
             }
+        }
+
+        // ================= PORTOFOLIO ADMIN MANAGER =================
+        const DEMO_PORTFOLIO = [
+            { id: 1, judul: "Sinematik Iklan Komersial Telkom Indonesia", kategori: "Video Sinematik", tipe: "video", klien: "Telkom Indonesia", embed_url: "https://www.youtube.com/embed/dQw4w9WgXcQ", gambar_url: "https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=800&q=80", deskripsi: "Video profil korporat sinematik dengan visualisasi transformasi digital." },
+            { id: 2, judul: "Pemetaan Aerial Proyek Jalan Tol Trans Jawa", kategori: "Drone Aerial", tipe: "video", klien: "Kementerian PUPR", embed_url: "https://www.youtube.com/embed/dQw4w9WgXcQ", gambar_url: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=800&q=80", deskripsi: "Perekaman drone FPV & aerial 4K HDR untuk dokumentasi konstruksi." },
+            { id: 3, judul: "Live Streaming Hybrid Launching Produk BUMN", kategori: "Live Streaming", tipe: "video", klien: "Pertamina Digital", embed_url: "https://www.youtube.com/embed/dQw4w9WgXcQ", gambar_url: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80", deskripsi: "Multi-camera live broadcast 1080p60 ke YouTube & Zoom simultan." },
+            { id: 4, judul: "Katalog Foto Produk Sinematik Watch Collection", kategori: "Foto Produk", tipe: "image", klien: "Luxe Timepiece", embed_url: "", gambar_url: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80", deskripsi: "Macro commercial product photography dengan lighting studio presisi." },
+            { id: 5, judul: "Short Movie Company Profile Pertamina Energy", kategori: "Video Sinematik", tipe: "video", klien: "Pertamina Energy", embed_url: "https://www.youtube.com/embed/dQw4w9WgXcQ", gambar_url: "https://images.unsplash.com/photo-1579632652768-6cb9dcf85912?auto=format&fit=crop&w=800&q=80", deskripsi: "Film pendek naratif menyentuh perjalanan energi negeri." },
+            { id: 6, judul: "Video Musikal Concert Live Cinematic", kategori: "Video Sinematik", tipe: "video", klien: "Soundscape Fest", embed_url: "https://www.youtube.com/embed/dQw4w9WgXcQ", gambar_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80", deskripsi: "Coverage konser musik skala besar dengan slow-mo 120fps & audio multi-track." }
+        ];
+
+        let portfolioData = [...DEMO_PORTFOLIO];
+
+        function renderAdminPortfolio() {
+            const grid = document.getElementById('admin-portfolio-grid');
+            if (!grid) return;
+
+            grid.innerHTML = portfolioData.map(item => {
+                return `
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between space-y-3 group hover:border-brand-accent/40 transition-all">
+                        <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-slate-900 border border-slate-800">
+                            <img src="${item.gambar_url}" alt="${escapeHtml(item.judul)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-2 left-2 px-2 py-0.5 text-[9px] font-extrabold uppercase text-brand-accent bg-slate-950/80 border border-slate-800 rounded-md">
+                                ${escapeHtml(item.kategori)}
+                            </span>
+                            <span class="absolute top-2 right-2 px-2 py-0.5 text-[9px] font-bold uppercase ${item.tipe === 'video' ? 'bg-amber-500 text-slate-950' : 'bg-blue-500 text-white'} rounded-md">
+                                ${item.tipe === 'video' ? '🎥 Video' : '📸 Foto'}
+                            </span>
+                        </div>
+
+                        <div class="space-y-1">
+                            <span class="text-[10px] font-bold text-brand-accent uppercase">${escapeHtml(item.klien)}</span>
+                            <h4 class="font-bold text-xs sm:text-sm text-slate-100 line-clamp-1">${escapeHtml(item.judul)}</h4>
+                            <p class="text-[11px] text-slate-400 line-clamp-2">${escapeHtml(item.deskripsi || '-')}</p>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-800 flex items-center justify-end gap-2">
+                            <button onclick="editPortfolioItem(${item.id})" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg transition-colors">
+                                ✏️ Edit
+                            </button>
+                            <button onclick="deletePortfolioItem(${item.id})" class="px-3 py-1.5 bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs font-bold rounded-lg transition-colors border border-rose-500/30">
+                                🗑️ Hapus
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openPortfolioModal(item = null) {
+            const modal = document.getElementById('modal-portfolio-form');
+            const title = document.getElementById('modal-portfolio-title');
+            if (!modal) return;
+            
+            if (item) {
+                title.innerText = 'Edit Karya Portofolio';
+                document.getElementById('form-port-id').value = item.id;
+                document.getElementById('form-port-judul').value = item.judul;
+                document.getElementById('form-port-kategori').value = item.kategori;
+                document.getElementById('form-port-tipe').value = item.tipe;
+                document.getElementById('form-port-klien').value = item.klien;
+                document.getElementById('form-port-gambar').value = item.gambar_url;
+                document.getElementById('form-port-embed').value = item.embed_url || '';
+                document.getElementById('form-port-deskripsi').value = item.deskripsi || '';
+            } else {
+                title.innerText = 'Tambah Karya Portofolio Baru';
+                document.getElementById('form-port-id').value = '';
+                document.getElementById('form-port-judul').value = '';
+                document.getElementById('form-port-kategori').value = 'Video Sinematik';
+                document.getElementById('form-port-tipe').value = 'video';
+                document.getElementById('form-port-klien').value = '';
+                document.getElementById('form-port-gambar').value = '';
+                document.getElementById('form-port-embed').value = '';
+                document.getElementById('form-port-deskripsi').value = '';
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closePortfolioModal() {
+            const modal = document.getElementById('modal-portfolio-form');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function editPortfolioItem(id) {
+            const item = portfolioData.find(p => p.id == id);
+            if (item) openPortfolioModal(item);
+        }
+
+        function deletePortfolioItem(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus karya portofolio ini?')) {
+                portfolioData = portfolioData.filter(p => p.id != id);
+                renderAdminPortfolio();
+                showToast('Karya portofolio berhasil dihapus', 'info');
+            }
+        }
+
+        function savePortfolioItem(e) {
+            if (e) e.preventDefault();
+            const id = document.getElementById('form-port-id').value;
+            const judul = document.getElementById('form-port-judul').value.trim();
+            const kategori = document.getElementById('form-port-kategori').value;
+            const tipe = document.getElementById('form-port-tipe').value;
+            const klien = document.getElementById('form-port-klien').value.trim();
+            const gambar_url = document.getElementById('form-port-gambar').value.trim();
+            const embed_url = document.getElementById('form-port-embed').value.trim();
+            const deskripsi = document.getElementById('form-port-deskripsi').value.trim();
+
+            if (id) {
+                const index = portfolioData.findIndex(p => p.id == id);
+                if (index !== -1) {
+                    portfolioData[index] = { id: Number(id), judul, kategori, tipe, klien, gambar_url, embed_url, deskripsi };
+                }
+                showToast('Karya portofolio berhasil diperbarui!', 'success');
+            } else {
+                const newId = Date.now();
+                portfolioData.unshift({ id: newId, judul, kategori, tipe, klien, gambar_url, embed_url, deskripsi });
+                showToast('Karya portofolio baru berhasil ditambahkan!', 'success');
+            }
+
+            renderAdminPortfolio();
+            closePortfolioModal();
         }
 
         // Set View Mode (Grid vs Table)
