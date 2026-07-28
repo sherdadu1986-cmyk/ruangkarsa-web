@@ -133,145 +133,70 @@
             </p>
         </section>
 
-        <!-- Showcase Section (Marketplace Compact 4-5 Column Grid) -->
-        <section class="py-12 px-4 sm:px-6 relative bg-slate-950 text-slate-100 border-t border-b border-slate-800/80">
+        <!-- Showcase Section (Marketplace Tokopedia/Shopee UX Grid) -->
+        <section id="katalog-rental" class="py-10 px-4 sm:px-6 relative bg-slate-950 text-slate-100 border-t border-b border-slate-800/80">
             <div class="max-w-7xl mx-auto space-y-6">
-                <div class="flex items-center justify-between">
+                
+                <!-- Catalog Header & Search -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h2 class="text-xl sm:text-2xl font-bold text-white font-sans">Katalog Alat Ready</h2>
-                        <p class="text-xs text-slate-400 mt-0.5">Pilih unit produksi sinema & media Ruang Karsa</p>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-white font-sans flex items-center gap-2">
+                            <span>🛒 Etalase Sewa Alat Production</span>
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">Pilih perlengkapan sinematografi & media Ruang Karsa (Real-time Filter)</p>
                     </div>
-                    <span class="px-3 py-1 bg-brand-accent/10 border border-brand-accent/30 text-brand-accent text-xs font-bold rounded-full">
-                        6 Unit Display
-                    </span>
+                    
+                    <div class="flex items-center gap-3">
+                        <div class="relative w-full sm:w-64">
+                            <input type="text" id="catalog-search" oninput="filterCatalog()" placeholder="Cari kamera, lensa, mic..." 
+                                   class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-100 focus:outline-none focus:border-brand-accent">
+                            <span class="absolute left-3 top-2.5 text-slate-500 text-xs">🔍</span>
+                        </div>
+                        <span id="catalog-count-badge" class="px-3 py-2 bg-brand-accent/15 border border-brand-accent/30 text-brand-accent text-xs font-bold rounded-xl shrink-0">
+                            35 Unit Display
+                        </span>
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-4">
-                    
-                    <!-- Item 1: Sony FX3 / A7S III -->
-                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 sm:p-3.5 hover:border-brand-accent/50 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-lg group">
-                        <div class="relative w-full aspect-square rounded-xl overflow-hidden mb-3 bg-slate-950 border border-slate-800">
-                            <img src="https://images.unsplash.com/photo-1619597455322-4fbbd820250a?auto=format&fit=crop&w=400&q=80" alt="Sony FX3 Camera" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                            <span class="absolute top-2 left-2 px-2 py-0.5 text-[10px] font-bold uppercase text-brand-accent bg-slate-950/80 border border-slate-800 rounded-md">Kamera</span>
-                            <span class="absolute top-2 right-2 px-2 py-0.5 bg-emerald-500/90 text-slate-950 text-[10px] font-extrabold rounded-md shadow">🟢 Ready</span>
-                        </div>
-                        <div class="space-y-1.5 flex-1 flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-bold text-xs sm:text-sm text-slate-100 group-hover:text-brand-accent transition-colors line-clamp-2 leading-snug min-h-[2.4rem]">Sony FX3 / A7S III</h3>
-                            </div>
-                            <div class="pt-2 border-t border-slate-800">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[10px] text-slate-400 font-medium">Stok: <strong class="text-emerald-400">2 Unit</strong></span>
-                                    <span class="text-[10px] text-slate-400 font-semibold uppercase">Sewa/Hari</span>
-                                </div>
-                                <div class="text-sm sm:text-base font-extrabold text-brand-accent mt-0.5">Rp 800.000</div>
-                                <a href="https://wa.me/6281331266786?text=Halo%20Karsa%20Multimedia%2C%20saya%20tertarik%20untuk%20menyewa%20Sony%20FX3%20%2F%20A7S%20III." target="_blank" rel="noopener noreferrer" 
-                                   class="mt-2.5 w-full py-1.5 px-3 text-[11px] font-bold rounded-xl bg-brand-accent text-slate-950 hover:bg-brand-limeBright transition-all shadow flex items-center justify-center gap-1">
-                                    <span>Sewa via WA</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Interactive Category Filter Tabs (Horizontal Scroll Bar) -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-800/80 no-scrollbar">
+                    <button onclick="setCategoryFilter('ALL')" id="tab-cat-ALL" 
+                            class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 bg-brand-accent text-slate-950 shadow">
+                        Semua Unit
+                    </button>
+                    <button onclick="setCategoryFilter('POPULER')" id="tab-cat-POPULER" 
+                            class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 bg-slate-900 border border-slate-800 text-amber-300 hover:border-amber-400/50">
+                        🔥 Paling Populer
+                    </button>
+                    <button onclick="setCategoryFilter('Kamera')" id="tab-cat-Kamera" 
+                            class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">
+                        📷 Kamera
+                    </button>
+                    <button onclick="setCategoryFilter('Lensa')" id="tab-cat-Lensa" 
+                            class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">
+                        🔍 Lensa
+                    </button>
+                    <button onclick="setCategoryFilter('Drone')" id="tab-cat-Drone" 
+                            class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">
+                        🚁 Drone & Gimbal
+                    </button>
+                    <button onclick="setCategoryFilter('Audio')" id="tab-cat-Audio" 
+                            class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">
+                        🎙️ Audio
+                    </button>
+                    <button onclick="setCategoryFilter('Lighting')" id="tab-cat-Lighting" 
+                            class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">
+                        💡 Lighting
+                    </button>
+                    <button onclick="setCategoryFilter('Aksesoris')" id="tab-cat-Aksesoris" 
+                            class="px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 bg-slate-900 border border-slate-800 text-slate-300 hover:text-white">
+                        🎬 Aksesoris
+                    </button>
+                </div>
 
-                    <!-- Item 2: Sony GM Lenses -->
-                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 sm:p-3.5 hover:border-brand-accent/50 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-lg group">
-                        <div class="relative w-full aspect-square rounded-xl overflow-hidden mb-3 bg-slate-950 border border-slate-800">
-                            <img src="https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=400&q=80" alt="Sony G Master Lens" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                            <span class="absolute top-2 left-2 px-2 py-0.5 text-[10px] font-bold uppercase text-brand-accent bg-slate-950/80 border border-slate-800 rounded-md">Lensa</span>
-                            <span class="absolute top-2 right-2 px-2 py-0.5 bg-emerald-500/90 text-slate-950 text-[10px] font-extrabold rounded-md shadow">🟢 Ready</span>
-                        </div>
-                        <div class="space-y-1.5 flex-1 flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-bold text-xs sm:text-sm text-slate-100 group-hover:text-brand-accent transition-colors line-clamp-2 leading-snug min-h-[2.4rem]">Sony G Master Lens Series</h3>
-                            </div>
-                            <div class="pt-2 border-t border-slate-800">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[10px] text-slate-400 font-medium">Stok: <strong class="text-emerald-400">3 Unit</strong></span>
-                                    <span class="text-[10px] text-slate-400 font-semibold uppercase">Sewa/Hari</span>
-                                </div>
-                                <div class="text-sm sm:text-base font-extrabold text-brand-accent mt-0.5">Rp 350.000</div>
-                                <a href="https://wa.me/6281331266786?text=Halo%20Karsa%20Multimedia%2C%20saya%20tertarik%20untuk%20menyewa%20Lensa%20Sony%20G%20Master." target="_blank" rel="noopener noreferrer" 
-                                   class="mt-2.5 w-full py-1.5 px-3 text-[11px] font-bold rounded-xl bg-brand-accent text-slate-950 hover:bg-brand-limeBright transition-all shadow flex items-center justify-center gap-1">
-                                    <span>Sewa via WA</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 3: DJI Mavic 3 Pro (Disewa) -->
-                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 sm:p-3.5 hover:border-slate-700 flex flex-col justify-between overflow-hidden shadow-lg group opacity-85">
-                        <div class="relative w-full aspect-square rounded-xl overflow-hidden mb-3 bg-slate-950 border border-slate-800">
-                            <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=400&q=80" alt="DJI Mavic 3 Pro Drone" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                            <span class="absolute top-2 left-2 px-2 py-0.5 text-[10px] font-bold uppercase text-brand-accent bg-slate-950/80 border border-slate-800 rounded-md">Drone</span>
-                            <span class="absolute top-2 right-2 px-2 py-0.5 bg-rose-500/90 text-white text-[10px] font-extrabold rounded-md shadow">🔴 Booked</span>
-                        </div>
-                        <div class="space-y-1.5 flex-1 flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-bold text-xs sm:text-sm text-slate-100 line-clamp-2 leading-snug min-h-[2.4rem]">DJI Mavic 3 / Inspire</h3>
-                            </div>
-                            <div class="pt-2 border-t border-slate-800">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[10px] text-slate-400 font-medium">Stok: <strong class="text-rose-400">Kosong</strong></span>
-                                    <span class="text-[10px] text-slate-400 font-semibold uppercase">Sewa/Hari</span>
-                                </div>
-                                <div class="text-sm sm:text-base font-extrabold text-brand-accent mt-0.5">Rp 1.200.000</div>
-                                <button disabled class="mt-2.5 w-full py-1.5 px-3 text-[11px] font-bold rounded-xl bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed flex items-center justify-center opacity-80">
-                                    <span>🚫 Booked</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 4: Lighting & Audio -->
-                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 sm:p-3.5 hover:border-brand-accent/50 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-lg group">
-                        <div class="relative w-full aspect-square rounded-xl overflow-hidden mb-3 bg-slate-950 border border-slate-800">
-                            <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=400&q=80" alt="Lighting & Audio" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                            <span class="absolute top-2 left-2 px-2 py-0.5 text-[10px] font-bold uppercase text-brand-accent bg-slate-950/80 border border-slate-800 rounded-md">Audio & Light</span>
-                            <span class="absolute top-2 right-2 px-2 py-0.5 bg-emerald-500/90 text-slate-950 text-[10px] font-extrabold rounded-md shadow">🟢 Ready</span>
-                        </div>
-                        <div class="space-y-1.5 flex-1 flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-bold text-xs sm:text-sm text-slate-100 group-hover:text-brand-accent transition-colors line-clamp-2 leading-snug min-h-[2.4rem]">Aputure COB & Audio Kit</h3>
-                            </div>
-                            <div class="pt-2 border-t border-slate-800">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[10px] text-slate-400 font-medium">Stok: <strong class="text-emerald-400">4 Unit</strong></span>
-                                    <span class="text-[10px] text-slate-400 font-semibold uppercase">Sewa/Hari</span>
-                                </div>
-                                <div class="text-sm sm:text-base font-extrabold text-brand-accent mt-0.5">Rp 250.000</div>
-                                <a href="https://wa.me/6281331266786?text=Halo%20Karsa%20Multimedia%2C%20saya%20tertarik%20untuk%20menyewa%20Lighting%20%26%20Audio." target="_blank" rel="noopener noreferrer" 
-                                   class="mt-2.5 w-full py-1.5 px-3 text-[11px] font-bold rounded-xl bg-brand-accent text-slate-950 hover:bg-brand-limeBright transition-all shadow flex items-center justify-center gap-1">
-                                    <span>Sewa via WA</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 5: Sennheiser MKH 416 -->
-                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 sm:p-3.5 hover:border-brand-accent/50 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-lg group">
-                        <div class="relative w-full aspect-square rounded-xl overflow-hidden mb-3 bg-slate-950 border border-slate-800">
-                            <img src="https://images.unsplash.com/photo-1590402494587-44b71d7772f6?auto=format&fit=crop&w=400&q=80" alt="Shotgun Mic" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                            <span class="absolute top-2 left-2 px-2 py-0.5 text-[10px] font-bold uppercase text-brand-accent bg-slate-950/80 border border-slate-800 rounded-md">Audio & Light</span>
-                            <span class="absolute top-2 right-2 px-2 py-0.5 bg-emerald-500/90 text-slate-950 text-[10px] font-extrabold rounded-md shadow">🟢 Ready</span>
-                        </div>
-                        <div class="space-y-1.5 flex-1 flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-bold text-xs sm:text-sm text-slate-100 group-hover:text-brand-accent transition-colors line-clamp-2 leading-snug min-h-[2.4rem]">Sennheiser MKH 416 Mic</h3>
-                            </div>
-                            <div class="pt-2 border-t border-slate-800">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[10px] text-slate-400 font-medium">Stok: <strong class="text-emerald-400">4 Unit</strong></span>
-                                    <span class="text-[10px] text-slate-400 font-semibold uppercase">Sewa/Hari</span>
-                                </div>
-                                <div class="text-sm sm:text-base font-extrabold text-brand-accent mt-0.5">Rp 250.000</div>
-                                <a href="https://wa.me/6281331266786?text=Halo%20Karsa%20Multimedia%2C%20saya%20tertarik%20untuk%20menyewa%20Sennheiser%20Mic." target="_blank" rel="noopener noreferrer" 
-                                   class="mt-2.5 w-full py-1.5 px-3 text-[11px] font-bold rounded-xl bg-brand-accent text-slate-950 hover:bg-brand-limeBright transition-all shadow flex items-center justify-center gap-1">
-                                    <span>Sewa via WA</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
+                <!-- Shopee Marketplace 4-5 Column Compact Card Grid -->
+                <div id="rental-catalog-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-4">
+                    <!-- Cards dynamically rendered by JavaScript -->
                 </div>
             </div>
         </section>
@@ -490,8 +415,173 @@
                         Login ke Admin Panel
                     </button>
                 </div>
-            </form>
-        </div>
-    </div>
+    <!-- Dynamic Marketplace Catalog Engine & Dataset -->
+    <script>
+        const DEMO_ITEMS = [
+            // KAMERA
+            { id: 1, nama: "Sony FX3 Cinema Camera Line", kategori: "Kamera", harga_sewa: 850000, stok: 2, status: "Tersedia", populer: true, deskripsi: "Kamera Cinema Full Frame 4K 120fps dengan S-Cinetone.", gambar_url: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=600&q=80" },
+            { id: 2, nama: "Sony Alpha A7S III Full Frame", kategori: "Kamera", harga_sewa: 750000, stok: 3, status: "Tersedia", populer: true, deskripsi: "Spesialis Low-Light 4K 120fps 10-bit 4:2:2 All-Intra.", gambar_url: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=600&q=80" },
+            { id: 3, nama: "Sony Alpha A7 IV Hybrid Camera", kategori: "Kamera", harga_sewa: 500000, stok: 4, status: "Tersedia", populer: false, deskripsi: "Hybrid 33MP 4K 60fps dengan real-time eye AF.", gambar_url: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=600&q=80" },
+            { id: 4, nama: "Canon EOS R5 8K Mirrorless", kategori: "Kamera", harga_sewa: 800000, stok: 2, status: "Tersedia", populer: false, deskripsi: "Sensor 45MP, Perekaman 8K RAW internal & 4K 120fps.", gambar_url: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=600&q=80" },
+            { id: 5, nama: "Blackmagic Pocket Cinema 6K Pro", kategori: "Kamera", harga_sewa: 600000, stok: 1, status: "Disewa", populer: false, deskripsi: "Super 35 6K HDR dengan internal ND filter 2, 4 & 6 stop.", gambar_url: "https://images.unsplash.com/photo-1589578527966-fdac0f44566c?auto=format&fit=crop&w=600&q=80" },
+            { id: 6, nama: "Panasonic Lumix GH6 Cinema", kategori: "Kamera", harga_sewa: 450000, stok: 2, status: "Tersedia", populer: false, deskripsi: "Micro 4/3 25.2MP, ProRes 422 HQ internal, active cooling.", gambar_url: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=600&q=80" },
+            { id: 7, nama: "RED Komodo 6K Cinema Camera", kategori: "Kamera", harga_sewa: 1750000, stok: 1, status: "Tersedia", populer: true, deskripsi: "Global Shutter Super 35 6K, REDCODE RAW ultra-sinematik.", gambar_url: "https://images.unsplash.com/photo-1589578527966-fdac0f44566c?auto=format&fit=crop&w=600&q=80" },
+
+            // LENSA
+            { id: 8, nama: "Sony FE 24-70mm f/2.8 GM II", kategori: "Lensa", harga_sewa: 350000, stok: 3, status: "Tersedia", populer: true, deskripsi: "Lensa Zoom Flagship G Master tajam dan ultra-ringan.", gambar_url: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=600&q=80" },
+            { id: 9, nama: "Sony FE 70-200mm f/2.8 GM II", kategori: "Lensa", harga_sewa: 400000, stok: 2, status: "Tersedia", populer: true, deskripsi: "Telephoto zoom ringan dengan motor AF Quad XD tajam.", gambar_url: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=600&q=80" },
+            { id: 10, nama: "Sigma 35mm f/1.4 DG DN Art", kategori: "Lensa", harga_sewa: 200000, stok: 4, status: "Tersedia", populer: false, deskripsi: "Lensa prime sinematik dengan bokeh lembut dan ketajaman tinggi.", gambar_url: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=600&q=80" },
+            { id: 11, nama: "Canon RF 50mm f/1.2L USM", kategori: "Lensa", harga_sewa: 350000, stok: 2, status: "Tersedia", populer: false, deskripsi: "Lensa prime aperture f/1.2 ultrafast seri L Canon RF.", gambar_url: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=600&q=80" },
+            { id: 12, nama: "Sony FE 16-35mm f/2.8 GM Wide", kategori: "Lensa", harga_sewa: 350000, stok: 2, status: "Disewa", populer: false, deskripsi: "Ultra-wide zoom sinematik untuk landscape & vlogging.", gambar_url: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=600&q=80" },
+            { id: 13, nama: "Laowa 24mm f/14 2X Macro Probe", kategori: "Lensa", harga_sewa: 500000, stok: 1, status: "Tersedia", populer: false, deskripsi: "Lensa probe unik untuk perekaman makro komersial & produk.", gambar_url: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=600&q=80" },
+            { id: 14, nama: "Zeiss CP.3 Cinema Lens 5-Kit", kategori: "Lensa", harga_sewa: 1500000, stok: 1, status: "Tersedia", populer: true, deskripsi: "Set lensa sinema profesional Zeiss (15, 25, 35, 50, 85mm).", gambar_url: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=600&q=80" },
+
+            // AUDIO
+            { id: 15, nama: "Rode Wireless GO II Dual Kit", kategori: "Audio", harga_sewa: 175000, stok: 5, status: "Tersedia", populer: true, deskripsi: "Mikrofon nirkabel dual transmitter dengan onboard recording.", gambar_url: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" },
+            { id: 16, nama: "DJI Mic 2 Wireless System (2 TX)", kategori: "Audio", harga_sewa: 200000, stok: 4, status: "Tersedia", populer: true, deskripsi: "Transmisi 250m, 32-bit float recording & AI noise cancelling.", gambar_url: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" },
+            { id: 17, nama: "Sennheiser MKH 416 Shotgun Mic", kategori: "Audio", harga_sewa: 250000, stok: 4, status: "Tersedia", populer: true, deskripsi: "Microphone Shotgun Standar Industri Film & Broadcast.", gambar_url: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" },
+            { id: 18, nama: "Zoom H6 All-Black Handy Recorder", kategori: "Audio", harga_sewa: 150000, stok: 3, status: "Tersedia", populer: false, deskripsi: "Audio recorder 6-track simultan dengan capsule interchangeable.", gambar_url: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" },
+            { id: 19, nama: "Rode VideoMic NTG Shotgun", kategori: "Audio", harga_sewa: 125000, stok: 4, status: "Tersedia", populer: false, deskripsi: "On-camera shotgun mic broadcast grade dengan USB-C.", gambar_url: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" },
+            { id: 20, nama: "Tentacle Sync E mkII Timecode", kategori: "Audio", harga_sewa: 150000, stok: 2, status: "Tersedia", populer: false, deskripsi: "Generator timecode Bluetooth ultra-presisi untuk sync audio-video.", gambar_url: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" },
+
+            // LIGHTING
+            { id: 21, nama: "Aputure LS 600d Pro Daylight", kategori: "Lighting", harga_sewa: 600000, stok: 2, status: "Tersedia", populer: true, deskripsi: "COB LED Super Terang 600W Weather-Resistant dengan Bowens Mount.", gambar_url: "https://images.unsplash.com/photo-1590402494587-44b71d7772f6?auto=format&fit=crop&w=600&q=80" },
+            { id: 22, nama: "Aputure Amaran 200x Bi-Color LED", kategori: "Lighting", harga_sewa: 250000, stok: 4, status: "Tersedia", populer: true, deskripsi: "Point-source LED 200W variabel 2700K-6500K Sidus Link Control.", gambar_url: "https://images.unsplash.com/photo-1590402494587-44b71d7772f6?auto=format&fit=crop&w=600&q=80" },
+            { id: 23, nama: "Nanlite PavoTube II 30C 2-Kit", kategori: "Lighting", harga_sewa: 350000, stok: 2, status: "Tersedia", populer: true, deskripsi: "Lampu Tube RGBWW 4 kaki dengan efek sinematik & baterai internal.", gambar_url: "https://images.unsplash.com/photo-1590402494587-44b71d7772f6?auto=format&fit=crop&w=600&q=80" },
+            { id: 24, nama: "Godox SL-60W Video Light LED", kategori: "Lighting", harga_sewa: 100000, stok: 5, status: "Tersedia", populer: false, deskripsi: "Lampu LED studio 60W hemat energi untuk podcast & vlogging.", gambar_url: "https://images.unsplash.com/photo-1590402494587-44b71d7772f6?auto=format&fit=crop&w=600&q=80" },
+            { id: 25, nama: "Aputure Light Dome II Softbox", kategori: "Lighting", harga_sewa: 100000, stok: 4, status: "Tersedia", populer: false, deskripsi: "Softbox heksagonal 35-inci dengan quick-release setup.", gambar_url: "https://images.unsplash.com/photo-1590402494587-44b71d7772f6?auto=format&fit=crop&w=600&q=80" },
+            { id: 26, nama: "Falcon Eyes RX-18TD Roll-Flex", kategori: "Lighting", harga_sewa: 200000, stok: 2, status: "Disewa", populer: false, deskripsi: "Matras LED fleksibel Bi-Color 100W waterproof.", gambar_url: "https://images.unsplash.com/photo-1590402494587-44b71d7772f6?auto=format&fit=crop&w=600&q=80" },
+
+            // DRONE & GIMBAL
+            { id: 27, nama: "DJI Mavic 3 Pro Cine Drone Combo", kategori: "Drone", harga_sewa: 1250000, stok: 2, status: "Tersedia", populer: true, deskripsi: "Drone Aerial 3-Kamera Hasselblad Apple ProRes 5.1K.", gambar_url: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=600&q=80" },
+            { id: 28, nama: "DJI Mini 4 Pro Fly More Combo", kategori: "Drone", harga_sewa: 450000, stok: 3, status: "Tersedia", populer: true, deskripsi: "Drone sub-249g 4K 60fps HDR, sensor omnidirectional obstacle.", gambar_url: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=600&q=80" },
+            { id: 29, nama: "DJI RS 3 Pro Gimbal Stabilizer", kategori: "Drone", harga_sewa: 300000, stok: 3, status: "Tersedia", populer: true, deskripsi: "Gimbal 3-Axis Serat Karbon Lidar Autofocus 4.5kg Payload.", gambar_url: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=600&q=80" },
+            { id: 30, nama: "DJI Inspire 2 RAW 5.2K Cinema", kategori: "Drone", harga_sewa: 2500000, stok: 1, status: "Disewa", populer: false, deskripsi: "Drone flagship sinema dengan kamera Zenmuse X7 RAW 5.2K.", gambar_url: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=600&q=80" },
+            { id: 31, nama: "Easyrig Vario 5 with Serene Arm", kategori: "Aksesoris", harga_sewa: 550000, stok: 2, status: "Tersedia", populer: false, deskripsi: "Support vest mekanis pendukung beban kamera sinema berat.", gambar_url: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=600&q=80" },
+
+            // AKSESORIS
+            { id: 32, nama: "Atomos Ninja V+ 8K HDR Monitor", kategori: "Aksesoris", harga_sewa: 250000, stok: 3, status: "Tersedia", populer: true, deskripsi: "Monitor recorder 5-inci 1000nit Perekaman ProRes RAW 8K.", gambar_url: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=600&q=80" },
+            { id: 33, nama: "Hollyland Mars 400S Pro Wireless", kategori: "Aksesoris", harga_sewa: 200000, stok: 3, status: "Tersedia", populer: true, deskripsi: "Transmisi video nirkabel SDI/HDMI latensi ultra-rendah 0.08s.", gambar_url: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=600&q=80" },
+            { id: 34, nama: "V-Mount Battery 190Wh (4x Kit)", kategori: "Aksesoris", harga_sewa: 250000, stok: 4, status: "Tersedia", populer: false, deskripsi: "Paket 4 baterai V-Mount D-Tap + Dual Quad Fast Charger.", gambar_url: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=600&q=80" },
+            { id: 35, nama: "Sachtler Flowtech 75 Tripod", kategori: "Aksesoris", harga_sewa: 300000, stok: 2, status: "Dalam Perawatan", populer: false, deskripsi: "Tripod serat karbon setup paling cepat dengan fluid head FSB 8.", gambar_url: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=600&q=80" }
+        ];
+
+        let currentActiveCategory = 'ALL';
+        let publicCatalogItems = [...DEMO_ITEMS];
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function setCategoryFilter(category) {
+            currentActiveCategory = category;
+            
+            // Update Tab Button Styles
+            const allTabs = ['ALL', 'POPULER', 'Kamera', 'Lensa', 'Drone', 'Audio', 'Lighting', 'Aksesoris'];
+            allTabs.forEach(t => {
+                const btn = document.getElementById(`tab-cat-${t}`);
+                if (btn) {
+                    if (t === category) {
+                        btn.className = "px-4 py-2 rounded-xl text-xs font-extrabold transition-all shrink-0 bg-brand-accent text-slate-950 shadow";
+                    } else if (t === 'POPULER') {
+                        btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 bg-slate-900 border border-slate-800 text-amber-300 hover:border-amber-400/50";
+                    } else {
+                        btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 bg-slate-900 border border-slate-800 text-slate-300 hover:text-white";
+                    }
+                }
+            });
+
+            filterCatalog();
+        }
+
+        function filterCatalog() {
+            const searchVal = (document.getElementById('catalog-search')?.value || '').toLowerCase().trim();
+            const grid = document.getElementById('rental-catalog-grid');
+            const badge = document.getElementById('catalog-count-badge');
+            if (!grid) return;
+
+            const filtered = publicCatalogItems.filter(item => {
+                const matchSearch = item.nama.toLowerCase().includes(searchVal) || (item.kategori && item.kategori.toLowerCase().includes(searchVal));
+                
+                let matchCat = true;
+                if (currentActiveCategory === 'POPULER') {
+                    matchCat = !!item.populer;
+                } else if (currentActiveCategory !== 'ALL') {
+                    matchCat = item.kategori === currentActiveCategory;
+                }
+
+                return matchSearch && matchCat;
+            });
+
+            if (badge) badge.innerText = `${filtered.length} Unit Display`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-16 text-center text-slate-500 font-semibold">Tidak ada produk rental yang cocok dengan filter.</div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => {
+                const priceFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(item.harga_sewa || 0);
+
+                let statusBadge = item.status === 'Tersedia' ? 
+                    `<span class="px-2 py-0.5 bg-emerald-500/90 text-slate-950 text-[10px] font-extrabold rounded-md shadow">🟢 Ready</span>` : 
+                    (item.status === 'Disewa' ? `<span class="px-2 py-0.5 bg-rose-500/90 text-white text-[10px] font-extrabold rounded-md shadow">🔴 Booked</span>` :
+                    `<span class="px-2 py-0.5 bg-amber-500/90 text-slate-950 text-[10px] font-extrabold rounded-md shadow">🟡 Maintenance</span>`);
+
+                let popularBadge = item.populer ? `<span class="absolute bottom-2 left-2 px-2 py-0.5 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 text-[9px] font-extrabold rounded-md shadow flex items-center gap-1">🔥 Best Seller</span>` : '';
+
+                let isAvailable = item.status === 'Tersedia' && (item.stok ?? 1) > 0;
+                let waMessage = encodeURIComponent(`Halo Karsa Multimedia, saya tertarik untuk menyewa unit ${item.nama}.`);
+
+                let buttonHtml = isAvailable ? `
+                    <a href="https://wa.me/6281331266786?text=${waMessage}" target="_blank" rel="noopener noreferrer" 
+                       class="mt-2.5 w-full py-1.5 px-3 text-[11px] font-bold rounded-xl bg-brand-accent text-slate-950 hover:bg-brand-limeBright transition-all shadow flex items-center justify-center gap-1">
+                        <span>Sewa via WA</span>
+                    </a>
+                ` : `
+                    <button disabled class="mt-2.5 w-full py-1.5 px-3 text-[11px] font-bold rounded-xl bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed flex items-center justify-center opacity-80" title="Unit sedang tidak tersedia">
+                        <span>🚫 Booked</span>
+                    </button>
+                `;
+
+                return `
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 sm:p-3.5 hover:border-brand-accent/50 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-lg group">
+                        <!-- Image Container (Aspect Square 1:1) -->
+                        <div class="relative w-full aspect-square rounded-xl overflow-hidden mb-3 bg-slate-950 border border-slate-800">
+                            ${item.gambar_url ? `<img src="${item.gambar_url}" alt="${escapeHtml(item.nama)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">` : `<div class="w-full h-full flex flex-col items-center justify-center text-slate-500 font-bold text-xs">📷</div>`}
+                            <span class="absolute top-2 left-2 px-2 py-0.5 text-[10px] font-bold uppercase text-brand-accent bg-slate-950/80 border border-slate-800 rounded-md">
+                                ${escapeHtml(item.kategori || 'Kamera')}
+                            </span>
+                            <span class="absolute top-2 right-2">
+                                ${statusBadge}
+                            </span>
+                            ${popularBadge}
+                        </div>
+
+                        <!-- Content Body -->
+                        <div class="space-y-1.5 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-xs sm:text-sm text-slate-100 group-hover:text-brand-accent transition-colors line-clamp-2 leading-snug min-h-[2.4rem]" title="${escapeHtml(item.nama)}">${escapeHtml(item.nama)}</h3>
+                            </div>
+                            <div class="pt-2 border-t border-slate-800">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] text-slate-400 font-medium">Stok: <strong class="${isAvailable ? 'text-emerald-400' : 'text-rose-400'}">${isAvailable ? (item.stok + ' Unit') : 'Kosong'}</strong></span>
+                                    <span class="text-[10px] text-slate-400 font-semibold uppercase">Sewa/Hari</span>
+                                </div>
+                                <div class="text-sm sm:text-base font-extrabold text-brand-accent mt-0.5">${priceFormatted}</div>
+                                ${buttonHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Initialize Catalog on DOM load
+        document.addEventListener('DOMContentLoaded', () => {
+            filterCatalog();
+        });
+    </script>
 </body>
 </html>
