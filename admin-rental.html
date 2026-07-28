@@ -148,7 +148,7 @@
         </div>
 
         <!-- ================= MODULE 1: KATALOG RENTAL ================= -->
-        <div id="module-katalog-section" class="space-y-8">
+        <div id="module-katalog-section" class="tab-content space-y-8">
             <!-- Top Banner & SQL Schema Info -->
             <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4 relative overflow-hidden">
                 <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
@@ -309,7 +309,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
         </div>
 
         <!-- ================= MODULE 2: PORTOFOLIO KARYA ================= -->
-        <div id="module-portofolio-section" class="hidden space-y-6">
+        <div id="module-portofolio-section" class="tab-content hidden space-y-6">
             <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
@@ -329,23 +329,22 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 </div>
             </div>
         <!-- ================= MODULE 3: LOGO PARTNER & KLIEN ================= -->
-        <div id="tab-logo-partner" class="hidden space-y-6">
+        <div id="tab-logo-partner" class="tab-content hidden space-y-6">
             <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <!-- Header Section -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800 pb-4">
                     <div>
-                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                            <span>🏢 Manajemen Logo Partner & Klien (Marquee Slider)</span>
-                        </h2>
-                        <p class="text-xs text-slate-400 mt-1">Kelola daftar instansi & brand yang ditampilkan di auto-scrolling marquee slider.</p>
+                        <h2 class="text-2xl font-bold text-white">Manajemen Logo Partner & Klien</h2>
+                        <p class="text-slate-400 text-sm mt-1">Kelola logo brand dan instansi yang tampil di slider marquee depan.</p>
                     </div>
-                    <button onclick="openLogoModal()" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-brand-dark hover:bg-brand-limeBright shadow-lg shadow-brand-accent/20 transition-all flex items-center gap-2 shrink-0">
-                        <span>+ Tambah Logo Klien</span>
+                    <button id="btn-add-logo" onclick="openLogoModal()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-md transition-all">
+                        <span>+</span> Tambah Logo Partner
                     </button>
                 </div>
 
-                <!-- Client Logo Grid Manager -->
-                <div id="admin-logos-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    <!-- Dynamic Client Logo Cards -->
+                <!-- Grid List Logo -->
+                <div id="logo-list-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- Tempat render kartu logo -->
                 </div>
             </div>
         </div>
@@ -1046,25 +1045,36 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             window.location.href = 'index.html';
         }
 
-        // Switch Module Tabs Alias
+        // Switch Module Tabs Alias & Class Listener
         function switchTab(tabName) {
-            if (tabName === 'logo-partner' || tabName === 'logos' || tabName === 'logo') {
-                switchModule('logos');
-            } else if (tabName === 'portofolio' || tabName === 'portfolio') {
-                switchModule('portofolio');
-            } else if (tabName === 'katalog' || tabName === 'rental') {
-                switchModule('katalog');
-            } else {
-                switchModule(tabName);
-            }
-        }
+            const allTabs = document.querySelectorAll('.tab-content');
+            allTabs.forEach(t => t.classList.add('hidden'));
 
-        function switchModule(moduleName) {
-            const secKatalog = document.getElementById('module-katalog-section');
-            const secPortofolio = document.getElementById('module-portofolio-section');
-            const secLogos = document.getElementById('tab-logo-partner') || document.getElementById('module-logos-section');
-            const secKonten = document.getElementById('module-konten-section');
-            const secPengaturan = document.getElementById('module-pengaturan-section');
+            let targetId = tabName;
+            let activeBtnId = 'tab-btn-katalog';
+
+            if (tabName === 'logo-partner' || tabName === 'logos' || tabName === 'logo') {
+                targetId = 'tab-logo-partner';
+                activeBtnId = 'tab-btn-logos';
+                loadClientLogos();
+            } else if (tabName === 'portofolio' || tabName === 'portfolio') {
+                targetId = 'module-portofolio-section';
+                activeBtnId = 'tab-btn-portofolio';
+                renderAdminPortfolio();
+            } else if (tabName === 'katalog' || tabName === 'rental') {
+                targetId = 'module-katalog-section';
+                activeBtnId = 'tab-btn-katalog';
+                renderItems();
+            } else if (tabName === 'konten') {
+                targetId = 'module-konten-section';
+                activeBtnId = 'tab-btn-konten';
+            } else if (tabName === 'pengaturan') {
+                targetId = 'module-pengaturan-section';
+                activeBtnId = 'tab-btn-pengaturan';
+            }
+
+            const targetEl = document.getElementById(targetId);
+            if (targetEl) targetEl.classList.remove('hidden');
 
             const btnKatalog = document.getElementById('tab-btn-katalog');
             const btnPortofolio = document.getElementById('tab-btn-portofolio');
@@ -1072,29 +1082,16 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             const btnKonten = document.getElementById('tab-btn-konten');
             const btnPengaturan = document.getElementById('tab-btn-pengaturan');
 
-            [secKatalog, secPortofolio, secLogos, secKonten, secPengaturan].forEach(s => s?.classList.add('hidden'));
             [btnKatalog, btnPortofolio, btnLogos, btnKonten, btnPengaturan].forEach(b => {
                 if (b) b.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white shrink-0";
             });
 
-            if (moduleName === 'katalog') {
-                secKatalog?.classList.remove('hidden');
-                if (btnKatalog) btnKatalog.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
-            } else if (moduleName === 'portofolio') {
-                secPortofolio?.classList.remove('hidden');
-                if (btnPortofolio) btnPortofolio.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
-                renderAdminPortfolio();
-            } else if (moduleName === 'logos' || moduleName === 'logo-partner') {
-                secLogos?.classList.remove('hidden');
-                if (btnLogos) btnLogos.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
-                renderAdminLogos();
-            } else if (moduleName === 'konten') {
-                secKonten?.classList.remove('hidden');
-                if (btnKonten) btnKonten.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
-            } else if (moduleName === 'pengaturan') {
-                secPengaturan?.classList.remove('hidden');
-                if (btnPengaturan) btnPengaturan.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
-            }
+            const activeBtn = document.getElementById(activeBtnId);
+            if (activeBtn) activeBtn.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
+        }
+
+        function switchModule(moduleName) {
+            switchTab(moduleName);
         }
 
         // ================= CLIENT LOGO ADMIN MANAGER =================
@@ -1112,6 +1109,10 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
         let clientLogosData = JSON.parse(localStorage.getItem('rk_client_logos')) || [...DEMO_LOGOS];
         let currentLogoMode = 'file';
         let selectedLogoLocalFile = null;
+
+        function loadClientLogos() {
+            renderAdminLogos();
+        }
 
         function switchLogoInputMode(mode) {
             currentLogoMode = mode;
@@ -1162,26 +1163,34 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
         }
 
         function renderAdminLogos() {
-            const grid = document.getElementById('admin-logos-grid');
-            if (!grid) return;
+            const grid1 = document.getElementById('logo-list-grid');
+            const grid2 = document.getElementById('admin-logos-grid');
+            if (!grid1 && !grid2) return;
+
+            if (!clientLogosData || clientLogosData.length === 0) {
+                clientLogosData = [...DEMO_LOGOS];
+            }
 
             const sorted = [...clientLogosData].sort((a, b) => (a.urutan || 99) - (b.urutan || 99));
 
-            grid.innerHTML = sorted.map(logo => {
+            const htmlContent = sorted.map(logo => {
                 return `
-                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3 flex flex-col justify-between items-center text-center space-y-2 group hover:border-brand-accent/40 transition-all relative">
-                        <span class="absolute top-2 left-2 px-1.5 py-0.5 bg-slate-900 border border-slate-800 text-[9px] font-mono text-brand-accent rounded-md">#${logo.urutan || '-'}</span>
-                        <div class="w-full h-16 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center p-2 mt-2">
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between items-center text-center space-y-3 group hover:border-brand-accent/40 transition-all relative shadow-lg">
+                        <span class="absolute top-2.5 left-2.5 px-2 py-0.5 bg-slate-900 border border-slate-800 text-[10px] font-mono text-brand-accent font-bold rounded-md">#${logo.urutan || '-'}</span>
+                        <div class="w-full h-20 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center p-3 mt-3">
                             ${logo.logo_url ? `<img src="${logo.logo_url}" alt="${escapeHtml(logo.nama)}" class="max-h-full max-w-full object-contain">` : `<span class="text-xs font-extrabold text-slate-300 tracking-wider">${escapeHtml(logo.nama)}</span>`}
                         </div>
-                        <span class="text-[11px] font-bold text-slate-200 truncate w-full">${escapeHtml(logo.nama)}</span>
-                        <div class="flex items-center gap-1 w-full pt-1">
-                            <button onclick="editLogoItem(${logo.id})" class="flex-1 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold rounded-lg transition-colors">Edit</button>
-                            <button onclick="deleteLogoItem(${logo.id})" class="flex-1 py-1 bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-[10px] font-bold rounded-lg border border-rose-500/30 transition-colors">Hapus</button>
+                        <span class="text-xs font-extrabold text-slate-100 truncate w-full">${escapeHtml(logo.nama)}</span>
+                        <div class="flex items-center gap-2 w-full pt-1">
+                            <button onclick="editLogoItem(${logo.id})" class="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg transition-colors">Edit</button>
+                            <button onclick="deleteLogoItem(${logo.id})" class="flex-1 py-1.5 bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-xs font-bold rounded-lg border border-rose-500/30 transition-colors">🗑️ Hapus</button>
                         </div>
                     </div>
                 `;
             }).join('');
+
+            if (grid1) grid1.innerHTML = htmlContent;
+            if (grid2) grid2.innerHTML = htmlContent;
         }
 
         function openLogoModal(item = null) {
