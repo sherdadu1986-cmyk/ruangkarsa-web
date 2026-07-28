@@ -417,63 +417,65 @@
                         Login ke Admin Panel
                     </button>
                 </div>
-    <!-- Dynamic Marketplace Catalog Engine & Dataset -->
+    <!-- Dynamic Marketplace Catalog Engine & Supabase Live Data -->
     <script>
-        const DEMO_ITEMS = [
-            // KAMERA
-            { id: 1, nama: "Sony FX3 Cinema Camera Line", kategori: "Kamera", harga_sewa: 850000, stok: 2, status: "Tersedia", populer: true, deskripsi: "Kamera Cinema Full Frame 4K 120fps dengan S-Cinetone.", gambar_url: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=600&q=80" },
-            { id: 2, nama: "Sony Alpha A7S III Full Frame", kategori: "Kamera", harga_sewa: 750000, stok: 3, status: "Tersedia", populer: true, deskripsi: "Spesialis Low-Light 4K 120fps 10-bit 4:2:2 All-Intra.", gambar_url: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=600&q=80" },
-            { id: 3, nama: "Sony Alpha A7 IV Hybrid Camera", kategori: "Kamera", harga_sewa: 500000, stok: 4, status: "Tersedia", populer: false, deskripsi: "Hybrid 33MP 4K 60fps dengan real-time eye AF.", gambar_url: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=600&q=80" },
-            { id: 4, nama: "Canon EOS R5 8K Mirrorless", kategori: "Kamera", harga_sewa: 800000, stok: 2, status: "Tersedia", populer: false, deskripsi: "Sensor 45MP, Perekaman 8K RAW internal & 4K 120fps.", gambar_url: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=600&q=80" },
-            { id: 5, nama: "Blackmagic Pocket Cinema 6K Pro", kategori: "Kamera", harga_sewa: 600000, stok: 1, status: "Disewa", populer: false, deskripsi: "Super 35 6K HDR dengan internal ND filter 2, 4 & 6 stop.", gambar_url: "https://images.unsplash.com/photo-1589578527966-fdac0f44566c?auto=format&fit=crop&w=600&q=80" },
-            { id: 6, nama: "Panasonic Lumix GH6 Cinema", kategori: "Kamera", harga_sewa: 450000, stok: 2, status: "Tersedia", populer: false, deskripsi: "Micro 4/3 25.2MP, ProRes 422 HQ internal, active cooling.", gambar_url: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=600&q=80" },
-            { id: 7, nama: "RED Komodo 6K Cinema Camera", kategori: "Kamera", harga_sewa: 1750000, stok: 1, status: "Tersedia", populer: true, deskripsi: "Global Shutter Super 35 6K, REDCODE RAW ultra-sinematik.", gambar_url: "https://images.unsplash.com/photo-1589578527966-fdac0f44566c?auto=format&fit=crop&w=600&q=80" },
-
-            // LENSA
-            { id: 8, nama: "Sony FE 24-70mm f/2.8 GM II", kategori: "Lensa", harga_sewa: 350000, stok: 3, status: "Tersedia", populer: true, deskripsi: "Lensa Zoom Flagship G Master tajam dan ultra-ringan.", gambar_url: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=600&q=80" },
-            { id: 9, nama: "Sony FE 70-200mm f/2.8 GM II", kategori: "Lensa", harga_sewa: 400000, stok: 2, status: "Tersedia", populer: true, deskripsi: "Telephoto zoom ringan dengan motor AF Quad XD tajam.", gambar_url: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=600&q=80" },
-            { id: 10, nama: "Sigma 35mm f/1.4 DG DN Art", kategori: "Lensa", harga_sewa: 200000, stok: 4, status: "Tersedia", populer: false, deskripsi: "Lensa prime sinematik dengan bokeh lembut dan ketajaman tinggi.", gambar_url: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=600&q=80" },
-            { id: 11, nama: "Canon RF 50mm f/1.2L USM", kategori: "Lensa", harga_sewa: 350000, stok: 2, status: "Tersedia", populer: false, deskripsi: "Lensa prime aperture f/1.2 ultrafast seri L Canon RF.", gambar_url: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=600&q=80" },
-            { id: 12, nama: "Sony FE 16-35mm f/2.8 GM Wide", kategori: "Lensa", harga_sewa: 350000, stok: 2, status: "Disewa", populer: false, deskripsi: "Ultra-wide zoom sinematik untuk landscape & vlogging.", gambar_url: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=600&q=80" },
-            { id: 13, nama: "Laowa 24mm f/14 2X Macro Probe", kategori: "Lensa", harga_sewa: 500000, stok: 1, status: "Tersedia", populer: false, deskripsi: "Lensa probe unik untuk perekaman makro komersial & produk.", gambar_url: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=600&q=80" },
-            { id: 14, nama: "Zeiss CP.3 Cinema Lens 5-Kit", kategori: "Lensa", harga_sewa: 1500000, stok: 1, status: "Tersedia", populer: true, deskripsi: "Set lensa sinema profesional Zeiss (15, 25, 35, 50, 85mm).", gambar_url: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=600&q=80" },
-
-            // AUDIO
-            { id: 15, nama: "Rode Wireless GO II Dual Kit", kategori: "Audio", harga_sewa: 175000, stok: 5, status: "Tersedia", populer: true, deskripsi: "Mikrofon nirkabel dual transmitter dengan onboard recording.", gambar_url: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" },
-            { id: 16, nama: "DJI Mic 2 Wireless System (2 TX)", kategori: "Audio", harga_sewa: 200000, stok: 4, status: "Tersedia", populer: true, deskripsi: "Transmisi 250m, 32-bit float recording & AI noise cancelling.", gambar_url: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" },
-            { id: 17, nama: "Sennheiser MKH 416 Shotgun Mic", kategori: "Audio", harga_sewa: 250000, stok: 4, status: "Tersedia", populer: true, deskripsi: "Microphone Shotgun Standar Industri Film & Broadcast.", gambar_url: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" },
-            { id: 18, nama: "Zoom H6 All-Black Handy Recorder", kategori: "Audio", harga_sewa: 150000, stok: 3, status: "Tersedia", populer: false, deskripsi: "Audio recorder 6-track simultan dengan capsule interchangeable.", gambar_url: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" },
-            { id: 19, nama: "Rode VideoMic NTG Shotgun", kategori: "Audio", harga_sewa: 125000, stok: 4, status: "Tersedia", populer: false, deskripsi: "On-camera shotgun mic broadcast grade dengan USB-C.", gambar_url: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" },
-            { id: 20, nama: "Tentacle Sync E mkII Timecode", kategori: "Audio", harga_sewa: 150000, stok: 2, status: "Tersedia", populer: false, deskripsi: "Generator timecode Bluetooth ultra-presisi untuk sync audio-video.", gambar_url: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" },
-
-            // LIGHTING
-            { id: 21, nama: "Aputure LS 600d Pro Daylight", kategori: "Lighting", harga_sewa: 600000, stok: 2, status: "Tersedia", populer: true, deskripsi: "COB LED Super Terang 600W Weather-Resistant dengan Bowens Mount.", gambar_url: "https://images.unsplash.com/photo-1590402494587-44b71d7772f6?auto=format&fit=crop&w=600&q=80" },
-            { id: 22, nama: "Aputure Amaran 200x Bi-Color LED", kategori: "Lighting", harga_sewa: 250000, stok: 4, status: "Tersedia", populer: true, deskripsi: "Point-source LED 200W variabel 2700K-6500K Sidus Link Control.", gambar_url: "https://images.unsplash.com/photo-1590402494587-44b71d7772f6?auto=format&fit=crop&w=600&q=80" },
-            { id: 23, nama: "Nanlite PavoTube II 30C 2-Kit", kategori: "Lighting", harga_sewa: 350000, stok: 2, status: "Tersedia", populer: true, deskripsi: "Lampu Tube RGBWW 4 kaki dengan efek sinematik & baterai internal.", gambar_url: "https://images.unsplash.com/photo-1590402494587-44b71d7772f6?auto=format&fit=crop&w=600&q=80" },
-            { id: 24, nama: "Godox SL-60W Video Light LED", kategori: "Lighting", harga_sewa: 100000, stok: 5, status: "Tersedia", populer: false, deskripsi: "Lampu LED studio 60W hemat energi untuk podcast & vlogging.", gambar_url: "https://images.unsplash.com/photo-1590402494587-44b71d7772f6?auto=format&fit=crop&w=600&q=80" },
-            { id: 25, nama: "Aputure Light Dome II Softbox", kategori: "Lighting", harga_sewa: 100000, stok: 4, status: "Tersedia", populer: false, deskripsi: "Softbox heksagonal 35-inci dengan quick-release setup.", gambar_url: "https://images.unsplash.com/photo-1590402494587-44b71d7772f6?auto=format&fit=crop&w=600&q=80" },
-            { id: 26, nama: "Falcon Eyes RX-18TD Roll-Flex", kategori: "Lighting", harga_sewa: 200000, stok: 2, status: "Disewa", populer: false, deskripsi: "Matras LED fleksibel Bi-Color 100W waterproof.", gambar_url: "https://images.unsplash.com/photo-1590402494587-44b71d7772f6?auto=format&fit=crop&w=600&q=80" },
-
-            // DRONE & GIMBAL
-            { id: 27, nama: "DJI Mavic 3 Pro Cine Drone Combo", kategori: "Drone", harga_sewa: 1250000, stok: 2, status: "Tersedia", populer: true, deskripsi: "Drone Aerial 3-Kamera Hasselblad Apple ProRes 5.1K.", gambar_url: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=600&q=80" },
-            { id: 28, nama: "DJI Mini 4 Pro Fly More Combo", kategori: "Drone", harga_sewa: 450000, stok: 3, status: "Tersedia", populer: true, deskripsi: "Drone sub-249g 4K 60fps HDR, sensor omnidirectional obstacle.", gambar_url: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=600&q=80" },
-            { id: 29, nama: "DJI RS 3 Pro Gimbal Stabilizer", kategori: "Drone", harga_sewa: 300000, stok: 3, status: "Tersedia", populer: true, deskripsi: "Gimbal 3-Axis Serat Karbon Lidar Autofocus 4.5kg Payload.", gambar_url: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=600&q=80" },
-            { id: 30, nama: "DJI Inspire 2 RAW 5.2K Cinema", kategori: "Drone", harga_sewa: 2500000, stok: 1, status: "Disewa", populer: false, deskripsi: "Drone flagship sinema dengan kamera Zenmuse X7 RAW 5.2K.", gambar_url: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=600&q=80" },
-            { id: 31, nama: "Easyrig Vario 5 with Serene Arm", kategori: "Aksesoris", harga_sewa: 550000, stok: 2, status: "Tersedia", populer: false, deskripsi: "Support vest mekanis pendukung beban kamera sinema berat.", gambar_url: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=600&q=80" },
-
-            // AKSESORIS
-            { id: 32, nama: "Atomos Ninja V+ 8K HDR Monitor", kategori: "Aksesoris", harga_sewa: 250000, stok: 3, status: "Tersedia", populer: true, deskripsi: "Monitor recorder 5-inci 1000nit Perekaman ProRes RAW 8K.", gambar_url: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=600&q=80" },
-            { id: 33, nama: "Hollyland Mars 400S Pro Wireless", kategori: "Aksesoris", harga_sewa: 200000, stok: 3, status: "Tersedia", populer: true, deskripsi: "Transmisi video nirkabel SDI/HDMI latensi ultra-rendah 0.08s.", gambar_url: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=600&q=80" },
-            { id: 34, nama: "V-Mount Battery 190Wh (4x Kit)", kategori: "Aksesoris", harga_sewa: 250000, stok: 4, status: "Tersedia", populer: false, deskripsi: "Paket 4 baterai V-Mount D-Tap + Dual Quad Fast Charger.", gambar_url: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=600&q=80" },
-            { id: 35, nama: "Sachtler Flowtech 75 Tripod", kategori: "Aksesoris", harga_sewa: 300000, stok: 2, status: "Dalam Perawatan", populer: false, deskripsi: "Tripod serat karbon setup paling cepat dengan fluid head FSB 8.", gambar_url: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=600&q=80" }
-        ];
-
         let currentActiveCategory = 'ALL';
-        let publicCatalogItems = [...DEMO_ITEMS];
+        let publicCatalogItems = [];
 
         function escapeHtml(str) {
             if (!str) return '';
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        async function fetchRentalItems() {
+            if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('rental_items')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+
+                    if (error) {
+                        console.error('Gagal mengambil data rental:', error);
+                        return;
+                    }
+
+                    if (data && data.length > 0) {
+                        publicCatalogItems = data.map(item => ({
+                            id: item.id,
+                            nama: item.nama || item.name || 'Tanpa Nama',
+                            kategori: item.kategori || item.category || 'Kamera',
+                            harga_sewa: Number(item.harga_sewa ?? item.price ?? 0),
+                            stok: Number(item.stok ?? item.stock ?? 1),
+                            status: item.status || 'Tersedia',
+                            gambar_url: item.gambar_url || item.image_url || '',
+                            populer: item.populer || false,
+                            deskripsi: item.deskripsi || ''
+                        }));
+                        filterCatalog();
+                    }
+                } catch (err) {
+                    console.error('Error fetching rental items from Supabase:', err);
+                }
+            }
+        }
+
+        function initRentalRealtime() {
+            fetchRentalItems();
+
+            if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+                try {
+                    supabaseClient
+                        .channel('public:rental_items')
+                        .on('postgres_changes', { event: '*', schema: 'public', table: 'rental_items' }, payload => {
+                            console.log('Perubahan database rental_items terdeteksi di /rental:', payload);
+                            fetchRentalItems();
+                        })
+                        .subscribe();
+                } catch (err) {
+                    console.warn('Realtime channel subscription error:', err);
+                }
+            }
         }
 
         function setCategoryFilter(category) {
@@ -582,6 +584,7 @@
 
         // Initialize Catalog on DOM load
         document.addEventListener('DOMContentLoaded', () => {
+            initRentalRealtime();
             filterCatalog();
         });
     </script>
