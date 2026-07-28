@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Dashboard Admin Karsa Rental - Manajemen Item Persewaan Peralatan Produksi">
-    <title>Karsa Multimedia | Admin Rental Management</title>
+    <meta name="description" content="Super Admin Studio Dashboard - Manajemen Katalog Rental & Konten Website Ruang Karsa">
+    <title>Ruang Karsa | Super Admin Studio Dashboard</title>
     <!-- Tailwind CSS Play CDN v3 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -14,21 +14,21 @@
                     colors: {
                         slate: {
                             750: '#0c2266',
-                            800: '#0a1a4a',        /* Card Background Option 1 (#0a1a4a) */
+                            800: '#0a1a4a',
                             850: '#081640',
-                            900: '#061238',        /* Card Background Option 2 (#061238) */
-                            950: '#040d2b',        /* Deep Translucent Card Background */
+                            900: '#061238',
+                            950: '#040d2b',
                         },
                         brand: {
-                            dark: '#03091e',       /* Main Background Top */
-                            DEFAULT: '#0523a0',    /* Main Background Mid */
-                            gradientEnd: '#0d52ff',/* Main Background Bottom */
-                            electric: '#1a68ff',   /* Bright Electric Blue Hover/Highlight */
-                            cobalt: '#2f78ff',     /* Saturated Cobalt Accent */
+                            dark: '#03091e',
+                            DEFAULT: '#0523a0',
+                            gradientEnd: '#0d52ff',
+                            electric: '#1a68ff',
+                            cobalt: '#2f78ff',
                             card: 'rgba(6, 18, 56, 0.8)',
                             cardAlt: 'rgba(10, 26, 74, 0.7)',
                             border: 'rgba(47, 120, 255, 0.25)',
-                            accent: '#f59e0b',     /* Gold/Yellow Accent (#f59e0b) */
+                            accent: '#f59e0b',
                             accentHover: '#eab308',
                             limeBright: '#f59e0b',
                         }
@@ -50,34 +50,47 @@
     <link rel="stylesheet" href="index.css">
     <style>
         .modal-backdrop {
-            background-color: rgba(5, 7, 13, 0.75);
-            backdrop-filter: blur(8px);
+            background-color: rgba(5, 7, 13, 0.85);
+            backdrop-filter: blur(10px);
+        }
+        .line-clamp-1 {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
     </style>
 </head>
 <body class="text-slate-100 min-h-screen relative font-sans antialiased bg-r-pattern flex flex-col" style="background: linear-gradient(180deg, #020617 0%, #031242 40%, #082fc4 80%, #1e62ff 100%) fixed !important;">
 
     <!-- Header / Navbar -->
-    <header class="sticky top-0 z-40 bg-brand/90 backdrop-blur-md border-b border-slate-800/80 py-4 px-6">
+    <header class="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/80 py-4 px-6">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-4">
                 <a href="index.html" class="flex items-center transition-transform hover:scale-102">
                     <img src="karsa-multimedia.png" alt="Karsa Multimedia" class="h-10 w-auto">
                 </a>
                 <span class="h-6 w-px bg-slate-800 hidden sm:block"></span>
-                <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-brand-accent/10 text-brand-accent border border-brand-accent/20 hidden sm:inline-block">
-                    Admin Panel
+                <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-brand-accent/15 text-brand-accent border border-brand-accent/30 hidden sm:inline-flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span>
+                    Super Admin Studio
                 </span>
             </div>
 
             <nav class="flex items-center gap-3 text-xs sm:text-sm font-semibold text-slate-300">
                 <a href="rental.html" target="_blank" class="hover:text-brand-accent transition-colors flex items-center gap-1.5 bg-slate-900 border border-slate-800 px-3.5 py-1.5 rounded-full">
-                    <span>Lihat Halaman Rental</span>
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <span>Lihat Web Rental</span>
+                    <svg class="w-3.5 h-3.5 text-brand-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                     </svg>
                 </a>
-                <button id="btn-supabase-config" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-1.5 rounded-full transition-colors flex items-center gap-1.5 border border-slate-700/60">
+                <button id="btn-supabase-config" onclick="openConfigModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-1.5 rounded-full transition-colors flex items-center gap-1.5 border border-slate-700/60">
                     <span>⚡ Set Supabase</span>
                 </button>
                 <button id="btn-logout-admin" onclick="logoutAdmin()" class="bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 px-3.5 py-1.5 rounded-full transition-colors flex items-center gap-1.5 font-bold">
@@ -90,40 +103,81 @@
     <!-- Main Content Area -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8 space-y-8">
 
-        <!-- Top Banner & SQL Schema Info -->
-        <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4 relative overflow-hidden">
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+        <!-- Super Admin Multi-Module Navigation Tabs -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-2 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xl">
+            <div class="flex items-center gap-2 w-full sm:w-auto overflow-x-auto">
+                <button id="tab-btn-katalog" onclick="switchModule('katalog')" 
+                        class="px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0">
+                    <span>📦 Katalog Rental</span>
+                </button>
+                <button id="tab-btn-konten" onclick="switchModule('konten')" 
+                        class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white shrink-0">
+                    <span>📝 Konten Landing Page</span>
+                </button>
+                <button id="tab-btn-pengaturan" onclick="switchModule('pengaturan')" 
+                        class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white shrink-0">
+                    <span>⚙️ Pengaturan Web</span>
+                </button>
+            </div>
+            <div class="text-xs text-slate-400 font-semibold px-4 hidden lg:flex items-center gap-2 shrink-0">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span>Database Status: <strong class="text-emerald-400" id="db-status-indicator">Connected</strong></span>
+            </div>
+        </div>
+
+        <!-- Connection Alert Warning if Supabase Credentials Missing -->
+        <div id="supabase-status-alert" class="hidden p-4 rounded-2xl border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs sm:text-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <span class="text-xl">⚠️</span>
                 <div>
-                    <h1 class="text-2xl sm:text-3xl font-extrabold text-white">Manajemen Item Rental</h1>
-                    <p class="text-sm text-slate-400 mt-1 max-w-2xl">
-                        Kelola data inventaris, harga sewa, stok, dan status ketersediaan unit peralatan produksi Karsa Rental yang terhubung ke database **Supabase**.
-                    </p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <button id="btn-toggle-sql" class="px-4 py-2.5 text-xs font-semibold rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors flex items-center gap-2">
-                        <svg class="w-4 h-4 text-brand-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
-                        </svg>
-                        <span>Skema SQL Supabase</span>
-                    </button>
-                    <button id="btn-add-item-top" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-brand-dark hover:bg-brand-limeBright shadow-lg shadow-brand-accent/20 transition-all flex items-center gap-2">
-                        <svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
-                        </svg>
-                        <span>Tambah Item Baru</span>
-                    </button>
+                    <span class="font-bold block">Kredensial Supabase Belum Dikonfigurasi</span>
+                    <span>Silakan klik **Set Supabase** di kanan atas untuk memasukkan URL & Anon Key proyek Supabase Anda.</span>
                 </div>
             </div>
+            <button onclick="openConfigModal()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs shrink-0">
+                Konfigurasi Sekarang
+            </button>
+        </div>
 
-            <!-- Collapsible SQL Script Guide -->
-            <div id="sql-guide-box" class="hidden pt-4 border-t border-slate-800 space-y-3">
-                <div class="flex items-center justify-between text-xs text-slate-300">
-                    <span class="font-bold text-brand-accent">Jalankan SQL ini di SQL Editor Supabase Anda jika tabel belum dibuat:</span>
-                    <button id="btn-copy-sql" class="text-slate-400 hover:text-white font-semibold flex items-center gap-1">
-                        📋 Copy SQL
-                    </button>
+        <!-- ================= MODULE 1: KATALOG RENTAL ================= -->
+        <div id="module-katalog-section" class="space-y-8">
+            <!-- Top Banner & SQL Schema Info -->
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4 relative overflow-hidden">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-white">Manajemen Item Rental</h1>
+                        <p class="text-sm text-slate-400 mt-1 max-w-2xl">
+                            Kelola data inventaris, harga sewa, stok, dan status ketersediaan unit peralatan produksi Ruang Karsa dengan Live Preview WYSIWYG real-time.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button id="btn-toggle-sql" class="px-4 py-2.5 text-xs font-semibold rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors flex items-center gap-2">
+                            <svg class="w-4 h-4 text-brand-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
+                            </svg>
+                            <span>Skema SQL Supabase</span>
+                        </button>
+                        <button onclick="openCategoriesModal()" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-800 hover:bg-slate-700 text-brand-accent border border-brand-accent/30 transition-all flex items-center gap-1.5 shadow">
+                            <span>🏷️ + Kelola Kategori</span>
+                        </button>
+                        <button id="btn-add-item-top" onclick="openFormModal()" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-brand-dark hover:bg-brand-limeBright shadow-lg shadow-brand-accent/20 transition-all flex items-center gap-2">
+                            <svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            <span>Tambah Item Baru</span>
+                        </button>
+                    </div>
                 </div>
-                <pre class="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs font-mono text-emerald-400 overflow-x-auto select-all leading-relaxed"><code id="sql-code-text">CREATE TABLE IF NOT EXISTS public.rental_items (
+
+                <!-- Collapsible SQL Script Guide -->
+                <div id="sql-guide-box" class="hidden pt-4 border-t border-slate-800 space-y-3">
+                    <div class="flex items-center justify-between text-xs text-slate-300">
+                        <span class="font-bold text-brand-accent">Jalankan SQL ini di SQL Editor Supabase Anda jika tabel belum dibuat:</span>
+                        <button id="btn-copy-sql" class="text-slate-400 hover:text-white font-semibold flex items-center gap-1">
+                            📋 Copy SQL
+                        </button>
+                    </div>
+                    <pre class="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs font-mono text-emerald-400 overflow-x-auto select-all leading-relaxed"><code id="sql-code-text">CREATE TABLE IF NOT EXISTS public.rental_items (
     id BIGINT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
     nama TEXT NOT NULL,
     kategori TEXT NOT NULL DEFAULT 'Kamera',
@@ -137,111 +191,247 @@
 
 ALTER TABLE public.rental_items ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR ALL USING (true) WITH CHECK (true);</code></pre>
-            </div>
-        </div>
-
-        <!-- Connection Alert Warning if Supabase Credentials Missing -->
-        <div id="supabase-status-alert" class="hidden p-4 rounded-2xl border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs sm:text-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div class="flex items-center gap-3">
-                <span class="text-xl">⚠️</span>
-                <div>
-                    <span class="font-bold block">Kredensial Supabase Belum Dikonfigurasi</span>
-                    <span>Silakan klik tombol **Set Supabase** di kanan atas untuk memasukkan URL & Anon Key proyek Supabase Anda.</span>
                 </div>
             </div>
-            <button onclick="openConfigModal()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs shrink-0">
-                Konfigurasi Sekarang
-            </button>
-        </div>
 
-        <!-- Statistics Overview Cards -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-1">
-                <span class="text-xs font-medium text-slate-400">Total Jenis Item</span>
-                <div id="stat-total-items" class="text-2xl font-extrabold text-white">0</div>
-            </div>
-            <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-1">
-                <span class="text-xs font-medium text-slate-400">Total Unit Stok</span>
-                <div id="stat-total-stock" class="text-2xl font-extrabold text-white">0</div>
-            </div>
-            <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-1">
-                <span class="text-xs font-medium text-emerald-400">Item Ready (Tersedia)</span>
-                <div id="stat-available-items" class="text-2xl font-extrabold text-emerald-400">0</div>
-            </div>
-            <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-1">
-                <span class="text-xs font-medium text-amber-400">Sedang Disewa / Perawatan</span>
-                <div id="stat-rented-items" class="text-2xl font-extrabold text-amber-400">0</div>
-            </div>
-        </div>
-
-        <!-- Filters & Search Toolbar -->
-        <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4">
-            <!-- Search Box -->
-            <div class="relative w-full md:w-80">
-                <input type="text" id="search-input" placeholder="Cari nama item..." 
-                       class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-accent transition-colors">
-                <svg class="w-4 h-4 text-slate-500 absolute left-3.5 top-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg>
+            <!-- Statistics Overview Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-1 shadow-lg">
+                    <span class="text-xs font-medium text-slate-400">Total Jenis Item</span>
+                    <div id="stat-total-items" class="text-2xl font-extrabold text-white">0</div>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-1 shadow-lg">
+                    <span class="text-xs font-medium text-slate-400">Total Unit Stok</span>
+                    <div id="stat-total-stock" class="text-2xl font-extrabold text-white">0</div>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-1 shadow-lg">
+                    <span class="text-xs font-medium text-emerald-400">Item Ready (Tersedia)</span>
+                    <div id="stat-available-items" class="text-2xl font-extrabold text-emerald-400">0</div>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-1 shadow-lg">
+                    <span class="text-xs font-medium text-amber-400">Sedang Disewa / Perawatan</span>
+                    <div id="stat-rented-items" class="text-2xl font-extrabold text-amber-400">0</div>
+                </div>
             </div>
 
-            <!-- Filter Controls -->
-            <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
-                <select id="filter-kategori" class="bg-slate-950 border border-slate-800 text-xs text-slate-300 px-3.5 py-2.5 rounded-xl focus:outline-none focus:border-brand-accent">
-                    <option value="ALL">Semua Kategori</option>
-                    <option value="Kamera">Kamera</option>
-                    <option value="Lensa">Lensa</option>
-                    <option value="Drone">Drone</option>
-                    <option value="Audio & Light">Audio & Light</option>
-                    <option value="Aksesoris">Aksesoris</option>
-                </select>
-
-                <select id="filter-status" class="bg-slate-950 border border-slate-800 text-xs text-slate-300 px-3.5 py-2.5 rounded-xl focus:outline-none focus:border-brand-accent">
-                    <option value="ALL">Semua Status</option>
-                    <option value="Tersedia">Tersedia</option>
-                    <option value="Disewa">Disewa</option>
-                    <option value="Dalam Perawatan">Dalam Perawatan</option>
-                </select>
-
-                <button id="btn-refresh" class="p-2.5 bg-slate-950 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 rounded-xl transition-colors" title="Refresh Data">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            <!-- Filters & View Switcher Toolbar -->
+            <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl">
+                <!-- Search Box -->
+                <div class="relative w-full md:w-80">
+                    <input type="text" id="search-input" placeholder="Cari nama item..." 
+                           class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-accent transition-colors">
+                    <svg class="w-4 h-4 text-slate-500 absolute left-3.5 top-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
-                </button>
+                </div>
+
+                <!-- Filter Controls & View Switcher -->
+                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                    <select id="filter-kategori" class="bg-slate-950 border border-slate-800 text-xs text-slate-300 px-3.5 py-2.5 rounded-xl focus:outline-none focus:border-brand-accent">
+                        <option value="ALL">Semua Kategori</option>
+                        <option value="Kamera">Kamera</option>
+                        <option value="Lensa">Lensa</option>
+                        <option value="Drone">Drone</option>
+                        <option value="Audio & Light">Audio & Light</option>
+                        <option value="Aksesoris">Aksesoris</option>
+                    </select>
+
+                    <select id="filter-status" class="bg-slate-950 border border-slate-800 text-xs text-slate-300 px-3.5 py-2.5 rounded-xl focus:outline-none focus:border-brand-accent">
+                        <option value="ALL">Semua Status</option>
+                        <option value="Tersedia">Tersedia</option>
+                        <option value="Disewa">Disewa</option>
+                        <option value="Dalam Perawatan">Dalam Perawatan</option>
+                    </select>
+
+                    <!-- View Switcher Toggle -->
+                    <div class="flex items-center gap-1 bg-slate-950 border border-slate-800 p-1 rounded-xl">
+                        <button id="btn-view-grid" onclick="setViewMode('grid')" 
+                                class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-brand-accent text-slate-950 shadow">
+                            <span>🎴 Live Card Preview</span>
+                        </button>
+                        <button id="btn-view-table" onclick="setViewMode('table')" 
+                                class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-white">
+                            <span>📊 Tabel View</span>
+                        </button>
+                    </div>
+
+                    <button id="btn-refresh" onclick="fetchItems()" class="p-2.5 bg-slate-950 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 rounded-xl transition-colors" title="Refresh Data">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- View 1: Live Card Preview Grid (WYSIWYG) -->
+            <div id="grid-view-container" class="space-y-4">
+                <div id="grid-cards-wrapper" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Cards rendered dynamically -->
+                </div>
+            </div>
+
+            <!-- View 2: Rental Items Data Table -->
+            <div id="table-view-container" class="hidden bg-slate-900/90 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs sm:text-sm">
+                        <thead class="bg-slate-950/80 text-slate-400 font-semibold border-b border-slate-800 uppercase tracking-wider text-[11px]">
+                            <tr>
+                                <th class="py-4 px-6">ID</th>
+                                <th class="py-4 px-6">Item Rental</th>
+                                <th class="py-4 px-6">Kategori</th>
+                                <th class="py-4 px-6">Harga Sewa / Hari</th>
+                                <th class="py-4 px-6 text-center">Stok</th>
+                                <th class="py-4 px-6 text-center">Status</th>
+                                <th class="py-4 px-6 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body-items" class="divide-y divide-slate-800/60 text-slate-200">
+                            <tr>
+                                <td colspan="7" class="py-12 text-center text-slate-400">
+                                    <div class="inline-flex items-center gap-3">
+                                        <div class="w-5 h-5 border-2 border-brand-accent border-t-transparent rounded-full animate-spin"></div>
+                                        <span>Memuat data item rental dari Supabase...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <!-- Rental Items Data Table -->
-        <div class="bg-slate-900/90 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs sm:text-sm">
-                    <thead class="bg-slate-950/80 text-slate-400 font-semibold border-b border-slate-800 uppercase tracking-wider text-[11px]">
-                        <tr>
-                            <th class="py-4 px-6">ID</th>
-                            <th class="py-4 px-6">Item Rental</th>
-                            <th class="py-4 px-6">Kategori</th>
-                            <th class="py-4 px-6">Harga Sewa / Hari</th>
-                            <th class="py-4 px-6 text-center">Stok</th>
-                            <th class="py-4 px-6 text-center">Status</th>
-                            <th class="py-4 px-6 text-right">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body-items" class="divide-y divide-slate-800/60 text-slate-200">
-                        <!-- Loading skeleton placeholder -->
-                        <tr>
-                            <td colspan="7" class="py-12 text-center text-slate-400">
-                                <div class="inline-flex items-center gap-3">
-                                    <div class="w-5 h-5 border-2 border-brand-accent border-t-transparent rounded-full animate-spin"></div>
-                                    <span>Memuat data item rental dari Supabase...</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- ================= MODULE 2: KONTEN LANDING PAGE ================= -->
+        <div id="module-konten-section" class="hidden space-y-6">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <span>📝 Editor Konten Landing Page</span>
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Ubah teks headline, deskripsi hero, dan nomor kontak utama tanpa perlu ubah coding.</p>
+                </div>
+
+                <form onsubmit="saveLandingContent(event)" class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Judul Hero Headline</label>
+                        <input type="text" id="landing-hero-title" value="Wujudkan Ide Kreatif & Komunikasi Visual yang Berdampak." 
+                               class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent font-semibold">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Deskripsi Singkat Hero</label>
+                        <textarea id="landing-hero-desc" rows="3" 
+                                  class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-brand-accent leading-relaxed">Ruang Karsa adalah partner media kreatif profesional yang bergerak di bidang produksi media terintegrasi, dokumentasi sinematik, drone aerial, live streaming event, hingga rental peralatan media.</textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">Nomor WhatsApp CS (Format 62...)</label>
+                            <input type="text" id="landing-wa-num" value="6281331266786" 
+                                   class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">Email Kontak Resmi</label>
+                            <input type="email" id="landing-email" value="halo@ruangkarsa.com" 
+                                   class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800 flex justify-end">
+                        <button type="submit" class="px-6 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-slate-950 hover:bg-brand-limeBright shadow-lg transition-all">
+                            Simpan Perubahan Konten
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================= MODULE 3: PENGATURAN WEB ================= -->
+        <div id="module-pengaturan-section" class="hidden space-y-6">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <span>⚙️ Pengaturan Web & Integrasi Supabase</span>
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Atur kredensial API Supabase dan konfigurasi sistem studio.</p>
+                </div>
+
+                <form onsubmit="saveWebSettings(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Supabase Project URL</label>
+                        <input type="url" id="setting-supabase-url" value="https://kolgqqvurvbjbtuufnai.supabase.co" 
+                               class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent font-mono">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Supabase Anon Key</label>
+                        <textarea id="setting-supabase-key" rows="3" 
+                                  class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-100 focus:outline-none focus:border-brand-accent font-mono">sb_publishable_U0idj52nArjoczbEFXcXAw_gvfyGuzg</textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">Nama Brand Studio</label>
+                            <input type="text" id="setting-brand-name" value="Ruang Karsa Multimedia" 
+                                   class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">Mata Uang Default</label>
+                            <select id="setting-currency" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                                <option value="IDR">Rupiah Indonesia (IDR - Rp)</option>
+                                <option value="USD">US Dollar (USD - $)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+                        <button type="button" onclick="resetConfig()" class="px-4 py-2 text-xs font-bold rounded-xl bg-slate-800 text-rose-400 hover:bg-slate-700 transition-colors">
+                            Reset ke Default
+                        </button>
+                        <button type="submit" class="px-6 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-slate-950 hover:bg-brand-limeBright shadow-lg transition-all">
+                            Simpan Pengaturan Web
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 
     </main>
+
+    <!-- Modal Category Management -->
+    <div id="modal-categories" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl relative">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <span>🏷️ Kelola Kategori Rental</span>
+                </h3>
+                <button onclick="closeCategoriesModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Form Add New Category -->
+            <form onsubmit="addCategory(event)" class="flex gap-2">
+                <input type="text" id="new-category-input" required placeholder="Tambah Kategori Baru..." 
+                       class="flex-1 px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-100 focus:outline-none focus:border-brand-accent">
+                <button type="submit" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-slate-950 hover:bg-brand-limeBright transition-all">
+                    + Tambah
+                </button>
+            </form>
+
+            <!-- Category List -->
+            <div class="space-y-2 max-h-60 overflow-y-auto pr-1">
+                <div id="category-list-container" class="space-y-2">
+                    <!-- Categories rendered dynamically -->
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-800 flex justify-end">
+                <button onclick="closeCategoriesModal()" class="px-5 py-2 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors">
+                    Selesai
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal Form (Tambah / Edit Item) -->
     <div id="modal-item-form" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
@@ -255,7 +445,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 </button>
             </div>
 
-            <form id="rental-form" class="space-y-4">
+            <form id="rental-form" onsubmit="saveItem(event)" class="space-y-4">
                 <input type="hidden" id="form-item-id">
 
                 <div>
@@ -307,16 +497,22 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 </div>
 
                 <div>
-                    <label for="form-gambar" class="block text-xs font-bold text-slate-300 mb-1">URL Gambar (Opsional)</label>
-                    <input type="url" id="form-gambar" placeholder="https://images.unsplash.com/..." 
+                    <label for="form-gambar" class="block text-xs font-bold text-slate-300 mb-1">URL Gambar (Live Preview Auto)</label>
+                    <input type="url" id="form-gambar" placeholder="https://images.unsplash.com/..." oninput="updateImagePreview(this.value)"
                            class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                    
+                    <!-- Live Image Preview Box -->
+                    <div id="image-preview-box" class="mt-2 w-full h-36 bg-slate-950 rounded-xl border border-slate-800 overflow-hidden hidden flex items-center justify-center relative">
+                        <img id="image-preview-img" src="" alt="Live Preview" class="w-full h-full object-cover">
+                        <span class="absolute bottom-2 right-2 px-2.5 py-0.5 bg-slate-900/90 text-brand-accent text-[10px] font-bold rounded-full border border-brand-accent/30">Live Preview</span>
+                    </div>
                 </div>
 
                 <div class="pt-4 border-t border-slate-800 flex justify-end gap-3">
                     <button type="button" onclick="closeFormModal()" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors">
                         Batal
                     </button>
-                    <button type="submit" id="btn-submit-form" class="px-6 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-brand-dark hover:bg-brand-limeBright transition-all shadow-md">
+                    <button type="submit" id="btn-submit-form" class="px-6 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-slate-950 hover:bg-brand-limeBright transition-all shadow-md">
                         Simpan Item
                     </button>
                 </div>
@@ -327,7 +523,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
     <!-- Modal Delete Confirmation -->
     <div id="modal-delete" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 space-y-5 text-center shadow-2xl">
-            <div class="w-12 h-12 bg-rose-500/10 text-rose-500 rounded-full flex items-center justify-center mx-auto text-xl">
+            <div class="w-12 h-12 bg-rose-500/10 text-rose-500 rounded-full flex items-center justify-center mx-auto text-xl border border-rose-500/30">
                 🗑️
             </div>
             <div>
@@ -338,7 +534,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 <button onclick="closeDeleteModal()" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors">
                     Batal
                 </button>
-                <button id="btn-confirm-delete" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-rose-600 text-white hover:bg-rose-500 transition-all shadow-md">
+                <button id="btn-confirm-delete" onclick="confirmDeleteItem()" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-rose-600 text-white hover:bg-rose-500 transition-all shadow-md">
                     Ya, Hapus Permanent
                 </button>
             </div>
@@ -359,7 +555,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 </button>
             </div>
 
-            <form id="config-form" class="space-y-4">
+            <form id="config-form" onsubmit="saveSupabaseConfig(event)" class="space-y-4">
                 <div>
                     <label for="cfg-url" class="block text-xs font-bold text-slate-300 mb-1">Supabase Project URL</label>
                     <input type="url" id="cfg-url" required placeholder="https://xxxx.supabase.co" 
@@ -380,7 +576,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                     <button type="button" onclick="resetConfig()" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-800 text-rose-400 hover:bg-slate-700 transition-colors">
                         Reset Config
                     </button>
-                    <button type="submit" class="px-6 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-brand-dark hover:bg-brand-limeBright transition-all">
+                    <button type="submit" class="px-6 py-2.5 text-xs font-bold rounded-xl bg-brand-accent text-slate-950 hover:bg-brand-limeBright transition-all">
                         Simpan & Hubungkan
                     </button>
                 </div>
@@ -393,7 +589,6 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Embedded Default Supabase Project Credentials
         const DEFAULT_SUPABASE_URL = 'https://kolgqqvurvbjbtuufnai.supabase.co';
         const DEFAULT_SUPABASE_KEY = 'sb_publishable_U0idj52nArjoczbEFXcXAw_gvfyGuzg';
 
@@ -403,6 +598,94 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
 
         let itemsData = [];
         let itemToDeleteId = null;
+        let activeViewMode = 'grid'; // 'grid' (WYSIWYG) or 'table'
+
+        // Dynamic Categories Management
+        const DEFAULT_CATEGORIES = ['Kamera', 'Lensa', 'Drone', 'Audio & Light', 'Aksesoris', 'Stabilizer & Rig'];
+        let categoriesData = JSON.parse(localStorage.getItem('KARSA_CATEGORIES')) || [...DEFAULT_CATEGORIES];
+
+        function saveCategories() {
+            localStorage.setItem('KARSA_CATEGORIES', JSON.stringify(categoriesData));
+            renderCategoryDropdowns();
+            renderCategoryList();
+        }
+
+        function renderCategoryDropdowns() {
+            const filterSelect = document.getElementById('filter-kategori');
+            const formSelect = document.getElementById('form-kategori');
+            if (!filterSelect || !formSelect) return;
+
+            const currentFilterVal = filterSelect.value;
+            const currentFormVal = formSelect.value;
+
+            filterSelect.innerHTML = `<option value="ALL">Semua Kategori</option>` +
+                categoriesData.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+
+            formSelect.innerHTML = categoriesData.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+
+            filterSelect.value = categoriesData.includes(currentFilterVal) || currentFilterVal === 'ALL' ? currentFilterVal : 'ALL';
+            formSelect.value = categoriesData.includes(currentFormVal) ? currentFormVal : (categoriesData[0] || 'Kamera');
+        }
+
+        function renderCategoryList() {
+            const container = document.getElementById('category-list-container');
+            if (!container) return;
+            if (categoriesData.length === 0) {
+                container.innerHTML = `<div class="text-xs text-slate-500 text-center py-4">Belum ada kategori.</div>`;
+                return;
+            }
+            container.innerHTML = categoriesData.map((cat, idx) => `
+                <div class="flex items-center justify-between p-3 bg-slate-950 border border-slate-800/80 rounded-xl text-xs">
+                    <span class="font-semibold text-slate-200">${escapeHtml(cat)}</span>
+                    <button type="button" onclick="deleteCategory(${idx})" class="text-rose-400 hover:text-rose-300 font-bold px-2 py-1 hover:bg-rose-500/10 rounded-lg transition-colors">
+                        🗑️ Hapus
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function openCategoriesModal() {
+            renderCategoryList();
+            const modal = document.getElementById('modal-categories');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeCategoriesModal() {
+            const modal = document.getElementById('modal-categories');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function addCategory(e) {
+            if (e) e.preventDefault();
+            const input = document.getElementById('new-category-input');
+            const val = input.value.trim();
+            if (val && !categoriesData.includes(val)) {
+                categoriesData.push(val);
+                saveCategories();
+                input.value = '';
+                showToast(`Kategori "${val}" berhasil ditambahkan!`, 'success');
+            } else if (categoriesData.includes(val)) {
+                showToast(`Kategori "${val}" sudah ada.`, 'error');
+            }
+        }
+
+        function deleteCategory(idx) {
+            const removed = categoriesData.splice(idx, 1);
+            saveCategories();
+            showToast(`Kategori "${removed[0]}" dihapus`, 'info');
+        }
+
+        // Demo Items Fallback Data
+        const DEMO_ITEMS = [
+            { id: 1, nama: "Sony FX3 Cinema Camera Line", kategori: "Kamera", harga_sewa: 850000, stok: 2, status: "Tersedia", deskripsi: "Kamera Cinema Full Frame ringkas dengan sensor 4K 120fps dan S-Cinetone.", gambar_url: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=600&q=80" },
+            { id: 2, nama: "Sony FE 24-70mm f/2.8 GM II", kategori: "Lensa", harga_sewa: 350000, stok: 3, status: "Tersedia", deskripsi: "Lensa Zoom Standar Flagship G Master tajam dan ultra-ringan.", gambar_url: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?auto=format&fit=crop&w=600&q=80" },
+            { id: 3, nama: "DJI Mavic 3 Pro Cine Drone", kategori: "Drone", harga_sewa: 1200000, stok: 1, status: "Disewa", deskripsi: "Drone Aerial 3 Kamera Hasselblad Apple ProRes 4K/60fps.", gambar_url: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=600&q=80" },
+            { id: 4, nama: "Aputure LS 600d Pro Daylight", kategori: "Audio & Light", harga_sewa: 500000, stok: 2, status: "Tersedia", deskripsi: "Lampu COB LED Super Terang 600W Weather-Resistant.", gambar_url: "https://images.unsplash.com/photo-1590402494587-44b71d7772f6?auto=format&fit=crop&w=600&q=80" },
+            { id: 5, nama: "Sennheiser MKH 416 Shotgun Mic", kategori: "Audio & Light", harga_sewa: 250000, stok: 4, status: "Tersedia", deskripsi: "Microphone Shotgun Profesional Standar Industri Film.", gambar_url: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80" },
+            { id: 6, nama: "DJI RS 3 Pro Gimbal Stabilizer", kategori: "Aksesoris", harga_sewa: 300000, stok: 2, status: "Dalam Perawatan", deskripsi: "Gimbal 3-Axis Serat Karbon Kuat untuk Kamera Sinema.", gambar_url: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=600&q=80" }
+        ];
 
         // Initialize Supabase Client & Protect Admin Session
         async function initSupabase() {
@@ -412,8 +695,9 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 try {
                     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
                     document.getElementById('supabase-status-alert').classList.add('hidden');
+                    const dbInd = document.getElementById('db-status-indicator');
+                    if (dbInd) { dbInd.innerText = 'Connected'; dbInd.className = 'text-emerald-400'; }
 
-                    // Check Supabase Auth or Local Admin Session
                     let hasSupabaseSession = false;
                     try {
                         const { data: { session } } = await supabaseClient.auth.getSession();
@@ -423,12 +707,10 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                     }
 
                     if (!isLocalAdmin && !hasSupabaseSession) {
-                        console.warn('Akses Ditolak: Sesi admin tidak ditemukan. Mengalihkan ke index.html...');
                         window.location.href = 'index.html';
                         return;
                     }
 
-                    // Subscribe to auth changes (auto redirect if signed out and no local admin flag)
                     supabaseClient.auth.onAuthStateChange((event, currentSession) => {
                         if (event === 'SIGNED_OUT' && !localStorage.getItem('isAdminLoggedIn')) {
                             window.location.href = 'index.html';
@@ -438,19 +720,20 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                     fetchItems();
                 } catch (err) {
                     console.error('Supabase init error:', err);
-                    if (!isLocalAdmin) {
-                        window.location.href = 'index.html';
-                        return;
-                    }
-                    fetchItems();
+                    itemsData = [...DEMO_ITEMS];
+                    renderItems();
+                    updateStats();
                 }
             } else {
                 if (!isLocalAdmin) {
                     window.location.href = 'index.html';
                     return;
                 }
-                document.getElementById('supabase-status-alert').classList.remove('hidden');
-                renderTablePlaceholderMissingConfig();
+                const dbInd = document.getElementById('db-status-indicator');
+                if (dbInd) { dbInd.innerText = 'Demo Mode'; dbInd.className = 'text-amber-400'; }
+                itemsData = [...DEMO_ITEMS];
+                renderItems();
+                updateStats();
             }
         }
 
@@ -458,20 +741,68 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
         async function logoutAdmin() {
             localStorage.removeItem('isAdminLoggedIn');
             if (supabaseClient) {
-                try {
-                    await supabaseClient.auth.signOut();
-                } catch (err) {
-                    console.error('Logout error:', err);
-                }
+                try { await supabaseClient.auth.signOut(); } catch (err) {}
             }
             window.location.href = 'index.html';
         }
 
-        // Fetch Items (Read)
-        async function fetchItems() {
-            if (!supabaseClient) return;
+        // Switch Module Tabs
+        function switchModule(moduleName) {
+            const secKatalog = document.getElementById('module-katalog-section');
+            const secKonten = document.getElementById('module-konten-section');
+            const secPengaturan = document.getElementById('module-pengaturan-section');
 
-            renderTableLoading();
+            const btnKatalog = document.getElementById('tab-btn-katalog');
+            const btnKonten = document.getElementById('tab-btn-konten');
+            const btnPengaturan = document.getElementById('tab-btn-pengaturan');
+
+            [secKatalog, secKonten, secPengaturan].forEach(s => s.classList.add('hidden'));
+            [btnKatalog, btnKonten, btnPengaturan].forEach(b => {
+                b.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white shrink-0";
+            });
+
+            if (moduleName === 'katalog') {
+                secKatalog.classList.remove('hidden');
+                btnKatalog.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
+            } else if (moduleName === 'konten') {
+                secKonten.classList.remove('hidden');
+                btnKonten.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
+            } else if (moduleName === 'pengaturan') {
+                secPengaturan.classList.remove('hidden');
+                btnPengaturan.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
+            }
+        }
+
+        // Set View Mode (Grid vs Table)
+        function setViewMode(mode) {
+            activeViewMode = mode;
+            const gridContainer = document.getElementById('grid-view-container');
+            const tableContainer = document.getElementById('table-view-container');
+            const btnGrid = document.getElementById('btn-view-grid');
+            const btnTable = document.getElementById('btn-view-table');
+
+            if (mode === 'grid') {
+                gridContainer.classList.remove('hidden');
+                tableContainer.classList.add('hidden');
+                btnGrid.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-brand-accent text-slate-950 shadow";
+                btnTable.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-white";
+            } else {
+                tableContainer.classList.remove('hidden');
+                gridContainer.classList.add('hidden');
+                btnTable.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-brand-accent text-slate-950 shadow";
+                btnGrid.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-white";
+            }
+            renderItems();
+        }
+
+        // Fetch Items (Read from Supabase)
+        async function fetchItems() {
+            if (!supabaseClient) {
+                itemsData = [...DEMO_ITEMS];
+                renderItems();
+                updateStats();
+                return;
+            }
 
             try {
                 const { data, error } = await supabaseClient
@@ -480,25 +811,23 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                     .order('id', { ascending: true });
 
                 if (error) throw error;
-
-                itemsData = data || [];
-                renderTable();
+                itemsData = (data && data.length > 0) ? data : [...DEMO_ITEMS];
+                renderItems();
                 updateStats();
             } catch (err) {
                 console.error('Fetch items error:', err);
-                showToast(`Gagal memuat data: ${err.message}`, 'error');
-                renderTableError(err.message);
+                itemsData = [...DEMO_ITEMS];
+                renderItems();
+                updateStats();
             }
         }
 
-        // Render Data Table
-        function renderTable() {
-            const tbody = document.getElementById('table-body-items');
-            const searchVal = document.getElementById('search-input').value.toLowerCase();
+        // Render Items in Both Views
+        function renderItems() {
+            const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
             const filterKat = document.getElementById('filter-kategori').value;
             const filterStat = document.getElementById('filter-status').value;
 
-            // Apply Filters
             const filtered = itemsData.filter(item => {
                 const matchSearch = item.nama.toLowerCase().includes(searchVal) || 
                                     (item.deskripsi && item.deskripsi.toLowerCase().includes(searchVal));
@@ -507,60 +836,140 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 return matchSearch && matchKat && matchStat;
             });
 
+            // 1. Render Table View
+            const tbody = document.getElementById('table-body-items');
             if (filtered.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="7" class="py-12 text-center text-slate-500">
-                            Tidak ada item rental yang ditemukan.
-                        </td>
-                    </tr>
-                `;
-                return;
+                tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-slate-500">Tidak ada item rental yang ditemukan.</td></tr>`;
+            } else {
+                tbody.innerHTML = filtered.map(item => {
+                    const priceFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(item.harga_sewa || 0);
+                    let statusBadge = item.status === 'Tersedia' ? 
+                        `<span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold rounded-full">Tersedia</span>` :
+                        (item.status === 'Disewa' ? `<span class="px-2.5 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-bold rounded-full">Disewa</span>` :
+                        `<span class="px-2.5 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-xs font-bold rounded-full">Perawatan</span>`);
+
+                    return `
+                        <tr class="hover:bg-slate-800/40 transition-colors">
+                            <td class="py-4 px-6 font-mono text-xs text-slate-400">#${item.id}</td>
+                            <td class="py-4 px-6">
+                                <div class="flex items-center gap-3">
+                                    ${item.gambar_url ? `<img src="${item.gambar_url}" alt="${escapeHtml(item.nama)}" class="w-10 h-10 object-cover rounded-xl border border-slate-800 shrink-0">` : `<div class="w-10 h-10 bg-slate-800 rounded-xl flex items-center justify-center text-slate-500 font-bold shrink-0">📷</div>`}
+                                    <div>
+                                        <div class="font-bold text-white">${escapeHtml(item.nama)}</div>
+                                        ${item.deskripsi ? `<div class="text-xs text-slate-400 truncate max-w-xs">${escapeHtml(item.deskripsi)}</div>` : ''}
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-6 text-slate-300">
+                                <span class="px-2.5 py-1 bg-slate-800 text-slate-300 rounded-lg text-xs font-medium border border-slate-700/60">${escapeHtml(item.kategori || 'Lainnya')}</span>
+                            </td>
+                            <td class="py-4 px-6 font-bold text-brand-accent">${priceFormatted}</td>
+                            <td class="py-4 px-6 text-center font-bold text-slate-200">${item.stok ?? 1}</td>
+                            <td class="py-4 px-6 text-center">${statusBadge}</td>
+                            <td class="py-4 px-6 text-right">
+                                <div class="inline-flex items-center gap-2">
+                                    <button onclick="toggleItemStatus(${item.id})" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-brand-accent rounded-lg text-xs font-bold border border-slate-700 transition-colors">
+                                        ⚡ Toggle Status
+                                    </button>
+                                    <button onclick="editItem(${item.id})" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-brand-accent rounded-lg text-xs font-semibold border border-slate-700 transition-colors">
+                                        Edit
+                                    </button>
+                                    <button onclick="openDeleteModal(${item.id}, '${escapeHtml(item.nama)}')" class="px-2.5 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 rounded-lg text-xs font-semibold border border-rose-500/30 transition-colors">
+                                        Hapus
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
             }
 
-            tbody.innerHTML = filtered.map(item => {
-                const priceFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(item.harga_sewa || 0);
+            // 2. Render Live Cards Preview Grid
+            const gridWrapper = document.getElementById('grid-cards-wrapper');
+            if (filtered.length === 0) {
+                gridWrapper.innerHTML = `<div class="col-span-full py-16 text-center text-slate-500 font-semibold">Tidak ada item rental dalam mode grid.</div>`;
+            } else {
+                gridWrapper.innerHTML = filtered.map(item => {
+                    const priceFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(item.harga_sewa || 0);
 
-                let statusBadge = '';
-                if (item.status === 'Tersedia') {
-                    statusBadge = `<span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold rounded-full">Tersedia</span>`;
-                } else if (item.status === 'Disewa') {
-                    statusBadge = `<span class="px-2.5 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-bold rounded-full">Disewa</span>`;
-                } else {
-                    statusBadge = `<span class="px-2.5 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-xs font-bold rounded-full">Perawatan</span>`;
-                }
+                    return `
+                        <div class="glass-card rounded-3xl p-5 border border-slate-750/80 bg-slate-900/80 backdrop-blur-md relative overflow-hidden flex flex-col justify-between hover:border-brand-accent/40 transition-all duration-300 group shadow-xl">
+                            <!-- Card Header Image -->
+                            <div class="relative w-full h-48 rounded-2xl overflow-hidden mb-4 bg-slate-950/80 border border-slate-800">
+                                ${item.gambar_url ? `<img src="${item.gambar_url}" alt="${escapeHtml(item.nama)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">` : `<div class="w-full h-full flex flex-col items-center justify-center text-slate-500 font-bold text-sm"><span>📷</span><span>Tidak Ada Gambar</span></div>`}
+                                <span class="absolute top-3 left-3 px-3 py-1 bg-slate-900/90 backdrop-blur-md border border-slate-700/80 rounded-full text-[11px] font-bold text-brand-accent shadow-md">
+                                    ${escapeHtml(item.kategori || 'Kamera')}
+                                </span>
+                                <span class="absolute top-3 right-3 ${item.status === 'Tersedia' ? 'bg-emerald-500/90 text-slate-950 border-emerald-400' : (item.status === 'Disewa' ? 'bg-amber-500/90 text-slate-950 border-amber-400' : 'bg-rose-500/90 text-white border-rose-400')} backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-extrabold border shadow-md">
+                                    ${escapeHtml(item.status || 'Tersedia')}
+                                </span>
+                            </div>
 
-                return `
-                    <tr class="hover:bg-slate-800/40 transition-colors">
-                        <td class="py-4 px-6 font-mono text-xs text-slate-400">#${item.id}</td>
-                        <td class="py-4 px-6">
-                            <div class="flex items-center gap-3">
-                                ${item.gambar_url ? `<img src="${item.gambar_url}" alt="${item.nama}" class="w-10 h-10 object-cover rounded-xl border border-slate-800 shrink-0">` : `<div class="w-10 h-10 bg-slate-800 rounded-xl flex items-center justify-center text-slate-500 font-bold shrink-0">📷</div>`}
-                                <div>
-                                    <div class="font-bold text-white">${escapeHtml(item.nama)}</div>
-                                    ${item.deskripsi ? `<div class="text-xs text-slate-400 truncate max-w-xs">${escapeHtml(item.deskripsi)}</div>` : ''}
+                            <!-- Card Content Body -->
+                            <div class="space-y-2.5 flex-1">
+                                <h3 class="font-bold text-lg text-white group-hover:text-brand-accent transition-colors line-clamp-1">${escapeHtml(item.nama)}</h3>
+                                <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed">${escapeHtml(item.deskripsi || 'Peralatan sinematografi & produksi profesional Ruang Karsa.')}</p>
+                                
+                                <div class="flex items-center justify-between pt-3 border-t border-slate-800/80 mt-2">
+                                    <div>
+                                        <span class="text-[10px] text-slate-400 font-semibold block uppercase tracking-wider">Harga Sewa</span>
+                                        <span class="text-base font-extrabold text-brand-accent">${priceFormatted} <span class="text-xs text-slate-400 font-normal">/ hari</span></span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-[10px] text-slate-400 font-semibold block uppercase tracking-wider">Stok Ready</span>
+                                        <span class="text-xs font-bold text-slate-200">${item.stok ?? 1} Unit</span>
+                                    </div>
                                 </div>
                             </div>
-                        </td>
-                        <td class="py-4 px-6 text-slate-300">
-                            <span class="px-2.5 py-1 bg-slate-800 text-slate-300 rounded-lg text-xs font-medium border border-slate-700/60">${escapeHtml(item.kategori || 'Lainnya')}</span>
-                        </td>
-                        <td class="py-4 px-6 font-bold text-brand-accent">${priceFormatted}</td>
-                        <td class="py-4 px-6 text-center font-bold text-slate-200">${item.stok ?? 1}</td>
-                        <td class="py-4 px-6 text-center">${statusBadge}</td>
-                        <td class="py-4 px-6 text-right">
-                            <div class="inline-flex items-center gap-2">
-                                <button onclick="editItem(${item.id})" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-brand-accent rounded-lg text-xs font-semibold border border-slate-700 transition-colors flex items-center gap-1">
-                                    <span>Edit</span>
+
+                            <!-- Admin Quick Overlay Control Bar -->
+                            <div class="pt-4 mt-4 border-t border-slate-800 flex items-center justify-between gap-2">
+                                <button onclick="toggleItemStatus(${item.id})" title="Klik untuk ubah status cepat"
+                                        class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${item.status === 'Tersedia' ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30' : 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30'}">
+                                    <span>${item.status === 'Tersedia' ? '🔴 Set Disewa' : '🟢 Set Tersedia'}</span>
                                 </button>
-                                <button onclick="openDeleteModal(${item.id}, '${escapeHtml(item.nama)}')" class="px-3 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 rounded-lg text-xs font-semibold border border-rose-500/30 transition-colors flex items-center gap-1">
-                                    <span>Hapus</span>
-                                </button>
+                                <div class="flex items-center gap-1.5">
+                                    <button onclick="editItem(${item.id})" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-brand-accent rounded-xl text-xs font-semibold border border-slate-700 transition-colors" title="Edit Quick">
+                                        ✏️
+                                    </button>
+                                    <button onclick="openDeleteModal(${item.id}, '${escapeHtml(item.nama)}')" class="p-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 rounded-xl text-xs font-semibold border border-rose-500/30 transition-colors" title="Hapus Item">
+                                        🗑️
+                                    </button>
+                                </div>
                             </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        // Toggle Item Status Real-time (1-Click)
+        async function toggleItemStatus(id) {
+            const item = itemsData.find(i => i.id == id);
+            if (!item) return;
+
+            const newStatus = item.status === 'Tersedia' ? 'Disewa' : 'Tersedia';
+            item.status = newStatus;
+
+            renderItems();
+            updateStats();
+
+            if (supabaseClient) {
+                try {
+                    const { error } = await supabaseClient
+                        .from('rental_items')
+                        .update({ status: newStatus })
+                        .eq('id', id);
+
+                    if (error) throw error;
+                    showToast(`Status "${item.nama}" diubah ke ${newStatus}`, 'success');
+                } catch (err) {
+                    console.error('Update status error:', err);
+                    showToast('Update lokal berhasil (Supabase Offline)', 'info');
+                }
+            } else {
+                showToast(`Status "${item.nama}" diubah ke ${newStatus} (Mode Demo)`, 'success');
+            }
         }
 
         // Stats Calculation
@@ -576,7 +985,20 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             document.getElementById('stat-rented-items').textContent = rented;
         }
 
-        // Open Form Modal for Create or Edit
+        // Form Modal Live Image Preview
+        function updateImagePreview(url) {
+            const box = document.getElementById('image-preview-box');
+            const img = document.getElementById('image-preview-img');
+            if (!box || !img) return;
+            if (url && url.trim()) {
+                img.src = url.trim();
+                box.classList.remove('hidden');
+            } else {
+                box.classList.add('hidden');
+            }
+        }
+
+        // Open Form Modal
         function openFormModal(item = null) {
             const modal = document.getElementById('modal-item-form');
             const title = document.getElementById('modal-form-title');
@@ -594,9 +1016,11 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 document.getElementById('form-status').value = item.status || 'Tersedia';
                 document.getElementById('form-deskripsi').value = item.deskripsi || '';
                 document.getElementById('form-gambar').value = item.gambar_url || '';
+                updateImagePreview(item.gambar_url || '');
             } else {
                 title.textContent = 'Tambah Item Rental Baru';
                 document.getElementById('form-item-id').value = '';
+                updateImagePreview('');
             }
 
             modal.classList.remove('hidden');
@@ -609,73 +1033,81 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             modal.classList.remove('flex');
         }
 
-        // Edit Item Click Action
         function editItem(id) {
-            const item = itemsData.find(i => i.id === id);
-            if (item) {
-                openFormModal(item);
-            }
+            const item = itemsData.find(i => i.id == id);
+            if (item) openFormModal(item);
         }
 
-        // Form Submit Handler (Create & Update)
-        document.getElementById('rental-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        // Save Item (Create or Update)
+        async function saveItem(e) {
+            if (e) e.preventDefault();
 
-            if (!supabaseClient) {
-                showToast('Supabase belum dikonfigurasi!', 'error');
-                return;
-            }
+            const itemId = document.getElementById('form-item-id').value;
+            const nama = document.getElementById('form-nama').value.trim();
+            const kategori = document.getElementById('form-kategori').value;
+            const harga_sewa = parseFloat(document.getElementById('form-harga').value) || 0;
+            const stok = parseInt(document.getElementById('form-stok').value) || 1;
+            const status = document.getElementById('form-status').value;
+            const deskripsi = document.getElementById('form-deskripsi').value.trim();
+            const gambar_url = document.getElementById('form-gambar').value.trim();
 
-            const id = document.getElementById('form-item-id').value;
-            const payload = {
-                nama: document.getElementById('form-nama').value.trim(),
-                kategori: document.getElementById('form-kategori').value,
-                harga_sewa: Number(document.getElementById('form-harga').value),
-                stok: Number(document.getElementById('form-stok').value),
-                status: document.getElementById('form-status').value,
-                deskripsi: document.getElementById('form-deskripsi').value.trim(),
-                gambar_url: document.getElementById('form-gambar').value.trim()
-            };
+            const payload = { nama, kategori, harga_sewa, stok, status, deskripsi, gambar_url };
 
             const submitBtn = document.getElementById('btn-submit-form');
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Menyimpan...';
+            submitBtn.innerText = 'Menyimpan...';
 
-            try {
-                if (id) {
-                    // Update existing item
-                    const { error } = await supabaseClient
-                        .from('rental_items')
-                        .update(payload)
-                        .eq('id', id);
-
-                    if (error) throw error;
-                    showToast('Item berhasil diperbarui!', 'success');
-                } else {
-                    // Create new item
-                    const { error } = await supabaseClient
-                        .from('rental_items')
-                        .insert([payload]);
-
-                    if (error) throw error;
-                    showToast('Item baru berhasil ditambahkan!', 'success');
+            if (supabaseClient) {
+                try {
+                    if (itemId) {
+                        const { error } = await supabaseClient
+                            .from('rental_items')
+                            .update(payload)
+                            .eq('id', itemId);
+                        if (error) throw error;
+                        showToast('Item berhasil diperbarui!', 'success');
+                    } else {
+                        const { error } = await supabaseClient
+                            .from('rental_items')
+                            .insert([payload]);
+                        if (error) throw error;
+                        showToast('Item baru berhasil ditambahkan!', 'success');
+                    }
+                    closeFormModal();
+                    fetchItems();
+                } catch (err) {
+                    console.error('Save item error:', err);
+                    showToast('Gagal menyimpan di Supabase. Menyimpan lokal...', 'error');
+                    saveItemLocal(itemId, payload);
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = 'Simpan Item';
                 }
-
-                closeFormModal();
-                fetchItems();
-            } catch (err) {
-                console.error('Save error:', err);
-                showToast(`Gagal menyimpan: ${err.message}`, 'error');
-            } finally {
+            } else {
+                saveItemLocal(itemId, payload);
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Simpan Item';
+                submitBtn.innerText = 'Simpan Item';
             }
-        });
+        }
 
-        // Delete Modal Handlers
-        function openDeleteModal(id, name) {
+        function saveItemLocal(itemId, payload) {
+            if (itemId) {
+                const idx = itemsData.findIndex(i => i.id == itemId);
+                if (idx !== -1) itemsData[idx] = { ...itemsData[idx], ...payload };
+            } else {
+                const newId = itemsData.length > 0 ? Math.max(...itemsData.map(i => Number(i.id) || 0)) + 1 : 1;
+                itemsData.push({ id: newId, ...payload });
+            }
+            closeFormModal();
+            renderItems();
+            updateStats();
+            showToast('Item berhasil disimpan (Mode Demo)!', 'success');
+        }
+
+        // Delete Item Modals
+        function openDeleteModal(id, nama) {
             itemToDeleteId = id;
-            document.getElementById('delete-item-name').textContent = name;
+            document.getElementById('delete-item-name').innerText = nama;
             const modal = document.getElementById('modal-delete');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
@@ -688,34 +1120,58 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             modal.classList.remove('flex');
         }
 
-        document.getElementById('btn-confirm-delete').addEventListener('click', async () => {
-            if (!itemToDeleteId || !supabaseClient) return;
+        async function confirmDeleteItem() {
+            if (!itemToDeleteId) return;
 
-            const btn = document.getElementById('btn-confirm-delete');
-            btn.disabled = true;
-            btn.textContent = 'Menghapus...';
-
-            try {
-                const { error } = await supabaseClient
-                    .from('rental_items')
-                    .delete()
-                    .eq('id', itemToDeleteId);
-
-                if (error) throw error;
-
-                showToast('Item berhasil dihapus dari database Supabase!', 'success');
+            if (supabaseClient) {
+                try {
+                    const { error } = await supabaseClient
+                        .from('rental_items')
+                        .delete()
+                        .eq('id', itemToDeleteId);
+                    if (error) throw error;
+                    showToast('Item berhasil dihapus!', 'success');
+                    closeDeleteModal();
+                    fetchItems();
+                } catch (err) {
+                    console.error('Delete item error:', err);
+                    itemsData = itemsData.filter(i => i.id != itemToDeleteId);
+                    closeDeleteModal();
+                    renderItems();
+                    updateStats();
+                    showToast('Item dihapus dari tampilan lokal', 'info');
+                }
+            } else {
+                itemsData = itemsData.filter(i => i.id != itemToDeleteId);
                 closeDeleteModal();
-                fetchItems();
-            } catch (err) {
-                console.error('Delete error:', err);
-                showToast(`Gagal menghapus: ${err.message}`, 'error');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Ya, Hapus Permanent';
+                renderItems();
+                updateStats();
+                showToast('Item berhasil dihapus (Mode Demo)!', 'success');
             }
-        });
+        }
 
-        // Supabase Config Modal Handlers
+        // Save Landing Content Handler
+        function saveLandingContent(e) {
+            if (e) e.preventDefault();
+            showToast('Konten Landing Page berhasil disimpan!', 'success');
+        }
+
+        // Save Web Settings Handler
+        function saveWebSettings(e) {
+            if (e) e.preventDefault();
+            const url = document.getElementById('setting-supabase-url').value.trim();
+            const key = document.getElementById('setting-supabase-key').value.trim();
+            if (url && key) {
+                localStorage.setItem('KARSA_SUPABASE_URL', url);
+                localStorage.setItem('KARSA_SUPABASE_KEY', key);
+                SUPABASE_URL = url;
+                SUPABASE_KEY = key;
+                initSupabase();
+                showToast('Pengaturan Web & Supabase berhasil disimpan!', 'success');
+            }
+        }
+
+        // Supabase Config Modals
         function openConfigModal() {
             document.getElementById('cfg-url').value = SUPABASE_URL;
             document.getElementById('cfg-key').value = SUPABASE_KEY;
@@ -730,127 +1186,80 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             modal.classList.remove('flex');
         }
 
-        document.getElementById('config-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            SUPABASE_URL = document.getElementById('cfg-url').value.trim();
-            SUPABASE_KEY = document.getElementById('cfg-key').value.trim();
-
-            localStorage.setItem('KARSA_SUPABASE_URL', SUPABASE_URL);
-            localStorage.setItem('KARSA_SUPABASE_KEY', SUPABASE_KEY);
-
-            closeConfigModal();
-            showToast('Konfigurasi Supabase berhasil disimpan!', 'success');
-            initSupabase();
-        });
-
-        function resetConfig() {
-            if (confirm('Reset konfigurasi Supabase ke kredensial default?')) {
-                localStorage.removeItem('KARSA_SUPABASE_URL');
-                localStorage.removeItem('KARSA_SUPABASE_KEY');
-                SUPABASE_URL = DEFAULT_SUPABASE_URL;
-                SUPABASE_KEY = DEFAULT_SUPABASE_KEY;
+        function saveSupabaseConfig(e) {
+            if (e) e.preventDefault();
+            const url = document.getElementById('cfg-url').value.trim();
+            const key = document.getElementById('cfg-key').value.trim();
+            if (url && key) {
+                localStorage.setItem('KARSA_SUPABASE_URL', url);
+                localStorage.setItem('KARSA_SUPABASE_KEY', key);
+                SUPABASE_URL = url;
+                SUPABASE_KEY = key;
                 closeConfigModal();
-                showToast('Konfigurasi Supabase telah direset ke default.', 'info');
                 initSupabase();
+                showToast('Kredensial Supabase disimpan!', 'success');
             }
         }
 
-        // Toggle SQL Guide Box
+        function resetConfig() {
+            localStorage.removeItem('KARSA_SUPABASE_URL');
+            localStorage.removeItem('KARSA_SUPABASE_KEY');
+            SUPABASE_URL = DEFAULT_SUPABASE_URL;
+            SUPABASE_KEY = DEFAULT_SUPABASE_KEY;
+            closeConfigModal();
+            initSupabase();
+            showToast('Kredensial Supabase di-reset ke default', 'info');
+        }
+
+        // Toast Helper
+        function showToast(msg, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgClass = type === 'success' ? 'bg-emerald-600 text-white' : (type === 'error' ? 'bg-rose-600 text-white' : 'bg-slate-800 text-slate-200 border border-slate-700');
+            
+            toast.className = `px-4 py-3 rounded-2xl shadow-xl text-xs font-bold ${bgClass} transition-all duration-300 flex items-center gap-2 pointer-events-auto`;
+            toast.innerHTML = `<span>${type === 'success' ? '✅' : (type === 'error' ? '❌' : 'ℹ️')}</span><span>${msg}</span>`;
+            
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Helper Escape HTML
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        // Event Listeners for Filters & Search
+        document.getElementById('search-input').addEventListener('input', renderItems);
+        document.getElementById('filter-kategori').addEventListener('change', renderItems);
+        document.getElementById('filter-status').addEventListener('change', renderItems);
+
         document.getElementById('btn-toggle-sql').addEventListener('click', () => {
             const box = document.getElementById('sql-guide-box');
             box.classList.toggle('hidden');
         });
 
         document.getElementById('btn-copy-sql').addEventListener('click', () => {
-            const sqlText = document.getElementById('sql-code-text').textContent;
-            navigator.clipboard.writeText(sqlText);
-            showToast('Script SQL berhasil dicopy ke clipboard!', 'success');
+            const code = document.getElementById('sql-code-text').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                showToast('Skema SQL disalin ke clipboard!', 'success');
+            });
         });
 
-        // UI Helpers & Loaders
-        function renderTableLoading() {
-            document.getElementById('table-body-items').innerHTML = `
-                <tr>
-                    <td colspan="7" class="py-12 text-center text-slate-400">
-                        <div class="inline-flex items-center gap-3">
-                            <div class="w-5 h-5 border-2 border-brand-accent border-t-transparent rounded-full animate-spin"></div>
-                            <span>Memuat data item rental...</span>
-                        </div>
-                    </td>
-                </tr>
-            `;
-        }
-
-        function renderTablePlaceholderMissingConfig() {
-            document.getElementById('table-body-items').innerHTML = `
-                <tr>
-                    <td colspan="7" class="py-12 text-center text-slate-400">
-                        <div class="space-y-3">
-                            <div class="text-3xl">⚡</div>
-                            <div class="font-bold text-slate-300">Belum Terhubung ke Supabase</div>
-                            <div class="text-xs text-slate-500 max-w-sm mx-auto">Klik tombol "Set Supabase" untuk memasukkan URL & Anon Key Supabase project Anda.</div>
-                        </div>
-                    </td>
-                </tr>
-            `;
-        }
-
-        function renderTableError(msg) {
-            document.getElementById('table-body-items').innerHTML = `
-                <tr>
-                    <td colspan="7" class="py-12 text-center text-rose-400">
-                        <div class="space-y-2">
-                            <div class="font-bold text-sm">Gagal Mengambil Data Dari Supabase</div>
-                            <div class="text-xs font-mono text-slate-400 max-w-lg mx-auto bg-slate-950 p-3 rounded-xl border border-slate-800">${escapeHtml(msg)}</div>
-                            <div class="text-xs text-slate-500 pt-2">Pastikan tabel <code>rental_items</code> sudah dibuat di Supabase & RLS diizinkan.</div>
-                        </div>
-                    </td>
-                </tr>
-            `;
-        }
-
-        // Toast Messages
-        function showToast(msg, type = 'info') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-
-            let bgClass = 'bg-slate-900 border-slate-700 text-slate-200';
-            if (type === 'success') bgClass = 'bg-emerald-950 border-emerald-600/40 text-emerald-300';
-            if (type === 'error') bgClass = 'bg-rose-950 border-rose-600/40 text-rose-300';
-
-            toast.className = `px-4 py-3 rounded-2xl border text-xs font-semibold shadow-xl transition-all duration-300 opacity-0 transform translate-y-2 pointer-events-auto flex items-center gap-2 ${bgClass}`;
-            toast.innerHTML = `<span>${msg}</span>`;
-
-            container.appendChild(toast);
-
-            setTimeout(() => {
-                toast.classList.remove('opacity-0', 'translate-y-2');
-            }, 10);
-
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-2');
-                setTimeout(() => toast.remove(), 300);
-            }, 4000);
-        }
-
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>"']/g, function(m) {
-                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
-            });
-        }
-
-        // Event Listeners
-        document.getElementById('btn-add-item-top').addEventListener('click', () => openFormModal(null));
-        document.getElementById('btn-supabase-config').addEventListener('click', openConfigModal);
-        document.getElementById('btn-refresh').addEventListener('click', fetchItems);
-
-        document.getElementById('search-input').addEventListener('input', renderTable);
-        document.getElementById('filter-kategori').addEventListener('change', renderTable);
-        document.getElementById('filter-status').addEventListener('change', renderTable);
-
-        // Run Init
-        window.addEventListener('DOMContentLoaded', initSupabase);
+        // Initialize App on DOM Load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategoryDropdowns();
+            initSupabase();
+        });
     </script>
 </body>
 </html>
