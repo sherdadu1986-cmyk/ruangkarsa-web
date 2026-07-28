@@ -330,23 +330,20 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             </div>
         <!-- ================= MODULE 3: LOGO PARTNER & KLIEN ================= -->
         <div id="tab-logo-partner" class="tab-content hidden space-y-6">
-            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
-                <!-- Header Section -->
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800 pb-4">
-                    <div>
-                        <h2 class="text-2xl font-bold text-white">Manajemen Logo Partner & Klien</h2>
-                        <p class="text-slate-400 text-sm mt-1">Kelola logo brand dan instansi yang tampil di slider marquee depan.</p>
-                    </div>
-                    <button id="btn-add-logo" onclick="openLogoModal()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-md transition-all">
-                        <span>+</span> Tambah Logo Partner
-                    </button>
+            <div class="flex justify-between items-center bg-slate-800/50 p-5 rounded-2xl border border-slate-700/80 shadow-xl">
+                <div>
+                    <h2 class="text-xl font-bold text-white">Manajemen Logo Partner & Klien</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Tambah dan atur logo brand yang muncul di marquee slider depan.</p>
                 </div>
-
-                <!-- Grid List Logo -->
-                <div id="logo-list-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <!-- Tempat render kartu logo -->
-                </div>
+                <button onclick="openModalLogo()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-sm transition shadow-md flex items-center gap-1.5">
+                    <span>+ Tambah Logo Klien</span>
+                </button>
             </div>
+
+            <div id="grid-logo-partner" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Tempat render logo partner -->
+            </div>
+            <div id="logo-list-grid" class="hidden"></div>
         </div>
 
         <!-- ================= MODULE 4: KONTEN LANDING PAGE ================= -->
@@ -1096,21 +1093,26 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
 
         // ================= CLIENT LOGO ADMIN MANAGER =================
         const DEMO_LOGOS = [
-            { id: 1, nama: "TELKOM GROUP", logo_url: "", urutan: 1 },
-            { id: 2, nama: "PERTAMINA", logo_url: "", urutan: 2 },
-            { id: 3, nama: "BANK MANDIRI", logo_url: "", urutan: 3 },
-            { id: 4, nama: "KEMENPUPR", logo_url: "", urutan: 4 },
-            { id: 5, nama: "LUXE TIMEPIECE", logo_url: "", urutan: 5 },
-            { id: 6, nama: "SOUNDSCAPE FEST", logo_url: "", urutan: 6 },
-            { id: 7, nama: "SHOPEE MEDIA", logo_url: "", urutan: 7 },
-            { id: 8, nama: "GOTO IMPACT", logo_url: "", urutan: 8 }
+            { id: 1, nama: "TOKOPEDIA", logo_url: "", urutan: 1 },
+            { id: 2, nama: "SHOPEE", logo_url: "", urutan: 2 },
+            { id: 3, nama: "RUANG KARSA", logo_url: "", urutan: 3 },
+            { id: 4, nama: "GOJEK", logo_url: "", urutan: 4 },
+            { id: 5, nama: "TELKOM GROUP", logo_url: "", urutan: 5 }
         ];
 
         let clientLogosData = JSON.parse(localStorage.getItem('rk_client_logos')) || [...DEMO_LOGOS];
         let currentLogoMode = 'file';
         let selectedLogoLocalFile = null;
 
+        function openModalLogo(item = null) {
+            openLogoModal(item);
+        }
+
         function loadClientLogos() {
+            if (!clientLogosData || clientLogosData.length === 0) {
+                clientLogosData = [...DEMO_LOGOS];
+                localStorage.setItem('rk_client_logos', JSON.stringify(clientLogosData));
+            }
             renderAdminLogos();
         }
 
@@ -1163,10 +1165,6 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
         }
 
         function renderAdminLogos() {
-            const grid1 = document.getElementById('logo-list-grid');
-            const grid2 = document.getElementById('admin-logos-grid');
-            if (!grid1 && !grid2) return;
-
             if (!clientLogosData || clientLogosData.length === 0) {
                 clientLogosData = [...DEMO_LOGOS];
             }
@@ -1189,8 +1187,10 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 `;
             }).join('');
 
-            if (grid1) grid1.innerHTML = htmlContent;
-            if (grid2) grid2.innerHTML = htmlContent;
+            ['grid-logo-partner', 'logo-list-grid', 'admin-logos-grid'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = htmlContent;
+            });
         }
 
         function openLogoModal(item = null) {
