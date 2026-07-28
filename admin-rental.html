@@ -1785,29 +1785,37 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
 
         async function processImageForSave() {
             if (currentImageMode === 'url' || !selectedLocalFile) {
-                return document.getElementById('form-gambar').value.trim();
+                return document.getElementById('form-gambar')?.value?.trim() || '';
             }
 
-            // Attempt upload to Supabase Storage
+            // Attempt upload to Supabase Storage with bucket name fallbacks
             if (supabaseClient && selectedLocalFile) {
-                try {
-                    const fileExt = selectedLocalFile.name.split('.').pop();
-                    const fileName = `item-${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-                    const { data, error } = await supabaseClient.storage
-                        .from('rental-images')
-                        .upload(fileName, selectedLocalFile, { upsert: true });
+                const fileExt = selectedLocalFile.name.split('.').pop();
+                const fileName = `item-${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+                const buckets = ['rental_images', 'rental-images', 'item-images'];
 
-                    if (!error && data) {
-                        const { data: publicUrlData } = supabaseClient.storage
-                            .from('rental-images')
-                            .getPublicUrl(fileName);
-                        
-                        if (publicUrlData && publicUrlData.publicUrl) {
-                            return publicUrlData.publicUrl;
+                for (const bucketName of buckets) {
+                    try {
+                        console.log(`Memulai upload file ke bucket ${bucketName}...`, fileName);
+                        const { data, error } = await supabaseClient.storage
+                            .from(bucketName)
+                            .upload(fileName, selectedLocalFile, { cacheControl: '3600', upsert: true });
+
+                        if (!error && data) {
+                            const { data: publicUrlData } = supabaseClient.storage
+                                .from(bucketName)
+                                .getPublicUrl(fileName);
+                            
+                            if (publicUrlData && publicUrlData.publicUrl) {
+                                console.log("Upload sukses ke bucket", bucketName, "URL:", publicUrlData.publicUrl);
+                                return publicUrlData.publicUrl;
+                            }
+                        } else if (error) {
+                            console.warn(`Upload info bucket ${bucketName}:`, error.message);
                         }
+                    } catch (stErr) {
+                        console.warn(`Storage upload exception for bucket ${bucketName}:`, stErr);
                     }
-                } catch (stErr) {
-                    console.log('Supabase storage upload fallback to Base64:', stErr);
                 }
             }
 
@@ -1841,12 +1849,12 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             const title = document.getElementById('modal-form-title');
             const form = document.getElementById('rental-form');
 
-            form.reset();
+            if (form) form.reset();
             selectedLocalFile = null;
             switchImageInputMode('file');
 
             if (item) {
-                title.textContent = 'Edit Item Rental';
+                if (title) title.textContent = 'Edit Item Rental';
                 document.getElementById('form-item-id').value = item.id;
                 document.getElementById('form-nama').value = item.nama;
                 document.getElementById('form-kategori').value = item.kategori || 'Kamera';
@@ -1860,19 +1868,23 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 }
                 updateImagePreview(item.gambar_url || '');
             } else {
-                title.textContent = 'Tambah Item Rental Baru';
+                if (title) title.textContent = 'Tambah Item Rental Baru';
                 document.getElementById('form-item-id').value = '';
                 updateImagePreview('');
             }
 
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
         }
 
         function closeFormModal() {
             const modal = document.getElementById('modal-item-form');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
         }
 
         function editItem(id) {
@@ -1880,34 +1892,43 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             if (item) openFormModal(item);
         }
 
-        // Save Item (Create or Update)
+        // Safe Async Form Handler Alias
+        async function handleSaveItem(e) {
+            return await saveItem(e);
+        }
+
+        // Save Item (Create or Update) Safe-Async Implementation
         async function saveItem(e) {
             if (e) e.preventDefault();
 
-            const itemId = document.getElementById('form-item-id').value;
-            const nama = document.getElementById('form-nama').value.trim();
-            const kategori = document.getElementById('form-kategori').value;
-            const harga_sewa = parseFloat(document.getElementById('form-harga').value) || 0;
-            const stok = parseInt(document.getElementById('form-stok').value) || 1;
-            const status = document.getElementById('form-status').value;
-            const deskripsi = document.getElementById('form-deskripsi').value.trim();
+            const itemId = document.getElementById('form-item-id')?.value;
+            const nama = document.getElementById('form-nama')?.value?.trim() || '';
+            const kategori = document.getElementById('form-kategori')?.value || 'Kamera';
+            const harga_sewa = parseFloat(document.getElementById('form-harga')?.value) || 0;
+            const stok = parseInt(document.getElementById('form-stok')?.value) || 1;
+            const status = document.getElementById('form-status')?.value || 'Tersedia';
+            const deskripsi = document.getElementById('form-deskripsi')?.value?.trim() || '';
             
-            const submitBtn = document.getElementById('btn-submit-form');
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Uploading & Menyimpan...';
+            const submitBtn = document.getElementById('btn-submit-form') || document.getElementById('btn-submit-item');
+            const originalBtnText = submitBtn ? submitBtn.innerText : 'Simpan Item';
 
-            // Build payload WITHOUT 'deskripsi' property to prevent Supabase column mismatch
-            const payload = { nama, kategori, harga_sewa, stok, status, gambar_url };
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerText = 'Memproses...';
+            }
 
-            if (supabaseClient) {
-                try {
+            try {
+                const gambar_url = await processImageForSave();
+                const payload = { nama, kategori, harga_sewa, stok, status, gambar_url };
+
+                if (supabaseClient) {
                     if (itemId) {
                         let { error } = await supabaseClient
                             .from('rental_items')
                             .update(payload)
                             .eq('id', itemId);
 
-                        // Fallback for tables with English column names (name, category, price, stock, status, image_url)
+                        // Fallback for tables with English column names
                         if (error && (error.message.includes('column') || error.code === 'PGRST204')) {
                             const englishPayload = {
                                 name: nama,
@@ -1925,18 +1946,15 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                         }
 
                         if (error) {
-                            console.error('SUPABASE UPDATE ERROR:', error);
-                            alert('Error Supabase Update: ' + error.message);
-                            showToast('Error Supabase: ' + error.message, 'error');
-                            return;
+                            throw new Error('Gagal Simpan Database Update: ' + error.message);
                         }
-                        showToast('Item berhasil diperbarui di Supabase!', 'success');
+                        showToast('Item berhasil diperbarui!', 'success');
                     } else {
                         let { error } = await supabaseClient
                             .from('rental_items')
                             .insert([payload]);
 
-                        // Fallback for tables with English column names (name, category, price, stock, status, image_url)
+                        // Fallback for tables with English column names
                         if (error && (error.message.includes('column') || error.code === 'PGRST204')) {
                             const englishPayload = {
                                 name: nama,
@@ -1953,26 +1971,25 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                         }
 
                         if (error) {
-                            console.error('SUPABASE INSERT ERROR:', error);
-                            alert('Error Supabase Insert: ' + error.message);
-                            showToast('Error Supabase: ' + error.message, 'error');
-                            return;
+                            throw new Error('Gagal Simpan Database Insert: ' + error.message);
                         }
-                        showToast('Item baru berhasil ditambahkan ke Supabase!', 'success');
+                        showToast('Item baru berhasil ditambahkan!', 'success');
                     }
                     closeFormModal();
-                    fetchItems();
-                } catch (err) {
-                    console.error('Save item exception:', err);
-                    alert('Supabase Exception: ' + (err.message || err));
-                } finally {
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = 'Simpan Item';
+                    await fetchItems();
+                } else {
+                    saveItemLocal(itemId, { ...payload, deskripsi });
                 }
-            } else {
-                saveItemLocal(itemId, { ...payload, deskripsi });
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Simpan Item';
+            } catch (error) {
+                console.error("CRITICAL ERROR:", error);
+                alert(error.message || 'Terjadi kesalahan tidak terduga.');
+                showToast(error.message || 'Gagal menyimpan item', 'error');
+            } finally {
+                // PASTI MATIKAN LOADING APAPUN YANG TERJADI
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = originalBtnText;
+                }
             }
         }
 
