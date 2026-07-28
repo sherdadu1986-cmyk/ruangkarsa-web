@@ -329,7 +329,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 </div>
             </div>
         <!-- ================= MODULE 3: LOGO PARTNER & KLIEN ================= -->
-        <div id="module-logos-section" class="hidden space-y-6">
+        <div id="tab-logo-partner" class="hidden space-y-6">
             <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
@@ -762,6 +762,12 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                     </div>
                 </div>
 
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Urutan Tampil / Order Number <span class="text-slate-400 font-normal">(Opsional)</span></label>
+                    <input type="number" id="form-logo-urutan" min="1" placeholder="Contoh: 1, 2, 3..." 
+                           class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-100 focus:outline-none focus:border-brand-accent">
+                </div>
+
                 <div class="pt-4 border-t border-slate-800 flex justify-end gap-3">
                     <button type="button" onclick="closeLogoModal()" class="px-5 py-2.5 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors">
                         Batal
@@ -1040,11 +1046,23 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             window.location.href = 'index.html';
         }
 
-        // Switch Module Tabs
+        // Switch Module Tabs Alias
+        function switchTab(tabName) {
+            if (tabName === 'logo-partner' || tabName === 'logos' || tabName === 'logo') {
+                switchModule('logos');
+            } else if (tabName === 'portofolio' || tabName === 'portfolio') {
+                switchModule('portofolio');
+            } else if (tabName === 'katalog' || tabName === 'rental') {
+                switchModule('katalog');
+            } else {
+                switchModule(tabName);
+            }
+        }
+
         function switchModule(moduleName) {
             const secKatalog = document.getElementById('module-katalog-section');
             const secPortofolio = document.getElementById('module-portofolio-section');
-            const secLogos = document.getElementById('module-logos-section');
+            const secLogos = document.getElementById('tab-logo-partner') || document.getElementById('module-logos-section');
             const secKonten = document.getElementById('module-konten-section');
             const secPengaturan = document.getElementById('module-pengaturan-section');
 
@@ -1066,7 +1084,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 secPortofolio?.classList.remove('hidden');
                 if (btnPortofolio) btnPortofolio.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
                 renderAdminPortfolio();
-            } else if (moduleName === 'logos') {
+            } else if (moduleName === 'logos' || moduleName === 'logo-partner') {
                 secLogos?.classList.remove('hidden');
                 if (btnLogos) btnLogos.className = "px-5 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2 bg-brand-accent text-slate-950 shadow-md shrink-0";
                 renderAdminLogos();
@@ -1081,17 +1099,17 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
 
         // ================= CLIENT LOGO ADMIN MANAGER =================
         const DEMO_LOGOS = [
-            { id: 1, nama: "TELKOM GROUP", logo_url: "" },
-            { id: 2, nama: "PERTAMINA", logo_url: "" },
-            { id: 3, nama: "BANK MANDIRI", logo_url: "" },
-            { id: 4, nama: "KEMENPUPR", logo_url: "" },
-            { id: 5, nama: "LUXE TIMEPIECE", logo_url: "" },
-            { id: 6, nama: "SOUNDSCAPE FEST", logo_url: "" },
-            { id: 7, nama: "SHOPEE MEDIA", logo_url: "" },
-            { id: 8, nama: "GOTO IMPACT", logo_url: "" }
+            { id: 1, nama: "TELKOM GROUP", logo_url: "", urutan: 1 },
+            { id: 2, nama: "PERTAMINA", logo_url: "", urutan: 2 },
+            { id: 3, nama: "BANK MANDIRI", logo_url: "", urutan: 3 },
+            { id: 4, nama: "KEMENPUPR", logo_url: "", urutan: 4 },
+            { id: 5, nama: "LUXE TIMEPIECE", logo_url: "", urutan: 5 },
+            { id: 6, nama: "SOUNDSCAPE FEST", logo_url: "", urutan: 6 },
+            { id: 7, nama: "SHOPEE MEDIA", logo_url: "", urutan: 7 },
+            { id: 8, nama: "GOTO IMPACT", logo_url: "", urutan: 8 }
         ];
 
-        let clientLogosData = [...DEMO_LOGOS];
+        let clientLogosData = JSON.parse(localStorage.getItem('rk_client_logos')) || [...DEMO_LOGOS];
         let currentLogoMode = 'file';
         let selectedLogoLocalFile = null;
 
@@ -1147,16 +1165,19 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             const grid = document.getElementById('admin-logos-grid');
             if (!grid) return;
 
-            grid.innerHTML = clientLogosData.map(logo => {
+            const sorted = [...clientLogosData].sort((a, b) => (a.urutan || 99) - (b.urutan || 99));
+
+            grid.innerHTML = sorted.map(logo => {
                 return `
-                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3 flex flex-col justify-between items-center text-center space-y-2 group hover:border-brand-accent/40 transition-all">
-                        <div class="w-full h-16 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center p-2">
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3 flex flex-col justify-between items-center text-center space-y-2 group hover:border-brand-accent/40 transition-all relative">
+                        <span class="absolute top-2 left-2 px-1.5 py-0.5 bg-slate-900 border border-slate-800 text-[9px] font-mono text-brand-accent rounded-md">#${logo.urutan || '-'}</span>
+                        <div class="w-full h-16 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center p-2 mt-2">
                             ${logo.logo_url ? `<img src="${logo.logo_url}" alt="${escapeHtml(logo.nama)}" class="max-h-full max-w-full object-contain">` : `<span class="text-xs font-extrabold text-slate-300 tracking-wider">${escapeHtml(logo.nama)}</span>`}
                         </div>
                         <span class="text-[11px] font-bold text-slate-200 truncate w-full">${escapeHtml(logo.nama)}</span>
                         <div class="flex items-center gap-1 w-full pt-1">
-                            <button onclick="editLogoItem(${logo.id})" class="flex-1 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold rounded-lg">Edit</button>
-                            <button onclick="deleteLogoItem(${logo.id})" class="flex-1 py-1 bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-[10px] font-bold rounded-lg border border-rose-500/30">Hapus</button>
+                            <button onclick="editLogoItem(${logo.id})" class="flex-1 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold rounded-lg transition-colors">Edit</button>
+                            <button onclick="deleteLogoItem(${logo.id})" class="flex-1 py-1 bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-[10px] font-bold rounded-lg border border-rose-500/30 transition-colors">Hapus</button>
                         </div>
                     </div>
                 `;
@@ -1176,6 +1197,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 document.getElementById('form-logo-id').value = item.id;
                 document.getElementById('form-logo-nama').value = item.nama;
                 document.getElementById('form-logo-url').value = item.logo_url || '';
+                document.getElementById('form-logo-urutan').value = item.urutan || '';
                 if (item.logo_url) {
                     switchLogoInputMode('url');
                     updateLogoPreview(item.logo_url);
@@ -1185,6 +1207,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                 document.getElementById('form-logo-id').value = '';
                 document.getElementById('form-logo-nama').value = '';
                 document.getElementById('form-logo-url').value = '';
+                document.getElementById('form-logo-urutan').value = clientLogosData.length + 1;
                 updateLogoPreview('');
             }
 
@@ -1208,6 +1231,8 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
         function deleteLogoItem(id) {
             if (confirm('Apakah Anda yakin ingin menghapus logo klien ini?')) {
                 clientLogosData = clientLogosData.filter(l => l.id != id);
+                localStorage.setItem('rk_client_logos', JSON.stringify(clientLogosData));
+                window.dispatchEvent(new Event('storage'));
                 renderAdminLogos();
                 showToast('Logo klien berhasil dihapus', 'info');
             }
@@ -1217,6 +1242,8 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             if (e) e.preventDefault();
             const id = document.getElementById('form-logo-id').value;
             const nama = document.getElementById('form-logo-nama').value.trim();
+            const urutanVal = document.getElementById('form-logo-urutan').value;
+            const urutan = urutanVal ? Number(urutanVal) : (clientLogosData.length + 1);
             
             let logo_url = document.getElementById('form-logo-url').value.trim();
 
@@ -1231,13 +1258,16 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             if (id) {
                 const index = clientLogosData.findIndex(l => l.id == id);
                 if (index !== -1) {
-                    clientLogosData[index] = { id: Number(id), nama, logo_url };
+                    clientLogosData[index] = { id: Number(id), nama, logo_url, urutan };
                 }
                 showToast('Logo klien berhasil diperbarui!', 'success');
             } else {
-                clientLogosData.unshift({ id: Date.now(), nama, logo_url });
+                clientLogosData.unshift({ id: Date.now(), nama, logo_url, urutan });
                 showToast('Logo klien baru berhasil ditambahkan!', 'success');
             }
+
+            localStorage.setItem('rk_client_logos', JSON.stringify(clientLogosData));
+            window.dispatchEvent(new Event('storage'));
 
             renderAdminLogos();
             closeLogoModal();

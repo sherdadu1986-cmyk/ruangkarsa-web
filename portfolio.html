@@ -128,7 +128,7 @@
 
                 <!-- Infinite Auto-Scroll Slider Track Container -->
                 <div class="marquee-container py-2">
-                    <div class="marquee-track">
+                    <div class="marquee-track" id="portfolio-marquee-track">
                         <!-- Set 1 -->
                         <div class="px-6 py-4 rounded-2xl bg-slate-900/80 border border-slate-800 client-logo-card flex items-center justify-center min-w-[180px] h-20">
                             <span class="text-slate-300 font-extrabold text-sm tracking-wider">TELKOM GROUP</span>
@@ -471,8 +471,83 @@
             });
         }
 
+        function renderDynamicMarquee(logos = null) {
+            const track = document.getElementById('portfolio-marquee-track');
+            if (!track) return;
+
+            const logoList = logos || JSON.parse(localStorage.getItem('rk_client_logos')) || [
+                { nama: "TELKOM GROUP", logo_url: "" },
+                { nama: "PERTAMINA", logo_url: "" },
+                { nama: "BANK MANDIRI", logo_url: "" },
+                { nama: "KEMENPUPR", logo_url: "" },
+                { nama: "LUXE TIMEPIECE", logo_url: "" },
+                { nama: "SOUNDSCAPE FEST", logo_url: "" },
+                { nama: "SHOPEE MEDIA", logo_url: "" },
+                { nama: "GOTO IMPACT", logo_url: "" }
+            ];
+
+            const sorted = [...logoList].sort((a, b) => (a.urutan || 99) - (b.urutan || 99));
+
+            const htmlContent = sorted.map(item => `
+                <div class="px-6 py-4 rounded-2xl bg-slate-900/80 border border-slate-800 client-logo-card flex items-center justify-center min-w-[180px] h-20">
+                    ${item.logo_url ? `<img src="${item.logo_url}" alt="${escapeHtml(item.nama)}" class="max-h-12 max-w-[140px] object-contain">` : `<span class="text-slate-300 font-extrabold text-sm tracking-wider">${escapeHtml(item.nama)}</span>`}
+                </div>
+            `).join('');
+
+            track.innerHTML = htmlContent + htmlContent;
+        }
+
+        function initRealtimeSync() {
+            renderDynamicMarquee();
+
+            window.addEventListener('storage', (e) => {
+                if (!e.key || e.key === 'rk_client_logos') {
+                    const freshLogos = localStorage.getItem('rk_client_logos');
+                    if (freshLogos) renderDynamicMarquee(JSON.parse(freshLogos));
+                }
+                if (!e.key || e.key === 'rk_portfolios') {
+                    const freshPorts = localStorage.getItem('rk_portfolios');
+                    if (freshPorts && typeof renderPortfolioGrid === 'function') {
+                        const parsed = JSON.parse(freshPorts);
+                        DEMO_PORTFOLIO.length = 0;
+                        DEMO_PORTFOLIO.push(...parsed);
+                        renderPortfolioGrid();
+                    }
+                }
+            });
+
+            if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+                try {
+                    supabaseClient.channel('public:client_logos')
+                        .on('postgres_changes', { event: '*', schema: 'public', table: 'client_logos' }, async () => {
+                            const { data } = await supabaseClient.from('client_logos').select('*').order('urutan', { ascending: true });
+                            if (data && data.length > 0) {
+                                localStorage.setItem('rk_client_logos', JSON.stringify(data));
+                                renderDynamicMarquee(data);
+                            }
+                        })
+                        .subscribe();
+
+                    supabaseClient.channel('public:portfolios')
+                        .on('postgres_changes', { event: '*', schema: 'public', table: 'portfolio_items' }, async () => {
+                            const { data } = await supabaseClient.from('portfolio_items').select('*');
+                            if (data && data.length > 0) {
+                                localStorage.setItem('rk_portfolios', JSON.stringify(data));
+                                DEMO_PORTFOLIO.length = 0;
+                                DEMO_PORTFOLIO.push(...data);
+                                renderPortfolioGrid();
+                            }
+                        })
+                        .subscribe();
+                } catch(err) {
+                    console.warn('Realtime subscription error:', err);
+                }
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             renderPortfolioGrid();
+            initRealtimeSync();
         });
     </script>
 </body>
