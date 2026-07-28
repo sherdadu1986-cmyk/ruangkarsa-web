@@ -707,7 +707,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
     </div>
 
     <!-- Modal Add/Edit Client Logo Form -->
-    <div id="modal-logo-form" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
+    <div id="modal-logo" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl relative">
             <div class="flex items-center justify-between border-b border-slate-800 pb-4">
                 <h3 id="modal-logo-title" class="text-lg font-bold text-white">Tambah Logo Partner / Klien</h3>
@@ -1200,7 +1200,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
         }
 
         function openLogoModal(item = null) {
-            const modal = document.getElementById('modal-logo-form');
+            const modal = document.getElementById('modal-logo') || document.getElementById('modal-logo-form');
             const title = document.getElementById('modal-logo-title');
             if (!modal) return;
 
@@ -1208,7 +1208,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
             switchLogoInputMode('file');
 
             if (item) {
-                title.innerText = 'Edit Logo Partner / Klien';
+                if (title) title.innerText = 'Edit Logo Partner / Klien';
                 document.getElementById('form-logo-id').value = item.id;
                 document.getElementById('form-logo-nama').value = item.nama;
                 document.getElementById('form-logo-url').value = item.logo_url || '';
@@ -1218,7 +1218,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
                     updateLogoPreview(item.logo_url);
                 }
             } else {
-                title.innerText = 'Tambah Logo Partner / Klien';
+                if (title) title.innerText = 'Tambah Logo Partner / Klien';
                 document.getElementById('form-logo-id').value = '';
                 document.getElementById('form-logo-nama').value = '';
                 document.getElementById('form-logo-url').value = '';
@@ -1231,7 +1231,7 @@ CREATE POLICY "Public full access to rental_items" ON public.rental_items FOR AL
         }
 
         function closeLogoModal() {
-            const modal = document.getElementById('modal-logo-form');
+            const modal = document.getElementById('modal-logo') || document.getElementById('modal-logo-form');
             if (modal) {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
