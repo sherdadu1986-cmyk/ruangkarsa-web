@@ -427,6 +427,10 @@
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
+        async function fetchAndRenderRentalPublic() {
+            return await fetchRentalItems();
+        }
+
         async function fetchRentalItems() {
             if (typeof supabaseClient !== 'undefined' && supabaseClient) {
                 try {
@@ -436,9 +440,11 @@
                         .order('created_at', { ascending: false });
 
                     if (error) {
-                        console.error('Gagal mengambil data rental:', error);
+                        console.error('Gagal mengambil data rental:', error.message);
                         return;
                     }
+
+                    console.log("Data dari Supabase untuk Etalase Public:", data);
 
                     if (data && data.length > 0) {
                         publicCatalogItems = data.map(item => ({
@@ -452,8 +458,10 @@
                             populer: item.populer || false,
                             deskripsi: item.deskripsi || ''
                         }));
-                        filterCatalog();
+                    } else {
+                        publicCatalogItems = [];
                     }
+                    filterCatalog();
                 } catch (err) {
                     console.error('Error fetching rental items from Supabase:', err);
                 }
@@ -506,13 +514,15 @@
             if (!grid) return;
 
             const filtered = publicCatalogItems.filter(item => {
-                const matchSearch = item.nama.toLowerCase().includes(searchVal) || (item.kategori && item.kategori.toLowerCase().includes(searchVal));
+                const itemName = (item.nama || item.name || '').toLowerCase();
+                const itemCat = (item.kategori || item.category || '').toLowerCase();
+                const matchSearch = itemName.includes(searchVal) || itemCat.includes(searchVal);
                 
                 let matchCat = true;
                 if (currentActiveCategory === 'POPULER') {
                     matchCat = !!item.populer;
-                } else if (currentActiveCategory !== 'ALL') {
-                    matchCat = item.kategori === currentActiveCategory;
+                } else if (currentActiveCategory && currentActiveCategory !== 'ALL' && currentActiveCategory !== 'Semua Unit') {
+                    matchCat = itemCat.trim() === currentActiveCategory.toLowerCase().trim();
                 }
 
                 return matchSearch && matchCat;
